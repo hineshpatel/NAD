@@ -2,7 +2,6 @@
 // Created by Mingqiu Wang on 5/8/16.
 //
 #include "variables.h"
-#include "dataStructures.h"
 
 std::vector<receptor> receptors;
 std::vector<ligand> ligands;

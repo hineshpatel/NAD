@@ -12,7 +12,7 @@
 #define FO5 "time.txt" // record the time when NP detached or the simulation reaches time limit
 #define FO6 "bond_info.txt" // record all bond information
 #define FO7 "receptor.txt" // receptor info - (x,y)nm for each receptor
-//#define FO8
+#define FO8 "resume.txt"
 //#define FO9
 //#define FO10
 //#define FO11

@@ -25,18 +25,18 @@ class receptor {
 public:
 
     coord position;
-    bool bind;
+    bool bound;
     int pair;
 
-    receptor() : bind {false}, pair {-1} {}
+    receptor() : bound{false}, pair {-1} {}
 
     void unpairing() {
-        bind = false;
+        bound = false;
         pair = -1;
     }
 
     void pairing(int i) {
-        bind = true;
+        bound = true;
         pair = i;
     }
 };
@@ -47,10 +47,10 @@ public:
 
     coord position;
     coord position_origin;
-    bool bind;
+    bool bound;
     int pair;
 
-    ligand() : bind {false}, pair {-1} {}
+    ligand() : bound{false}, pair {-1} {}
 
     void updatePO(const coord& origin, const coord& np) {
         position_origin = origin;
@@ -62,12 +62,12 @@ public:
         position_origin = position - np;
     }
     void unpairing() {
-        bind = false;
+        bound = false;
         pair = -1;
     }
 
     void pairing(int i) {
-        bind = true;
+        bound = true;
         pair = i;
     }
 
@@ -86,16 +86,16 @@ struct np {
 
 struct bond {
 
-    int name = 0;
-    bool bind = false;
-    int ligand = 0;
-    int receptor = 0;
+    int name = -1;
+    bool bound = false;
+    int ligand = -1;
+    int receptor = -1;
 
     double formTime = 0; // (s)
     coord formPositionLigand; // (nm)
     coord formPositionReceptor; // (nm)
 
-    double breakTime = 0; // (s)
+    double breakTime = -1; // (s)
     coord breakPositionLigand; // (nm)
     coord breakPositionReceptor; // (nm)
 
@@ -103,9 +103,9 @@ struct bond {
 
 struct cutoff {
 
-    double bondLMax;
-    double bondLMin;
-    double deltaMax;
+    double bondLMax; // max bond length (nm)
+    double bondLMin; // min bond length (nm)
+    double deltaMax; // max bond length - equilibrium bond length (nm)
 
 };
 

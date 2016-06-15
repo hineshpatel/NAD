@@ -16,12 +16,13 @@
 #include "dataStructures.h"
 #include "variables.h"
 
+//TODO: rearrange the functions
 
 void setup(); // pre-setup
 double dist(double, double, double, double, double, double); // get distance between two points
 double dist(const coord &coord1, const coord &coord2); // get distance between two points
 std::pair<double, double> distribute
-        (double upper_dis, double lower_dis, std::pair<double, double> i);
+        (double upper_dis, double lower_dis, const std::pair<double, double>& i);
 // distribute a point close (closer than upper_dis && further than lower_dis) to a given point i
 void ini_receptor_double_cluster(); // initialize receptors
 void ini_receptor_monomer(); // initialize receptors
@@ -43,6 +44,10 @@ void translate();
 void rotate();
 int formBond(int lig, int rec);
 void reporting();
-
+bool ifDetach();
+void writeBond();
+void writeEndTime();
+void writeLoc();
+void writeResume();
 
 #endif //NANOAD_DECLARATION_H

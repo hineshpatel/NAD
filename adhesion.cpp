@@ -4,10 +4,20 @@
 
 #include "declaration.h"
 
+
+/**
+ * This function checks all active bonds and determines possible breakage.
+ * kr = kr0 * exp (gamma * sigma * delta / kB / T)
+ *
+ * @coefficient: kr_cal
+ * @update: set<int> activeBond, vector<ligand> ligands,
+ *      vector<receptor> receptors, vector<bond> bonds
+ *
+ */
 void breakageCheck() {
     double bondDis, kr, prob;
     int lig, rec;
-    static double kr_cal = (sigma * 1000.0 * gama) / thermal; // (nm^-2)
+    static const double kr_cal = (sigma * 1000.0 * gama) / thermal; // (nm^-1)
 
     for (auto bond = activeBond.begin(); bond != activeBond.end();) {
         lig = bonds.at(*bond).ligand;
@@ -19,43 +29,50 @@ void breakageCheck() {
         if (sfmt_genrand_res53(&sfmt)< prob) {
             ligands.at(lig).unpairing();
             receptors.at(rec).unpairing();
-            bonds.at(*bond).bind = false;
+            bonds.at(*bond).bound = false;
             bonds.at(*bond).breakTime = timeAcc;
             bonds.at(*bond).breakPositionLigand = ligands.at(lig).position;
             bonds.at(*bond).breakPositionReceptor = receptors.at(rec).position;
             bond = activeBond.erase(bond);
-
         }
         else ++bond;
     }
-
 }
 
+/**
+ * This function checks available unbound adhesion molecules and
+ *      determines possible formation.
+ * kf = kf0 * exp ( - sigma_ts * delta * delta / (2*kB*T))
+ *
+ * @coefficient: kf_cal, kr_cal
+ * @update: set<int> activeBond, vector<ligand> ligands,
+ *      vector<receptor> receptors, vector<bond> bonds
+ *
+ */
 void formationCheck() {
 
-    double bond_distance, kf, kr, prob;
-    static double kr_cal = (sigma * 1000.0 * gama) / thermal; // (nm^-2)
-    const double kf_cal = -1.0*(sigma_ts*500.0) / thermal; // (nm^-2)
+    double bondDis, kf, kr, prob;
+    static const double kr_cal = (sigma * 1000.0 * gama) / thermal; // (nm^-1)
+    static const double kf_cal = -1.0 * (sigma_ts * 500.0) / thermal; // (nm^-2)
 
-    for (auto ligand: availLig) {
-        if (ligands.at(ligand).bind) continue;
-        for (auto receptor: availRec) {
-            if (receptors.at(receptor).bind) continue;
-            bond_distance = dist(ligands.at(ligand).position,
-            receptors.at(receptor).position); // (nm)
-            kf = kf0*exp(kf_cal*((bond_distance - bondL)*(bond_distance - bondL)));
+    for (auto lig: availLig) {
+        if (ligands.at(lig).bound) continue;
+        for (auto rec: availRec) {
+            if (receptors.at(rec).bound) continue;
+            bondDis = dist(ligands.at(lig).position,
+                           receptors.at(rec).position); // (nm)
+            kf = kf0*exp(kf_cal*((bondDis - bondL) * (bondDis - bondL)));
             prob = 1.0 - exp(-1.0*kf*timeInc);
             if (sfmt_genrand_res53(&sfmt)< prob) {
-                kr = kr0*exp(kr_cal*fabs(bond_distance - bondL));
+                kr = kr0*exp(kr_cal*fabs(bondDis - bondL));
                 prob = 1.0 - exp(-1.0*kr*timeInc);
                 if (sfmt_genrand_res53(&sfmt)> prob) {
-                    activeBond.insert(formBond(ligand, receptor));
+                    activeBond.insert(formBond(lig, rec));
                     break;
                 }
             }
         }
     }
-
 }
 
 
@@ -64,6 +81,7 @@ void formationCheck() {
  *
  * @param: no. lig and no. rec
  * @return: no. the bond
+ * @update: vector<ligand> ligands, vector<receptor> receptors, vector<bond> bonds
  *
  */
 int formBond(int lig, int rec) {
@@ -73,7 +91,7 @@ int formBond(int lig, int rec) {
 
     bond bond1;
     bond1.name = bonds.size();
-    bond1.bind = true;
+    bond1.bound = true;
     bond1.formPositionLigand = ligands.at(lig).position;
     bond1.formPositionReceptor = receptors.at(rec).position;
     bond1.formTime = timeAcc;
@@ -85,3 +103,12 @@ int formBond(int lig, int rec) {
 
 }
 
+
+/**
+ * This function checks if the particle moves outside the substrate
+ *
+ */
+bool ifDetach() {
+    const static double dis = detach_criteria * radius;
+    return (dist(np.position, coord{}) > dis);
+}

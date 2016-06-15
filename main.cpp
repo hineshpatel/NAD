@@ -47,15 +47,24 @@ int main() {
         acceleration(fbond, fshear, frepulsion); // calculate accelerations
         translate(); // translate nanopartile
         rotate(); // rotate nanoparticle
-        if (!(step%10)) {
+
+        if (!(step%CHECKER)) {
             if (dist(np.lastPairPos,np.position)>bondL)getAvailRec(); // get all available receptors
             getAvailLig(); // get all available ligands
-        }
-        if (!(step%100)) {
+            if (ifDetach()) break;
             reporting();
-
+        }
+        if (!(step%REPORTER)) {
+            writeBond();
+            writeLoc();
+            writeResume();
         }
     }
+
+// Step 8: final record
+    writeEndTime();
+
+
 
     return 0;
 }

@@ -5,13 +5,15 @@
 #ifndef NANOAD_PARAMETERS_H
 #define NANOAD_PARAMETERS_H
 
+//TODO: rearrange the parameters
+
 #include <math.h>
 
 /* =======  Commonly used  ====================================================== */
-const int receptorDens = 21; // ICAM-1 density (1/um2)
+const int receptorDens = 134; // ICAM-1 density (1/um2)
 const int ligandDens = 410; // Ab density (1/um2)
 const double bondL = 41.1; // bond length at equilibrium (nm)
-const double timeLimit = 1e-4; // (s)
+const double timeLimit = 1e-2; // (s)
 const double sigma = 0.8; // (N/m)
 const double gama = 0.274; // (nm)
 #define LIG_CLU 1
@@ -48,7 +50,11 @@ const double kr0 = 1.1e-4; // (s^-1)
 const double kf0 = 1.6e5; // (s^-1)
 const double shear_rate = 100; // (s^-1)
 #define DEBUG 1
-const double polymer_thickness = 5; // (nm)
-const double compressibility = 3e-5; // (nN);
+const double proThick = 5; // the combined thickness of the protein layers (nm)
+const double compressibility = 3e-5; // the compressibility coefficient of surface proteins (nN);
+const int detach_criteria = 5; // # times than radius
+
+#define REPORTER 10000000  // all outputs saved every * steps
+#define CHECKER 100
 
 #endif //NANOAD_PARAMETERS_H

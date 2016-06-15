@@ -15,7 +15,7 @@
 #include "parameters.h"
 #include "SFMT.h"
 
-
+//TODO: rearrange the variables
 #define PI 3.14159
 
 extern std::vector<receptor> receptors;
@@ -47,7 +47,6 @@ const unsigned long long steps = timeLimit/timeInc;
 
 
 /******************* Random Number Generator **********************/
-
 extern sfmt_t sfmt;
 
 

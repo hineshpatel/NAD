@@ -15,6 +15,9 @@
  *      1) overwrites output files
  *      2) sets seed for random number generator as 1
  *
+ * @update: timeAcc, sfmt, bondCutoff
+ * @file: seed.txt
+ *
  */
 void setup() {
 
@@ -24,7 +27,7 @@ void setup() {
     if (DEBUG) {
         if ((outfile = fopen(FO1, "w")) == NULL){ printf("\nerror on open FO1!"); exit(1); }
         fclose(outfile);
-        sfmt_init_gen_rand(&sfmt, 1);
+        sfmt_init_gen_rand(&sfmt, 7);
     }
 
     else {
@@ -52,7 +55,7 @@ void setup() {
  * @return
  */
 std::pair<double, double> distribute
-        (double upper_dis, double lower_dis, std::pair<double, double> i) {
+        (double upper_dis, double lower_dis, const std::pair<double, double>& i) {
     double x, y, d;
     do {
         x = sfmt_genrand_res53(&sfmt) * 2 * upper_dis + i.first - upper_dis;
@@ -66,6 +69,7 @@ std::pair<double, double> distribute
 
 }
 
+
 /**
  * This function calculates the distance between two points.
  *
@@ -76,6 +80,8 @@ std::pair<double, double> distribute
 double dist(double rectx, double recty, double rectz, double surfx, double surfy, double surfz) {
     return sqrt((rectx - surfx)*(rectx - surfx) + (recty - surfy)*(recty - surfy) + (rectz - surfz)*(rectz - surfz));
 }
+
+
 /**
  * This function calculates the distance between two points.
  *
@@ -89,11 +95,11 @@ double dist(const coord &coord1, const coord &coord2) {
                 (coord1.z - coord2.z)*(coord1.z - coord2.z));
 }
 
+
 /**
  * This function transfers spherical coordinate (ph, tht, radius) to
  * Cartesian coordinate (coord)
- * @param: ph [0, 2PI], tht [0, PI]
- * @param
+ * @param: ph [0, 2PI], tht [0, PI], radius
  * @return
  */
 coord angle_trans(double ph, double tht, double radius) {
@@ -104,7 +110,7 @@ coord angle_trans(double ph, double tht, double radius) {
  * This function collects all available receptors within
  * radius + 2 * bond length of NP
  *
- * @return: update availRec[]
+ * @update: availRec, np.lastPairPos
  */
 void getAvailRec() {
     availRec.clear();
@@ -112,13 +118,12 @@ void getAvailRec() {
         if (dist(np.position,receptors.at(j).position)<(radius + 2 * bondL))
             availRec.push_back(j);
     np.lastPairPos = np.position;
-
 }
 
 /**
  * This function collects all available ligands below bond length
  *
- * @return: update availLig[]
+ * @update: availLig
  */
 void getAvailLig() {
     availLig.clear();
