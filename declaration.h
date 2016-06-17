@@ -35,11 +35,12 @@ void getAvailRec();
 void getAvailLig();
 void breakageCheck();
 void formationCheck();
-coord Frepulsion();
-std::pair<coord, coord> Fshear();
+coord Frepulsion(const double & npheight);
+std::pair<coord, coord> Fshear(const double & npheight);
 void acceleration(std::pair<coord, coord> Fbond, std::pair<coord, coord> Fshear, coord Frepulsion);
 double gasdev(long idum);
-std::pair<coord, coord> Fbond();
+std::pair<coord, coord> Fbond(const std::set<int> & activeBond, const std::vector<bond> & bonds,
+                              const std::vector<receptor> & receptors, const std::vector<ligand> & ligands);
 void translate();
 void rotate();
 int formBond(int lig, int rec);

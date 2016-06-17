@@ -7,9 +7,8 @@
 
 /**
  * This function checks all active bonds and determines possible breakage.
- * kr = kr0 * exp (gamma * sigma * delta / kB / T)
+ * Equation: kr = kr0 * exp (gamma * sigma * delta / kB / T)
  *
- * @coefficient: kr_cal
  * @update: set<int> activeBond, vector<ligand> ligands,
  *      vector<receptor> receptors, vector<bond> bonds
  *

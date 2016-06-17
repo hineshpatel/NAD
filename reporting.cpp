@@ -53,13 +53,13 @@ void writeBond() {
 
     FILE *outfile;
     if ((outfile = fopen(FO6, "w")) == NULL){ printf("\nerror on open FO6!"); exit(0); }
-    for (const auto && bond : bonds)
+    for (const auto & bond : bonds)
         fprintf(outfile, "%d\t%d\t%d\t"
                         "%lf\t%lf\t%lf\t"
                         "%lf\t%lf\t%lf\t"
                         "%.4e\t%.4e\t"
                         "%lf\t%lf\t%lf\t"
-                        "%lf\t%lf\t%lf\t",
+                        "%lf\t%lf\t%lf\n",
                 bond.bound, bond.ligand, bond.receptor,
                 bond.formPositionLigand.x, bond.formPositionLigand.y, bond.formPositionLigand.z,
                 bond.formPositionReceptor.x, bond.formPositionReceptor.y, bond.formPositionReceptor.z,
@@ -83,7 +83,7 @@ void writeResume() {
                 timeAcc, np.position.x, np.position.y, np.position.z,
                 np.velocity.x, np.velocity.y, np.velocity.z,
                 np.angle.x, np.angle.y, np.angle.z);
-    for (const auto && ligand : ligands)
+    for (const auto & ligand : ligands)
         fprintf(outfile, "%lf\t%lf\t%lf\n", ligand.position.x, ligand.position.y, ligand.position.z);
 
 

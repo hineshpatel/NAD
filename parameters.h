@@ -10,10 +10,10 @@
 #include <math.h>
 
 /* =======  Commonly used  ====================================================== */
-const int receptorDens = 134; // ICAM-1 density (1/um2)
+const int receptorDens = 21; // ICAM-1 density (1/um2)
 const int ligandDens = 410; // Ab density (1/um2)
 const double bondL = 41.1; // bond length at equilibrium (nm)
-const double timeLimit = 1e-2; // (s)
+const double timeLimit = 5; // (s)
 const double sigma = 0.8; // (N/m)
 const double gama = 0.274; // (nm)
 #define LIG_CLU 1

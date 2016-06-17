@@ -18,6 +18,7 @@ const coord operator+( const coord &a, const coord &b );
 const coord operator-( const coord &a, const coord &b );
 const coord operator*( const coord &a, double b );
 const coord operator*( double a, const coord &b );
+std::ostream& operator<<( std::ostream &os, const coord &vec);
 
 
 class receptor {

@@ -34,25 +34,25 @@ int main() {
 // Step 7: starts integrating Langevin equation
     coord frepulsion;
     pair<coord, coord> fbond, fshear;
-    for (auto step = 0; step < steps; ++step, timeAcc += timeInc) {
+    for (auto step = 0; timeAcc < timeLimit; ++step, timeAcc += timeInc) {
         if ((activeBond.size()) || (np.position.z < (radius + bondCutoff.bondLMax))) {
             breakageCheck(); // assess bond breakage
             formationCheck(); // assess bond formation
-            frepulsion = Frepulsion(); // calculate repulsion force from substrate to nanoparticle
+            frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
         else frepulsion = coord{0, 0, 0};
         // don't have to check bond and calculate repulsion force
-        fbond = Fbond(); // assess bond forces/torques on the nanoparticle
-        fshear = Fshear(); // assess shear force/torque on the nanoparticle
+        fbond = Fbond(activeBond, bonds, receptors, ligands); // assess bond forces/torques on the nanoparticle
+        fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
         acceleration(fbond, fshear, frepulsion); // calculate accelerations
-        translate(); // translate nanopartile
+        translate(); // translate nanoparticle
         rotate(); // rotate nanoparticle
 
         if (!(step%CHECKER)) {
             if (dist(np.lastPairPos,np.position)>bondL)getAvailRec(); // get all available receptors
             getAvailLig(); // get all available ligands
             if (ifDetach()) break;
-            reporting();
+//            reporting();
         }
         if (!(step%REPORTER)) {
             writeBond();
@@ -69,6 +69,45 @@ int main() {
     return 0;
 }
 
+//int main() {
+//    set<int> activeBond = {0, 1, 2};
+//    vector<bond> bonds;
+//    bond bond1;
+//    bond1.ligand = 0;
+//    bond1.receptor = 0;
+//    bonds.push_back(bond1);
+//    bond1.ligand = 1;
+//    bond1.receptor = 1;
+//    bonds.push_back(bond1);
+//    bond1.ligand = 2;
+//    bond1.receptor = 2;
+//    bonds.push_back(bond1);
+//    vector<receptor> receptors;
+//    receptor receptor1;
+//    receptor1.position = {0, -45, 0};
+//    receptors.push_back(receptor1);
+//    receptor1.position = {3, -50, 0};
+//    receptors.push_back(receptor1);
+//    receptor1.position = {-0.5, -40, 0};
+//    receptors.push_back(receptor1);
+//    np.position = {1.553678,-45.818843,124.235014};
+//    vector<ligand> ligands;
+//    ligand ligand1;
+//    ligand1.updatePA({58.055188,-49.81867,35.823587}, np.position);
+////    cout << ligand1.position_origin << endl;
+//    ligands.push_back(ligand1);
+//    ligand1.updatePA({77.100255,15.987777,85.535451}, np.position);
+////    cout << ligand1.position_origin << endl;
+//    ligands.push_back(ligand1);
+//    ligand1.updatePA({-9.222984,-149.624129,135.781703}, np.position);
+////    cout << ligand1.position_origin << endl;
+//    ligands.push_back(ligand1);
+//    std::pair<coord, coord> bond = Fbond(activeBond, bonds, receptors, ligands);
+//    std::pair<coord, coord> shear = Fshear(np.position.z);
+//    acceleration(bond, shear, Frepulsion(np.position.z));
+//    cout << Frepulsion(np.position.z) << "\t" << np.acc << "\t" << np.rot_acc << endl;
+//
+//}
 
 /**
  * Note that
