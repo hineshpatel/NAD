@@ -41,8 +41,8 @@ void acceleration(std::pair<coord, coord> Fbond, std::pair<coord, coord> Fshear,
 double gasdev(long idum);
 std::pair<coord, coord> Fbond(const std::set<int> & activeBond, const std::vector<bond> & bonds,
                               const std::vector<receptor> & receptors, const std::vector<ligand> & ligands);
-void translate();
-void rotate();
+void translate(coord & velocity, coord & position, const coord & acc);
+void rotate(coord & velocity, coord & angle, const coord & acc, std::vector<ligand> & ligands);
 int formBond(int lig, int rec);
 void reporting();
 bool ifDetach();

@@ -27,7 +27,7 @@ void setup() {
     if (DEBUG) {
         if ((outfile = fopen(FO1, "w")) == NULL){ printf("\nerror on open FO1!"); exit(1); }
         fclose(outfile);
-        sfmt_init_gen_rand(&sfmt, 7);
+        sfmt_init_gen_rand(&sfmt, 1);
     }
 
     else {

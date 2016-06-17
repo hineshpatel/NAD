@@ -9,12 +9,11 @@ using namespace std;
 /**
  * This function updates the location of nanoparticle
  *
- * @coefficient: c0, c1, c2, v_coeff1, v_coeff2, stddev_pos
- * @param[global var]: np.position (old), np.velocity (old)
- * @return[global var]: np.position (new), np.velocity (new)
+ * @param: velocity, position, acc
+ * @return: (update) velocity, position
  *
  */
-void translate() {
+void translate(coord & velocity, coord & position, const coord & acc) {
 
     static const double dev1 = exp(-2.0*beta*timeInc);
     static const double dev2 = (3.0 - 4.0*exp(-beta*timeInc));
@@ -36,20 +35,17 @@ void translate() {
     coord ran_x = {gasdev(10000), gasdev(10000), gasdev(10000)};
     coord ran_y = {gasdev(10000), gasdev(10000), gasdev(10000)};
 
-    np.position = np.position + a * np.velocity +  b * np.acc + ran_x * stddev_pos; // (nm)
-    np.velocity = c0 * np.velocity + c * np.acc + v_coeff1 * ran_x + v_coeff2 * ran_y;
+    position = position + a * velocity +  b * acc + ran_x * stddev_pos; // (nm)
+    velocity = c0 * velocity + c * acc + v_coeff1 * ran_x + v_coeff2 * ran_y;
 }
 
 
 /**
  * This function rotates the nanoparticle, and also updates the location of each ligand
  *
- * @coefficient: c0, c1, c2, v_coeff1, v_coeff2, stddev_pos
- * @param[global var]: np.angle (old), np.rot_velocity (old), ligands(old)
- * @return[global var]: np.angle (new), np.rot_velocity (new), ligands(old)
  *
  */
-void rotate() {
+void rotate(coord & velocity, coord & angle, const coord & acc, std::vector<ligand> & ligands) {
 
     static const double dev1 = exp(-2.0*beta_rot*timeInc);
     static const double dev2 = (3.0 - 4.0*exp(-beta_rot*timeInc));
@@ -72,19 +68,19 @@ void rotate() {
     coord ran_x = {gasdev(10000), gasdev(10000), gasdev(10000)};
     coord ran_y = {gasdev(10000), gasdev(10000), gasdev(10000)};
 
-    np.angle = -1 * (a * np.rot_velocity + b * np.rot_acc + ran_x * stddev_pos);
-    np.rot_velocity = c0 * np.rot_velocity + a * np.rot_acc + v_coeff1 * ran_x + v_coeff2 * ran_y;
+    angle = -1 * (a * velocity + b * acc + ran_x * stddev_pos);
+    velocity = c0 * velocity + a * acc + v_coeff1 * ran_x + v_coeff2 * ran_y;
 
 
 // updates 3D elementary rotation matrix
     vector<coord> rotationMatrix(3);
     double mol_cal[3];
-    double sinOmega = sin(np.angle.x);
-    double cosOmega = cos(np.angle.x);
-    double sinPhi = sin(np.angle.y);
-    double cosPhi = cos(np.angle.y);
-    double sinKappa = sin(np.angle.z);
-    double cosKappa = cos(np.angle.z);
+    double sinOmega = sin(angle.x);
+    double cosOmega = cos(angle.x);
+    double sinPhi = sin(angle.y);
+    double cosPhi = cos(angle.y);
+    double sinKappa = sin(angle.z);
+    double cosKappa = cos(angle.z);
     rotationMatrix.at(0).x = cosPhi * cosKappa;
     rotationMatrix.at(0).y = cosOmega * sinKappa + sinOmega * sinPhi * cosKappa;
     rotationMatrix.at(0).z = sinOmega * sinKappa - cosOmega * sinPhi * cosKappa;

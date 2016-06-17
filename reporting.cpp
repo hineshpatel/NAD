@@ -82,9 +82,11 @@ void writeResume() {
                         "%lf\t%lf\t%lf\n",
                 timeAcc, np.position.x, np.position.y, np.position.z,
                 np.velocity.x, np.velocity.y, np.velocity.z,
-                np.angle.x, np.angle.y, np.angle.z);
+                np.rot_velocity.x, np.rot_velocity.y, np.rot_velocity.z);
     for (const auto & ligand : ligands)
-        fprintf(outfile, "%lf\t%lf\t%lf\n", ligand.position.x, ligand.position.y, ligand.position.z);
+        fprintf(outfile, "%lf\t%lf\t%lf\n",
+                ligand.position_origin.x, ligand.position_origin.y,
+                ligand.position_origin.z);
 
 
     fclose(outfile);
