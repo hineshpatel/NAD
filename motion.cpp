@@ -7,13 +7,13 @@
 using namespace std;
 
 /**
- * This function updates the location of nanoparticle
+ * This function calculates the velocity and updates the location of nanoparticle
  *
  * @param: velocity, position, acc
- * @return: (update) velocity, position
+ * @update: velocity, position
  *
  */
-void translate(coord & velocity, coord & position, const coord & acc) {
+void translation(coord & velocity, coord & position, const coord & acc) {
 
     static const double dev1 = exp(-2.0*beta*timeInc);
     static const double dev2 = (3.0 - 4.0*exp(-beta*timeInc));
@@ -27,7 +27,6 @@ void translate(coord & velocity, coord & position, const coord & acc) {
     static const double c0 = exp(-1.0*beta*timeInc); // (dimensionless)
     static const double c1 = (1.0 - c0) / (beta*timeInc); // (dimensionless)
     static const double c2 = (1.0 - c1) / (beta*timeInc); // (dimensionless)
-
     static const double a = c1 * timeInc;
     static const double b = c2 * timeInc * timeInc * 1e9;
     static const double c = a * 1e9;
@@ -41,11 +40,13 @@ void translate(coord & velocity, coord & position, const coord & acc) {
 
 
 /**
- * This function rotates the nanoparticle, and also updates the location of each ligand
+ * This function calculates the rotational velocity of the particle and generates a rotation matrix
  *
- *
+ * @param: velocity, acc
+ * @update: velocity
+ * @return: rotationMatrix
  */
-void rotate(coord & velocity, coord & angle, const coord & acc, std::vector<ligand> & ligands) {
+vector<coord> rotate(coord & velocity, const coord & acc) {
 
     static const double dev1 = exp(-2.0*beta_rot*timeInc);
     static const double dev2 = (3.0 - 4.0*exp(-beta_rot*timeInc));
@@ -61,20 +62,18 @@ void rotate(coord & velocity, coord & angle, const coord & acc, std::vector<liga
     static const double c0 = exp(-1.0*beta_rot*timeInc); // (dimensionless)
     static const double c1 = (1.0 - c0) / (beta_rot*timeInc); // (dimensionless)
     static const double c2 = (1.0 - c1) / (beta_rot*timeInc); // (dimensionless)
-
     static const double a = c1 * timeInc;
     static const double b = c2 * timeInc * timeInc;
 
     coord ran_x = {gasdev(10000), gasdev(10000), gasdev(10000)};
     coord ran_y = {gasdev(10000), gasdev(10000), gasdev(10000)};
 
-    angle = -1 * (a * velocity + b * acc + ran_x * stddev_pos);
+    coord angle = -1 * (a * velocity + b * acc + ran_x * stddev_pos);
     velocity = c0 * velocity + a * acc + v_coeff1 * ran_x + v_coeff2 * ran_y;
 
 
-// updates 3D elementary rotation matrix
+// Generates a 3D elementary rotation matrix
     vector<coord> rotationMatrix(3);
-    double mol_cal[3];
     double sinOmega = sin(angle.x);
     double cosOmega = cos(angle.x);
     double sinPhi = sin(angle.y);
@@ -91,14 +90,26 @@ void rotate(coord & velocity, coord & angle, const coord & acc, std::vector<liga
     rotationMatrix.at(2).y = -1.0 * sinOmega * cosPhi;
     rotationMatrix.at(2).z = cosOmega * cosPhi;
 
+    return rotationMatrix;
+
+}
+
+/**
+ * This function rotates all ligands on the nanoparticle given a rotation matrix
+ *
+ * @param: ligands, rotationMatrix, NPposition
+ * @update: ligands
+ *
+ */
+void rotateLig (std::vector<ligand> & ligands, const vector<coord> & rotationMatrix, const coord & NPposition) {
+    double mol_cal[3];
     for (auto & ligand: ligands) {
         for (auto ii = 0; ii < 3; ii++) {
             mol_cal[ii] =
-            rotationMatrix.at(ii).x * ligand.position_origin.x +
-            rotationMatrix.at(ii).y * ligand.position_origin.y +
-            rotationMatrix.at(ii).z * ligand.position_origin.z;
+                    rotationMatrix.at(ii).x * ligand.position_origin.x +
+                    rotationMatrix.at(ii).y * ligand.position_origin.y +
+                    rotationMatrix.at(ii).z * ligand.position_origin.z;
         }
-        ligand.updatePO({mol_cal[0], mol_cal[1], mol_cal[2]}, np.position);
+        ligand.updatePO({mol_cal[0], mol_cal[1], mol_cal[2]}, NPposition);
     }
-
 }

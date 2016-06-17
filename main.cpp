@@ -5,81 +5,99 @@
 using namespace std;
 
 
-//int main() {
-//
-//// Step 1: sets up the simulation
-//    setup();
-//
-//// Step 2: adds receptors to substrate
-//    if (REC_CLU&&DOUBLE_CLU)
-//        ini_receptor_double_cluster(); // as double clustering
-//    else if (REC_CLU)
-//        ini_receptor_single_cluster(); // as single clustering
-//    else ini_receptor_monomer(); // as monomer
-//
-//// Step 3: adds a nanoparticle to the system
-//    ini_np();
-//
-//// Step 4: adds ligands on the nanoparticle
-//    ini_ligand();
-//
-//// Step 5: sets up initial NP binding
-//    ini_binding();
-//
-//// Step 6: get available adhesion molecules
-//    getAvailRec();
-//    getAvailLig();
-//
-//
-//// Step 7: starts integrating Langevin equation
-//    coord frepulsion;
-//    pair<coord, coord> fbond, fshear;
-//    for (auto step = 0; timeAcc < timeLimit; ++step, timeAcc += timeInc) {
-//        if ((activeBond.size()) || (np.position.z < (radius + bondCutoff.bondLMax))) {
-//            breakageCheck(); // assess bond breakage
-//            formationCheck(); // assess bond formation
-//            frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
-//        }
-//        else frepulsion = coord{0, 0, 0};
-//        // don't have to check bond and calculate repulsion force
-//        fbond = Fbond(activeBond, bonds, receptors, ligands); // assess bond forces/torques on the nanoparticle
-//        fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
-//        acceleration(fbond, fshear, frepulsion); // calculate accelerations
-//        translate(np.velocity, np.position, np.acc); // translate nanoparticle
-//        rotate(np.rot_velocity, np.angle, np.rot_acc, ligands); // rotate nanoparticle
-//
-//        if (!(step%CHECKER)) {
-//            if (dist(np.lastPairPos,np.position)>bondL)getAvailRec(); // get all available receptors
-//            getAvailLig(); // get all available ligands
-//            if (ifDetach()) break;
-////            reporting();
-//        }
-//        if (!(step%REPORTER)) {
-//            writeBond();
-//            writeLoc();
-//            writeResume();
-//        }
-//    }
-//
-//// Step 8: final record
-//    writeEndTime();
-//
-//
-//
-//    return 0;
-//}
-
 int main() {
-    setup();
-    np.velocity = {28533362.197028,23205777.429526,-39590677.153833};
-    np.position = {27.766997, -43.219823, 132.181734};
-    np.acc = {3e9, 5e9, 9e7};
-    translate(np.velocity, np.position, np.acc);
-//    cout << np.velocity << endl;
-//    cout << np.position << endl;
-    rotate(np.velocity, np.angle, np.acc, ligands);
 
+// Step 1: sets up the simulation
+    setup();
+
+// Step 2: adds receptors to substrate
+    if (REC_CLU&&DOUBLE_CLU)
+        ini_receptor_double_cluster(); // as double clustering
+    else if (REC_CLU)
+        ini_receptor_single_cluster(); // as single clustering
+    else ini_receptor_monomer(); // as monomer
+
+// Step 3: adds a nanoparticle to the system
+    ini_np();
+
+// Step 4: adds ligands on the nanoparticle
+    ini_ligand();
+
+// Step 5: sets up initial NP binding
+    ini_binding();
+
+// Step 6: get available adhesion molecules
+    getAvailRec();
+    getAvailLig();
+
+
+// Step 7: starts integrating Langevin equation
+    coord frepulsion;
+    pair<coord, coord> fbond, fshear;
+    for (auto step = 0; timeAcc < timeLimit; ++step, timeAcc += timeInc) {
+        if ((activeBond.size()) || (np.position.z < (radius + bondCutoff.bondLMax))) {
+            breakageCheck(); // assess bond breakage
+            formationCheck(); // assess bond formation
+            frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
+        }
+        else frepulsion = coord{0, 0, 0};
+        // don't have to check bond and calculate repulsion force
+        fbond = Fbond(activeBond, bonds, receptors, ligands); // assess bond forces/torques on the nanoparticle
+        fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
+        acceleration(fbond, fshear, frepulsion); // calculate accelerations
+        translation(np.velocity, np.position, np.acc); // translate nanoparticle
+        rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
+
+        if (!(step%CHECKER)) {
+            if (dist(np.lastPairPos,np.position)>bondL)getAvailRec(); // get all available receptors
+            getAvailLig(); // get all available ligands
+            if (ifDetach()) break;
+        }
+        if (!(step%REPORTER)) {
+            writeBond();
+            writeLoc();
+            writeResume();
+        }
     }
+
+// Step 8: final record
+    writeEndTime();
+
+
+
+    return 0;
+}
+
+//int main() {
+//    setup();
+//    np.velocity = {28533362.197028,23205777.429526,-39590677.153833};
+//    np.position = {1.553678, -45.818843, 124.235014};
+////    np.acc = {3e9, 5e9, 9e7};
+////    translation(np.velocity, np.position, np.acc);
+////    cout << np.velocity << endl;
+////    cout << np.position << endl;
+//    np.rot_velocity = {478586.526767,-136219.076178,603880.867970};
+//    np.rot_acc = {3e9, 5e9, 9e7};
+//    ligand ligand1;
+//    ligand1.updatePA({58.055188,-49.81867,35.823587}, np.position);
+//    ligands.push_back(ligand1);
+//    cout << "lig\t" << ligand1.position_origin << endl;
+//    ligand1.updatePA({77.100255,15.987777,85.535451}, np.position);
+//    ligands.push_back(ligand1);
+//    cout << "lig\t" << ligand1.position_origin << endl;
+//    ligand1.updatePA({-9.222984,-149.624129,135.781703}, np.position);
+//    ligands.push_back(ligand1);
+//    cout << "lig\t" << ligand1.position_origin << endl;
+//    vector<coord> matrix = rotate(np.rot_velocity, np.rot_acc);
+//    for (auto a : matrix)
+//        cout << a << endl;
+//    rotateLig (ligands, matrix, np.position);
+//    for (auto a : ligands)
+//        cout << a.position << endl;
+//
+//
+//
+//    }
 
 //int main() {
 //    set<int> activeBond = {0, 1, 2};

@@ -78,7 +78,6 @@ struct np {
     int name = 0;
     coord position;
     coord lastPairPos;
-    coord angle;
     coord velocity;
     coord rot_velocity;
     coord acc;
