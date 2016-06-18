@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "declaration.h"
 
 //TODO: restart
@@ -136,6 +137,22 @@ int main() {
 //    std::pair<coord, coord> shear = Fshear(np.position.z);
 //    acceleration(bond, shear, Frepulsion(np.position.z));
 //    cout << Frepulsion(np.position.z) << "\t" << np.acc << "\t" << np.rot_acc << endl;
+//
+//}
+
+//int main() {
+//
+//    FILE *outfile;
+//    if ((outfile = fopen("test.txt", "a")) == NULL){ printf("\nerror on open test!"); exit(0); }
+//
+//    double length;
+//    setup();
+//    for (long x = 0; x<1e6; ++x) {
+//        length = sfmt_genrand_res53(&sfmt)*5+38.6;
+//        if (!breakageCheck(length))
+//            fprintf(outfile, "%lf\n", length);
+//    }
+//    fclose(outfile);
 //
 //}
 

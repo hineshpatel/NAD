@@ -45,11 +45,19 @@ void translation(coord &velocity, coord &position, const coord &acc);
 std::vector<coord> rotate(coord & velocity, const coord & acc);
 void rotateLig (std::vector<ligand> & ligands, const std::vector<coord> & rotationMatrix, const coord & NPposition);
 int formBond(int lig, int rec);
+bool breakageCheck(double bondLength);
 void reporting();
 bool ifDetach();
 void writeBond();
 void writeEndTime();
 void writeLoc();
 void writeResume();
+double distSQ(const coord &coord1, const coord &coord2);
+bool formationCheck(double bondLength);
+double distance_P_S(const coord & a0, const coord & a1, const coord & a2);
+double seg_seg_Dist (const coord & rec1, const coord & lig2, const coord & rec3, const coord & lig4);
+bool ifCross (const std::set<int> & activeBond, const std::vector<receptor> & receptors,
+              const std::vector<ligand> & ligands, const int checkLig, const int checkRec);
+
 
 #endif //NANOAD_DECLARATION_H

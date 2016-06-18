@@ -56,5 +56,6 @@ const int detach_criteria = 5; // # times than radius
 
 #define REPORTER 10000000  // all outputs saved every * steps
 #define CHECKER 100
+#define CROSSCHECK 1 // whether to perform bond cross check
 
 #endif //NANOAD_PARAMETERS_H

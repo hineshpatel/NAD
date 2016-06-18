@@ -14,18 +14,14 @@
  *
  */
 void breakageCheck() {
-    double bondDis, kr, prob;
+    double bondDis;
     int lig, rec;
-    static const double kr_cal = (sigma * 1000.0 * gama) / thermal; // (nm^-1)
 
     for (auto bond = activeBond.begin(); bond != activeBond.end();) {
         lig = bonds.at(*bond).ligand;
         rec = bonds.at(*bond).receptor;
-        bondDis = dist(ligands.at(lig).position,
-                       receptors.at(rec).position); // (nm)
-        kr = kr0*exp(kr_cal*fabs(bondDis - bondL));
-        prob = 1.0 - exp(-1.0*kr*timeInc);
-        if (sfmt_genrand_res53(&sfmt)< prob) {
+        bondDis = dist(ligands.at(lig).position, receptors.at(rec).position); // (nm)
+        if (breakageCheck(bondDis)) {
             ligands.at(lig).unpairing();
             receptors.at(rec).unpairing();
             bonds.at(*bond).bound = false;
@@ -36,6 +32,16 @@ void breakageCheck() {
         }
         else ++bond;
     }
+}
+
+bool breakageCheck(double bondLength) {
+    double kr, prob;
+    static const double kr_cal = (sigma * 1000.0 * gama) / thermal; // (nm^-1)
+
+    kr = kr0*exp(kr_cal*fabs(bondLength - bondL));
+    prob = 1.0 - exp(-1.0*kr*timeInc);
+    return (sfmt_genrand_res53(&sfmt)< prob);
+
 }
 
 /**
@@ -50,9 +56,7 @@ void breakageCheck() {
  */
 void formationCheck() {
 
-    double bondDis, kf, kr, prob;
-    static const double kr_cal = (sigma * 1000.0 * gama) / thermal; // (nm^-1)
-    static const double kf_cal = -1.0 * (sigma_ts * 500.0) / thermal; // (nm^-2)
+    double bondDis;
 
     for (auto lig: availLig) {
         if (ligands.at(lig).bound) continue;
@@ -60,20 +64,26 @@ void formationCheck() {
             if (receptors.at(rec).bound) continue;
             bondDis = dist(ligands.at(lig).position,
                            receptors.at(rec).position); // (nm)
-            kf = kf0*exp(kf_cal*((bondDis - bondL) * (bondDis - bondL)));
-            prob = 1.0 - exp(-1.0*kf*timeInc);
-            if (sfmt_genrand_res53(&sfmt)< prob) {
-                kr = kr0*exp(kr_cal*fabs(bondDis - bondL));
-                prob = 1.0 - exp(-1.0*kr*timeInc);
-                if (sfmt_genrand_res53(&sfmt)> prob) {
-                    activeBond.insert(formBond(lig, rec));
-                    break;
-                }
+            if (formationCheck(bondDis)) {
+                if (CROSSCHECK&&ifCross (activeBond, receptors, ligands, lig, rec)) continue;
+                activeBond.insert(formBond(lig, rec));
+                break;
             }
         }
     }
 }
 
+bool formationCheck(double bondLength) {
+    double kf, prob;
+    static const double kf_cal = -1.0 * (sigma_ts * 500.0) / thermal; // (nm^-2)
+
+    kf = kf0*exp(kf_cal*((bondLength - bondL) * (bondLength - bondL)));
+    prob = 1.0 - exp(-1.0*kf*timeInc);
+    if (sfmt_genrand_res53(&sfmt)< prob) {
+        return !breakageCheck(bondLength);
+    }
+    return false;
+}
 
 /**
  * This function forms a bond between receptor rec and ligand lig.

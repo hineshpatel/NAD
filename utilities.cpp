@@ -3,6 +3,7 @@
 //
 
 
+#include <queue>
 #include "declaration.h"
 
 /**
@@ -95,6 +96,19 @@ double dist(const coord &coord1, const coord &coord2) {
                 (coord1.z - coord2.z)*(coord1.z - coord2.z));
 }
 
+/**
+ * This function calculates the square distance between two points.
+ *
+ * @param
+ * @param
+ * @return
+ */
+double distSQ(const coord &coord1, const coord &coord2) {
+    return ((coord1.x - coord2.x)*(coord1.x - coord2.x) +
+                (coord1.y - coord2.y)*(coord1.y - coord2.y) +
+                (coord1.z - coord2.z)*(coord1.z - coord2.z));
+}
+
 
 /**
  * This function transfers spherical coordinate (ph, tht, radius) to
@@ -162,4 +176,84 @@ double gasdev(long idum) {  // generates 2 random deviates at a time; idum is se
         iset=0; // so unset the ag,
         return gset; // and return it.
     }
+}
+
+
+bool ifCross (const std::set<int> & activeBond, const std::vector<receptor> & receptors,
+              const std::vector<ligand> & ligands, const int checkLig, const int checkRec) {
+    int lig, rec;
+    if (!activeBond.size()) return false;
+    for (int bond : activeBond) {
+        lig = bonds.at(bond).ligand;
+        rec = bonds.at(bond).receptor;
+        if (seg_seg_Dist(receptors.at(rec).position, ligands.at(lig).position,
+                receptors.at(checkRec).position, ligands.at(checkLig).position)<proThick)
+            return true;
+    }
+    return false;
+
+}
+
+
+/**
+ * This functure returns the minimum distance between two line segments
+ *
+ * @param: coordinates of four ends of the two segments
+ * @return: shortest distance
+ *
+ */
+double seg_seg_Dist (const coord & rec1, const coord & lig2, const coord & rec3, const coord & lig4) {
+    double a, b, c, d, e, f, s, t, shortest;
+    coord p, q;
+
+    a = distSQ(rec1, lig2);
+    b = -((lig2.x - rec1.x)*(lig4.x - rec3.x) + (lig2.y - rec1.y)*(lig4.y - rec3.y) +
+            (lig2.z - rec1.z)*(lig4.z - rec3.z));
+    c = (rec1.x - lig2.x)*(rec1.x - rec3.x) + (rec1.y - lig2.y)*(rec1.y - rec3.y) +
+            (rec1.z - lig2.z)*(rec1.z - rec3.z);
+    d = b;
+    e = distSQ(rec3, lig4);
+    f = (rec1.x - rec3.x)*(lig4.x - rec3.x) + (rec1.y - rec3.y)*(lig4.y - rec3.y) +
+            (rec1.z - rec3.z)*(lig4.z - rec3.z);
+
+    t = (c*d - a*f) / (b*d - a*e);
+    s = (c - b*t) / a;
+
+    p = rec1 + s*(lig2 - rec1);
+
+    q = rec3 + t*(lig4 - rec3);
+    shortest = dist(p,q);
+    if ((t <= 1) && (t >= 0) && (s <= 1) && (s >= 0)) return shortest;
+    std::priority_queue<double> P_S;
+    P_S.push(-distance_P_S(rec1, rec3, lig4));
+    P_S.push(-distance_P_S(lig2, rec3, lig4));
+    P_S.push(-distance_P_S(rec3, rec1, lig2));
+    P_S.push(-distance_P_S(lig4, rec1, lig2));
+
+    return -1.0*P_S.top();
+
+
+}
+
+
+/**
+ * This functure returns the distance from a point a0 to a line segment (a1-a2)
+ *
+ * @param:
+ * @return:
+ *
+ */
+double distance_P_S(const coord & a0, const coord & a1, const coord & a2)
+{
+    double s;
+    coord co;
+    s = -((a1.x - a0.x)*(a2.x - a1.x) + (a1.y - a0.y)*(a2.y - a2.y) + (a1.z - a0.z)*(a2.z - a1.z)) /
+            ((a2.x - a1.x)*(a2.x - a1.x) + (a2.y - a1.y)*(a2.y - a1.y) + (a2.z - a1.z)*(a2.z - a1.z));
+
+    if ((s >= 0) && (s <= 1)) {
+        co = a1 + s*(a2 - a1) - a0;
+        return sqrt(co.x * co.x + co.y * co.y + co.z * co.z);
+    }
+    if (s < 0) return dist(a1, a0);
+    if (s > 1) return dist(a2, a0);
 }
