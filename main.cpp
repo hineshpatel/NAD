@@ -8,6 +8,10 @@ using namespace std;
 
 int main() {
 
+
+
+
+
 // Step 1: sets up the simulation
     setup();
 

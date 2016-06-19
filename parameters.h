@@ -58,4 +58,5 @@ const int detach_criteria = 5; // # times than radius
 #define CHECKER 100
 #define CROSSCHECK 1 // whether to perform bond cross check
 
+const double bondDiameter = 2; // ICAM-1/Ab bond diameter (nm)
 #endif //NANOAD_PARAMETERS_H

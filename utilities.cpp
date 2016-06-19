@@ -5,7 +5,7 @@
 
 #include <queue>
 #include "declaration.h"
-
+using namespace std;
 /**
  * This function sets up all necessities for the simulation:
  *      1) prepares the seed for random number generator: sfmt
@@ -187,11 +187,10 @@ bool ifCross (const std::set<int> & activeBond, const std::vector<receptor> & re
         lig = bonds.at(bond).ligand;
         rec = bonds.at(bond).receptor;
         if (seg_seg_Dist(receptors.at(rec).position, ligands.at(lig).position,
-                receptors.at(checkRec).position, ligands.at(checkLig).position)<proThick)
+                receptors.at(checkRec).position, ligands.at(checkLig).position)<bondDiameter)
             return true;
     }
     return false;
-
 }
 
 
@@ -207,22 +206,22 @@ double seg_seg_Dist (const coord & rec1, const coord & lig2, const coord & rec3,
     coord p, q;
 
     a = distSQ(rec1, lig2);
-    b = -((lig2.x - rec1.x)*(lig4.x - rec3.x) + (lig2.y - rec1.y)*(lig4.y - rec3.y) +
-            (lig2.z - rec1.z)*(lig4.z - rec3.z));
-    c = (rec1.x - lig2.x)*(rec1.x - rec3.x) + (rec1.y - lig2.y)*(rec1.y - rec3.y) +
-            (rec1.z - lig2.z)*(rec1.z - rec3.z);
+    b = -((lig2.x - rec1.x) * (lig4.x - rec3.x) + (lig2.y - rec1.y) * (lig4.y - rec3.y) +
+          (lig2.z - rec1.z) * (lig4.z - rec3.z));
+    c = (rec1.x - lig2.x) * (rec1.x - rec3.x) + (rec1.y - lig2.y) * (rec1.y - rec3.y) +
+        (rec1.z - lig2.z) * (rec1.z - rec3.z);
     d = b;
     e = distSQ(rec3, lig4);
-    f = (rec1.x - rec3.x)*(lig4.x - rec3.x) + (rec1.y - rec3.y)*(lig4.y - rec3.y) +
-            (rec1.z - rec3.z)*(lig4.z - rec3.z);
+    f = (rec1.x - rec3.x) * (lig4.x - rec3.x) + (rec1.y - rec3.y) * (lig4.y - rec3.y) +
+        (rec1.z - rec3.z) * (lig4.z - rec3.z);
 
-    t = (c*d - a*f) / (b*d - a*e);
-    s = (c - b*t) / a;
+    t = (c * d - a * f) / (b * d - a * e);
+    s = (c - b * t) / a;
 
-    p = rec1 + s*(lig2 - rec1);
+    p = rec1 + s * (lig2 - rec1);
 
-    q = rec3 + t*(lig4 - rec3);
-    shortest = dist(p,q);
+    q = rec3 + t * (lig4 - rec3);
+    shortest = dist(p, q);
     if ((t <= 1) && (t >= 0) && (s <= 1) && (s >= 0)) return shortest;
     std::priority_queue<double> P_S;
     P_S.push(-distance_P_S(rec1, rec3, lig4));
@@ -247,7 +246,7 @@ double distance_P_S(const coord & a0, const coord & a1, const coord & a2)
 {
     double s;
     coord co;
-    s = -((a1.x - a0.x)*(a2.x - a1.x) + (a1.y - a0.y)*(a2.y - a2.y) + (a1.z - a0.z)*(a2.z - a1.z)) /
+    s = -((a1.x - a0.x)*(a2.x - a1.x) + (a1.y - a0.y)*(a2.y - a1.y) + (a1.z - a0.z)*(a2.z - a1.z)) /
             ((a2.x - a1.x)*(a2.x - a1.x) + (a2.y - a1.y)*(a2.y - a1.y) + (a2.z - a1.z)*(a2.z - a1.z));
 
     if ((s >= 0) && (s <= 1)) {
@@ -257,3 +256,4 @@ double distance_P_S(const coord & a0, const coord & a1, const coord & a2)
     if (s < 0) return dist(a1, a0);
     if (s > 1) return dist(a2, a0);
 }
+
