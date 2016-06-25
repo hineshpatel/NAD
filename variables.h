@@ -31,18 +31,18 @@ extern cutoff bondCutoff;
 
 
 
-const double sigma_ts = sigma; // (N/m)
-const double volume = (4.0 / 3.0) * PI * radius * radius * radius; // volume of NP (nm^3)
+const double sigma_ts = _sigma; // (N/m)
+const double volume = (4.0 / 3.0) * PI * _radius * _radius * _radius; // volume of NP (nm^3)
 const double mass = density * volume * 1.0e9; // mass of NP (ng)
-const double rot_inertia = (2.0 / 5.0) * mass * radius * radius; // rotation inertia of NP (ng*nm^2)
-const double beta = (3.0* PI * viscosity * (radius*2.0*0.001))
+const double rot_inertia = (2.0 / 5.0) * mass * _radius * _radius; // rotation inertia of NP (ng*nm^2)
+const double beta = (3.0 * PI * _viscosity * (_radius * 2.0 * 0.001))
                     / (mass*1e-12); // see {English, Biophys.J, 2014} (s^-1)
-const double beta_rot = PI*viscosity*(2.0*radius*0.001)*(2.0*radius)*(2.0*radius)
-                        / rot_inertia*1e12; // see {English, Biophys.J, 2014} (s^-1)
-const double substrate = 10*radius; // half diameter of the substrate (nm)
-const int ligandNum = (int)(ligandDens * 4 * PI*radius*radius / 1e6);
-const int receptorNum = receptorDens * substrate * substrate / 250000;
-const unsigned long long steps = timeLimit/timeInc;
+const double beta_rot = PI * _viscosity * (2.0 * _radius * 0.001) * (2.0 * _radius) * (2.0 * _radius)
+                        / rot_inertia * 1e12; // see {English, Biophys.J, 2014} (s^-1)
+const double _substrate = 10 * _radius; // half diameter of the substrate (nm)
+const int ligandNum = (int)(ligandDens * 4 * PI * _radius * _radius / 1e6);
+const int receptorNum = receptorDens * _substrate * _substrate / 250000;
+const unsigned long long steps = timeLimit / _timeInc;
 
 
 

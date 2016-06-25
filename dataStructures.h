@@ -99,6 +99,8 @@ struct bond {
     coord breakPositionLigand; // (nm)
     coord breakPositionReceptor; // (nm)
 
+    double delta = -1.0; // (nm) = current bond length - equilibrium length; (+) extension (-) compression
+
 };
 
 struct cutoff {
@@ -107,6 +109,8 @@ struct cutoff {
     double bondLMin; // min bond length (nm)
     double deltaMax; // max bond length - equilibrium bond length (nm)
 
+    cutoff(double bondL, double ratio) : deltaMax{0.05 * bondL}, bondLMax{0.05 * bondL + bondL},
+                                         bondLMin{-0.05 * bondL + bondL} {}
 };
 
 #endif //NANOAD_DATASTRUCTURES_H

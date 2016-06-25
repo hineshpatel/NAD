@@ -5,12 +5,22 @@
 #include "declaration.h"
 
 using namespace std;
-void reporting() {
+bool checkDisplace(long &step) {
 
-    cout << np.position.x << "\t" << np.position.y << "\t" << np.position.z
-    << "\t" << activeBond.size()
-//               << "\t" << dist(ligands.at(3).position,ligands.at(7).position)
-               << endl;
+    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(); // get all available receptors
+    getAvailLig(); // get all available ligands
+
+    if (ifDetach(np.position)) return true;
+
+    if (!(step%TRAJ)) {
+        writeLoc();
+    }
+    if (!(step%REPORTER)) {
+        writeBond();
+        writeResume();
+    }
+    return false;
+
 }
 
 void writeLoc() {
@@ -28,7 +38,8 @@ void writeEndTime() {
 
     FILE *outfile;
     if ((outfile = fopen(FO5, "w")) == NULL){ printf("\nerror on open FO5!"); exit(0); }
-    fprintf(outfile, "time: %lf\n", timeAcc);
+    fprintf(outfile, "%.4e\t%lf\t%lf\t%lf\t%lu\n", timeAcc, np.position.x,
+            np.position.y, np.position.z, activeBond.size());
     fclose(outfile);
 
 }
@@ -59,13 +70,15 @@ void writeBond() {
                         "%lf\t%lf\t%lf\t"
                         "%.4e\t%.4e\t"
                         "%lf\t%lf\t%lf\t"
-                        "%lf\t%lf\t%lf\n",
+                        "%lf\t%lf\t%lf\t"
+                        "%lf\n",
                 bond.bound, bond.ligand, bond.receptor,
                 bond.formPositionLigand.x, bond.formPositionLigand.y, bond.formPositionLigand.z,
                 bond.formPositionReceptor.x, bond.formPositionReceptor.y, bond.formPositionReceptor.z,
                 bond.formTime, bond.breakTime,
                 bond.breakPositionLigand.x, bond.breakPositionLigand.y, bond.breakPositionLigand.z,
-                bond.breakPositionReceptor.x, bond.breakPositionReceptor.y, bond.breakPositionReceptor.z
+                bond.breakPositionReceptor.x, bond.breakPositionReceptor.y, bond.breakPositionReceptor.z,
+                bond.delta
         );
 
     fclose(outfile);

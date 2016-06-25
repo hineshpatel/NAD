@@ -19,6 +19,7 @@
       <sourceFolder url="file://$MODULE_DIR$/SFMT.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/dataStructures.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/linker.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/parameters.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/adhesion.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/utilities.cpp" isTestSource="false" />

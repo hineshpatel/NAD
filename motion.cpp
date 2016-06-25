@@ -15,20 +15,20 @@ using namespace std;
  */
 void translation(coord & velocity, coord & position, const coord & acc) {
 
-    static const double dev1 = exp(-2.0*beta*timeInc);
-    static const double dev2 = (3.0 - 4.0*exp(-beta*timeInc));
-    static const double dev3 = 2 - (dev1 + dev2) / (beta*timeInc);
-    static const double stddev_pos = sqrt(timeInc*timeInc*thermal / (mass*1e-9) / beta / timeInc*dev3);
-    static const double stddev_vel = sqrt(thermal / (mass*1e-9)*(1.0 - exp(-2.0*beta*timeInc))); // (nm/s)
-    static const double cor = thermal / (mass*1e-9) / beta * (1 - exp(-beta*timeInc))*
-            (1 - exp(-beta*timeInc)) / stddev_pos / stddev_vel; // (dimensionless)
+    static const double dev1 = exp(-2.0 * beta * _timeInc);
+    static const double dev2 = (3.0 - 4.0*exp(-beta * _timeInc));
+    static const double dev3 = 2 - (dev1 + dev2) / (beta * _timeInc);
+    static const double stddev_pos = sqrt(_timeInc * _timeInc * _thermal / (mass * 1e-9) / beta / _timeInc * dev3);
+    static const double stddev_vel = sqrt(_thermal / (mass * 1e-9) * (1.0 - exp(-2.0 * beta * _timeInc))); // (nm/s)
+    static const double cor = _thermal / (mass * 1e-9) / beta * (1 - exp(-beta * _timeInc)) *
+                              (1 - exp(-beta * _timeInc)) / stddev_pos / stddev_vel; // (dimensionless)
     static const double v_coeff1 = stddev_vel * cor;
     static const double v_coeff2 = stddev_vel * sqrt(1 - cor * cor);
-    static const double c0 = exp(-1.0*beta*timeInc); // (dimensionless)
-    static const double c1 = (1.0 - c0) / (beta*timeInc); // (dimensionless)
-    static const double c2 = (1.0 - c1) / (beta*timeInc); // (dimensionless)
-    static const double a = c1 * timeInc;
-    static const double b = c2 * timeInc * timeInc * 1e9;
+    static const double c0 = exp(-1.0 * beta * _timeInc); // (dimensionless)
+    static const double c1 = (1.0 - c0) / (beta * _timeInc); // (dimensionless)
+    static const double c2 = (1.0 - c1) / (beta * _timeInc); // (dimensionless)
+    static const double a = c1 * _timeInc;
+    static const double b = c2 * _timeInc * _timeInc * 1e9;
     static const double c = a * 1e9;
 
     coord ran_x = {gasdev(10000), gasdev(10000), gasdev(10000)};
@@ -48,22 +48,22 @@ void translation(coord & velocity, coord & position, const coord & acc) {
  */
 vector<coord> rotate(coord & velocity, const coord & acc) {
 
-    static const double dev1 = exp(-2.0*beta_rot*timeInc);
-    static const double dev2 = (3.0 - 4.0*exp(-beta_rot*timeInc));
-    static const double dev3 = 2 - (dev1 + dev2) / (beta_rot*timeInc);
-    static const double stddev_pos = sqrt(timeInc*timeInc*thermal / (rot_inertia*1e-9)
-                                    / beta_rot / timeInc*dev3);
-    static const double stddev_vel = sqrt(thermal / (rot_inertia*1e-9)*(1.0 -
-            exp(-2.0*beta_rot*timeInc))); //s^-1
-    static const double cor = thermal / (rot_inertia*1e-9) / beta_rot * (1 - exp(-beta_rot*timeInc))*
-            (1 - exp(-beta_rot*timeInc)) / stddev_pos / stddev_vel;//dimensional
+    static const double dev1 = exp(-2.0 * beta_rot * _timeInc);
+    static const double dev2 = (3.0 - 4.0*exp(-beta_rot * _timeInc));
+    static const double dev3 = 2 - (dev1 + dev2) / (beta_rot * _timeInc);
+    static const double stddev_pos = sqrt(_timeInc * _timeInc * _thermal / (rot_inertia * 1e-9)
+                                          / beta_rot / _timeInc * dev3);
+    static const double stddev_vel = sqrt(_thermal / (rot_inertia * 1e-9) * (1.0 -
+                                                                             exp(-2.0 * beta_rot * _timeInc))); //s^-1
+    static const double cor = _thermal / (rot_inertia * 1e-9) / beta_rot * (1 - exp(-beta_rot * _timeInc)) *
+                              (1 - exp(-beta_rot * _timeInc)) / stddev_pos / stddev_vel;//dimensional
     static const double v_coeff1 = stddev_vel * cor;
     static const double v_coeff2 = stddev_vel * sqrt(1 - cor * cor);
-    static const double c0 = exp(-1.0*beta_rot*timeInc); // (dimensionless)
-    static const double c1 = (1.0 - c0) / (beta_rot*timeInc); // (dimensionless)
-    static const double c2 = (1.0 - c1) / (beta_rot*timeInc); // (dimensionless)
-    static const double a = c1 * timeInc;
-    static const double b = c2 * timeInc * timeInc;
+    static const double c0 = exp(-1.0 * beta_rot * _timeInc); // (dimensionless)
+    static const double c1 = (1.0 - c0) / (beta_rot * _timeInc); // (dimensionless)
+    static const double c2 = (1.0 - c1) / (beta_rot * _timeInc); // (dimensionless)
+    static const double a = c1 * _timeInc;
+    static const double b = c2 * _timeInc * _timeInc;
 
     coord ran_x = {gasdev(10000), gasdev(10000), gasdev(10000)};
     coord ran_y = {gasdev(10000), gasdev(10000), gasdev(10000)};

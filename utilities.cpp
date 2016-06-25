@@ -3,47 +3,33 @@
 //
 
 
-#include <queue>
 #include "declaration.h"
 using namespace std;
+
 /**
- * This function sets up all necessities for the simulation:
- *      1) prepares the seed for random number generator: sfmt
- *      2) defines the bonding length truncation: bondCutoff
- *      3) sets system time: timeAcc
+ * This function prepares the seed for random number generator
+ * If in DEBUG mode, sets seed as 1; otherwise read from /dev/urandom
  *
- * If in DEBUG mode,
- *      1) overwrites output files
- *      2) sets seed for random number generator as 1
- *
- * @update: timeAcc, sfmt, bondCutoff
- * @file: seed.txt
+ * @update: sfmt
+ * @file: seed.txt (append)
  *
  */
-void setup() {
+void setRNG(sfmt_t & sfmt) {
+
+    unsigned long long seed;
+
+    if (DEBUG) seed = 1;
+    else {
+	    FILE *fp = fopen("/dev/urandom", "r");
+        fread(&seed, 1, sizeof(unsigned int), fp);
+        fclose(fp);
+    }
+    sfmt_init_gen_rand(&sfmt, seed);
 
     FILE *outfile;
-    timeAcc = 0;
-
-    if (DEBUG) {
-        if ((outfile = fopen(FO1, "w")) == NULL){ printf("\nerror on open FO1!"); exit(1); }
-        fclose(outfile);
-        sfmt_init_gen_rand(&sfmt, 1);
-    }
-
-    else {
-        unsigned long long seed;
-	    FILE *fp = fopen("/dev/urandom", "r"); fread(&seed, 1, sizeof(unsigned int), fp); fclose(fp);
-	    if ((outfile = fopen(FO3, "w")) == NULL){ printf("\nerror on open FO3!"); exit(1); }
-	    fprintf(outfile, "%e\t%llu\n", timeAcc, seed);
-	    fclose(outfile);
-        sfmt_init_gen_rand(&sfmt, seed);
-    }
-
-    bondCutoff.deltaMax = 0.05 * bondL;
-    bondCutoff.bondLMax = bondL + bondCutoff.deltaMax;
-    bondCutoff.bondLMin = bondL - bondCutoff.deltaMax; //TODO: a better cutoff
-
+    if ((outfile = fopen(FO3, "a")) == NULL){ printf("\nerror on open FO3!"); exit(1); }
+    fprintf(outfile, "%e\t%llu\n", timeAcc, seed);
+    fclose(outfile);
 }
 
 
@@ -84,7 +70,7 @@ double dist(double rectx, double recty, double rectz, double surfx, double surfy
 
 
 /**
- * This function calculates the distance between two points.
+ * This function calculates the distance between two points at 3D
  *
  * @param
  * @param
@@ -94,6 +80,18 @@ double dist(const coord &coord1, const coord &coord2) {
     return sqrt((coord1.x - coord2.x)*(coord1.x - coord2.x) +
                 (coord1.y - coord2.y)*(coord1.y - coord2.y) +
                 (coord1.z - coord2.z)*(coord1.z - coord2.z));
+}
+
+/**
+ * This function calculates the distance between two points at 2D
+ *
+ * @param
+ * @param
+ * @return
+ */
+double dist(const std::pair<double, double> & coord1, const std::pair<double, double> & coord2) {
+    return sqrt((coord1.first - coord2.first)*(coord1.first - coord2.first) +
+                (coord1.second - coord2.second)*(coord1.second - coord2.second));
 }
 
 /**
@@ -111,9 +109,9 @@ double distSQ(const coord &coord1, const coord &coord2) {
 
 
 /**
- * This function transfers spherical coordinate (ph, tht, radius) to
+ * This function transfers spherical coordinate (ph, tht, _radius) to
  * Cartesian coordinate (coord)
- * @param: ph [0, 2PI], tht [0, PI], radius
+ * @param: ph [0, 2PI], tht [0, PI], _radius
  * @return
  */
 coord angle_trans(double ph, double tht, double radius) {
@@ -122,14 +120,14 @@ coord angle_trans(double ph, double tht, double radius) {
 
 /**
  * This function collects all available receptors within
- * radius + 2 * bond length of NP
+ * _radius + 2 * bond length of NP
  *
  * @update: availRec, np.lastPairPos
  */
 void getAvailRec() {
     availRec.clear();
     for (auto j = 0; j < receptorNum; ++j)
-        if (dist(np.position,receptors.at(j).position)<(radius + 2 * bondL))
+        if (dist(np.position,receptors.at(j).position)<(_radius + 2 * _bondEL))
             availRec.push_back(j);
     np.lastPairPos = np.position;
 }
@@ -142,7 +140,7 @@ void getAvailRec() {
 void getAvailLig() {
     availLig.clear();
     for (auto j = 0; j < ligandNum; ++j)
-        if (ligands.at(j).position.z<bondL)
+        if (ligands.at(j).position.z < _bondEL)
             availLig.push_back(j);
 }
 

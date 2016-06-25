@@ -2,26 +2,26 @@
 // Created by Mingqiu Wang on 5/7/16.
 //
 
+#include <fstream>
 #include "declaration.h"
-
+using namespace std;
 /**
  * This function initializes receptors on the substrate under double clustering condition.
  *
- * Initializes: std::vector<receptor> receptors
- * Outputs: receptor.txt
+ * @update: receptors: initialize all receptors
  *
  */
-void ini_receptor_double_cluster() {
+void ini_receptor_double_cluster(std::vector<receptor> & receptors) {
 
-    int gProteinNum = gProteinDens * substrate * substrate / 250000; // number of G protein sites
+    int gProteinNum = _gProteinDens * _substrate * _substrate / 250000; // number of G protein sites
     std::vector<int> gProtein (gProteinNum + 1, 0); // how many receptors in each G protein site (max 4)
     std::vector<std::pair<double, double> > gProteinPos; // positions of G protein sites (nm)
-    double x, y; srand(time(NULL));
+    double x, y; srand(sfmt_genrand_res53(&sfmt));
 
     // distributes G protein sites on the substrate
     for (auto j = 0; j < gProteinNum; j++) {
-        x = sfmt_genrand_res53(&sfmt) * 2* substrate - substrate;
-        y = sfmt_genrand_res53(&sfmt) * 2* substrate - substrate;
+        x = sfmt_genrand_res53(&sfmt) * 2 * _substrate - _substrate;
+        y = sfmt_genrand_res53(&sfmt) * 2 * _substrate - _substrate;
         gProteinPos.push_back({x, y });
     }
 
@@ -57,11 +57,10 @@ void ini_receptor_double_cluster() {
 /**
  * This function initializes receptors on the substrate under single clustering condition.
  *
- * Initializes: std::vector<receptor> receptors
- * Outputs: receptor.txt
+ * @update: receptors: initialize all receptors
  *
  */
-void ini_receptor_single_cluster() {
+void ini_receptor_single_cluster(std::vector<receptor> & receptors) {
 
     double receptor_x, receptor_y;
     for (auto j = 0; j < receptorNum; j++) { // distribute receptors
@@ -72,8 +71,8 @@ void ini_receptor_single_cluster() {
             receptor_y = a.second;
         }
         else {
-            receptor_x = sfmt_genrand_res53(&sfmt) * 2* substrate - substrate;
-            receptor_y = sfmt_genrand_res53(&sfmt) * 2* substrate - substrate;
+            receptor_x = sfmt_genrand_res53(&sfmt) * 2 * _substrate - _substrate;
+            receptor_y = sfmt_genrand_res53(&sfmt) * 2 * _substrate - _substrate;
         }
         receptor receptor1;
         receptor1.position = {receptor_x, receptor_y, 0};
@@ -85,17 +84,17 @@ void ini_receptor_single_cluster() {
 /**
  * This function initializes receptors on the substrate under monomer condition.
  *
- * Initializes: std::vector<receptor> receptors
- * Outputs: receptor.txt
+ * @update: receptors: initialize all receptors
+ *
  *
  */
-void ini_receptor_monomer() {
+void ini_receptor_monomer(std::vector<receptor> & receptors) {
 
     double receptor_x, receptor_y;
     for (auto j = 0; j < receptorNum; j++) { // distribute receptors
 
-        receptor_x = sfmt_genrand_res53(&sfmt) * 2* substrate - substrate;
-        receptor_y = sfmt_genrand_res53(&sfmt) * 2* substrate - substrate;
+        receptor_x = sfmt_genrand_res53(&sfmt) * 2 * _substrate - _substrate;
+        receptor_y = sfmt_genrand_res53(&sfmt) * 2 * _substrate - _substrate;
 
         receptor receptor1;
         receptor1.position = {receptor_x, receptor_y, 0};
@@ -108,15 +107,15 @@ void ini_receptor_monomer() {
 /**
  * This function initializes a nanoparticle.
  *
- * Initializes: np np
+ * @update: np
  *
  */
-void ini_np() {
+void ini_np(struct np & np) {
 
     np.position.x = 0;
     np.position.y = 0;
-    np.position.z = radius + bondL;
-    np.lastPairPos = np.position; //TODO: is this last pair pos useful?
+    np.position.z = _radius + _bondEL;
+    np.lastPairPos = np.position;
 
 }
 
@@ -124,10 +123,10 @@ void ini_np() {
 /**
  * This function initializes ligandss on the NP.
  *
- * Initializes: std::vector<ligand> ligands
+ * @update: ligands
  *
  */
-void ini_ligand() {
+void ini_ligand(std::vector<ligand> & ligands) {
 
     double ph, tht, dis; coord lig_ori;
     for (auto j = 0; j < ligandNum; j++) {
@@ -136,21 +135,21 @@ void ini_ligand() {
                 do {
                     ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); // [0, 2PI]
                     tht = acos(2 * sfmt_genrand_res53(&sfmt) - 1); // [0, PI]
-                    lig_ori = angle_trans(ph, tht, radius);
+                    lig_ori = angle_trans(ph, tht, _radius);
                     dis = dist(lig_ori, ligands.at(j - 1).position_origin);
                 } while (dis < clus_minLigDis || dis > clus_maxLigDis);
             }
             else {
                 ph = 2.0 * PI * sfmt_genrand_res53(&sfmt);
                 tht = acos(2 * sfmt_genrand_res53(&sfmt) - 1); //(0, pi)
-                lig_ori = angle_trans(ph, tht, radius);
+                lig_ori = angle_trans(ph, tht, _radius);
             }
         }
 
         else {
             ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); // [0, 2PI]
             tht = acos(2 * sfmt_genrand_res53(&sfmt) - 1); // [0, PI]
-            lig_ori = angle_trans(ph, tht, radius);
+            lig_ori = angle_trans(ph, tht, _radius);
         }
 
         ligand ligand1;
@@ -172,9 +171,9 @@ void ini_binding() {
     receptors.at(0).position.y = np.position.y;
 
     // Place 1st ligand right above the 1st receptor
-    ligands.at(0).updatePO(coord{0,0,-radius}, np.position);
+    ligands.at(0).updatePO(coord{0,0,-_radius}, np.position);
 
-    activeBond.insert(formBond(0, 0));
+    activeBond.insert(formBond(0, 0, ligands, receptors, bonds));
 
     FILE *outfile;
     if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
@@ -182,4 +181,91 @@ void ini_binding() {
         fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
     fclose(outfile);
 
+}
+
+/**
+ * This function resumes a simulation from intermediate files
+ * "resume.txt", "recepto.txt", "bond_info.txt"
+ *
+ *
+ * @update: timeAcc, sfmt, receptors, ligands, np, bonds, activeBonds
+ * @return: if all intermediate files are read correctly
+ *
+ *
+ */
+bool resume() {
+    double x, y, z;
+// read simulation time, particle info, ligands info
+    ifstream input{"resume.txt"};
+    if (!input.is_open()) return false;
+    input >> timeAcc >> np.position.x >> np.position.y >> np.position.z >>
+            np.velocity.x >> np.velocity.y >> np.velocity.z >>
+            np.rot_velocity.x >> np.rot_velocity.y >> np.rot_velocity.z;
+    for (auto j = 0; j < ligandNum; j++) {
+        input >> x >> y >> z;
+        ligand ligand1;
+        ligand1.updatePO(coord{x,y,z}, np.position);
+        ligands.push_back(ligand1);
+    }
+    input.close();
+
+// read receptor info
+    input.open("receptor.txt");
+    if (!input.is_open()) return false;
+    for (auto j = 0; j < receptorNum; j++) {
+        input >> x >> y;
+        receptor receptor1;
+        receptor1.position = {x, y, 0};
+        receptors.push_back(receptor1);
+    }
+    input.close();
+
+// read bond info
+    input.open("bond_info.txt");
+    if (!input.is_open()) return false;
+    int bondNum = 0;
+    for( ; !input.eof(); ++bondNum) {
+        bond bond;
+        input >> bond.bound >> bond.ligand >> bond.receptor >>
+                    bond.formPositionLigand.x >> bond.formPositionLigand.y >> bond.formPositionLigand.z >>
+                    bond.formPositionReceptor.x >> bond.formPositionReceptor.y >> bond.formPositionReceptor.z >>
+                    bond.formTime >> bond.breakTime >>
+                    bond.breakPositionLigand.x >> bond.breakPositionLigand.y >> bond.breakPositionLigand.z >>
+                    bond.breakPositionReceptor.x >> bond.breakPositionReceptor.y >> bond.breakPositionReceptor.z >>
+                    bond.delta;
+
+        bond.name = bondNum;
+        bonds.push_back(bond);
+        if (bond.bound) {
+            receptors.at(bond.receptor).pairing(bond.ligand);
+            ligands.at(bond.ligand).pairing(bond.receptor);
+        }
+    }
+    input.close();
+
+// assign seed to RNG
+    setRNG(sfmt);
+
+    return true;
+}
+
+/**
+ * This function starts a simulation from one state
+ *
+ * @update: timeAcc, sfmt, receptors, ligands, np, bonds, activeBonds
+ *
+ */
+void ini() {
+
+    timeAcc = 0;
+    setRNG(sfmt);
+    if (REC_CLU&&DOUBLE_CLU)
+        ini_receptor_double_cluster(receptors); // as double clustering
+    else if (REC_CLU)
+        ini_receptor_single_cluster(receptors); // as single clustering
+    else ini_receptor_monomer(receptors); // as monomer
+
+    ini_np(np);
+    ini_ligand(ligands);
+    ini_binding();
 }

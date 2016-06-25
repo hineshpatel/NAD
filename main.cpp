@@ -1,48 +1,40 @@
-#include <iostream>
-#include <fstream>
+/**
+ * Nano Adhesive Dynamics (NAD) simulation
+ * A simulation framework for modeling adhesion/movement of adhesive nanoparticle in the flow
+ *
+ * Please modify "parameters.h" to customize simulation condition
+ * Please refer to <> for simulation details
+ *
+ * @author: Mingqiu Wang (mingqiuw at uci.edu)
+ * @date: 6/23/2016
+ *
+ */
+
 #include "declaration.h"
 
-//TODO: restart
 using namespace std;
-
 
 int main() {
 
+    if (RESUME) {
+        if (!resume())
+            exit(2);
+    }
+    else ini();
 
-
-
-
-// Step 1: sets up the simulation
-    setup();
-
-// Step 2: adds receptors to substrate
-    if (REC_CLU&&DOUBLE_CLU)
-        ini_receptor_double_cluster(); // as double clustering
-    else if (REC_CLU)
-        ini_receptor_single_cluster(); // as single clustering
-    else ini_receptor_monomer(); // as monomer
-
-// Step 3: adds a nanoparticle to the system
-    ini_np();
-
-// Step 4: adds ligands on the nanoparticle
-    ini_ligand();
-
-// Step 5: sets up initial NP binding
-    ini_binding();
-
-// Step 6: get available adhesion molecules
+    for (auto x = 0; x < 100; ++x) cout << sfmt_genrand_res53(&sfmt) << endl;
+    exit(4);
+// get available adhesion molecules
     getAvailRec();
     getAvailLig();
 
-
-// Step 7: starts integrating Langevin equation
+// starts integrating Langevin equation
     coord frepulsion;
     pair<coord, coord> fbond, fshear;
-    for (auto step = 0; timeAcc < timeLimit; ++step, timeAcc += timeInc) {
-        if ((activeBond.size()) || (np.position.z < (radius + bondCutoff.bondLMax))) {
-            breakageCheck(); // assess bond breakage
-            formationCheck(); // assess bond formation
+    for (long step = 0; timeAcc < timeLimit; ++step, timeAcc += _timeInc) {
+        if ((activeBond.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
+            breakageCheck(activeBond, bonds, ligands, receptors); // assess bond breakage
+            formationCheck(availLig, availRec, activeBond, ligands, receptors); // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
         else frepulsion = coord{0, 0, 0};
@@ -54,27 +46,19 @@ int main() {
         rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
 
         if (!(step%CHECKER)) {
-            if (dist(np.lastPairPos,np.position)>bondL)getAvailRec(); // get all available receptors
-            getAvailLig(); // get all available ligands
-            if (ifDetach()) break;
+            if (checkDisplace(step)) break;
         }
-        if (!(step%REPORTER)) {
-            writeBond();
-            writeLoc();
-            writeResume();
-        }
+
     }
 
 // Step 8: final record
     writeEndTime();
 
-
-
     return 0;
 }
 
 //int main() {
-//    setup();
+//    setRNG();
 //    np.velocity = {28533362.197028,23205777.429526,-39590677.153833};
 //    np.position = {1.553678, -45.818843, 124.235014};
 ////    np.acc = {3e9, 5e9, 9e7};
@@ -150,10 +134,10 @@ int main() {
 //    if ((outfile = fopen("test.txt", "a")) == NULL){ printf("\nerror on open test!"); exit(0); }
 //
 //    double length;
-//    setup();
+//    setRNG();
 //    for (long x = 0; x<1e6; ++x) {
 //        length = sfmt_genrand_res53(&sfmt)*5+38.6;
-//        if (!breakageCheck(length))
+//        if (!ifBreak(length))
 //            fprintf(outfile, "%lf\n", length);
 //    }
 //    fclose(outfile);

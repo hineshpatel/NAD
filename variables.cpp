@@ -12,4 +12,4 @@ std::vector<bond> bonds;
 std::set<int> activeBond;
 std::vector<int> availRec;
 std::vector<int> availLig;
-cutoff bondCutoff;
+cutoff bondCutoff{_bondEL, _bondCutRatio};
