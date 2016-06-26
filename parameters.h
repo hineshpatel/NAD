@@ -60,7 +60,7 @@ const int _detach_criteria = 5; // # times than _radius
 #define CHECKER 100
 #define CROSSCHECK 1 // whether to perform bond cross check
 
-const double bondDiameter = 2; // ICAM-1/Ab bond diameter (nm)
+const double _bondDiameter = 2; // ICAM-1/Ab bond diameter (nm)
 const double _bondCutRatio = 0.05;
 
 

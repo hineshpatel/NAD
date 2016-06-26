@@ -31,12 +31,12 @@ int main() {
     pair<coord, coord> fbond, fshear;
     for (unsigned long long step = 0; timeAcc < timeLimit; ++step, timeAcc += _timeInc) {
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
-            breakageCheck_linker(activeBonds, bonds, ligands, receptors); // assess bond breakage
+            breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
             formationCheck(availLig, availRec, activeBonds, ligands, receptors); // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
-        else frepulsion = coord{0, 0, 0};
-        // don't have to check bond and calculate repulsion force
+        else frepulsion = coord{0, 0, 0}; // don't have to check bond and calculate repulsion force if
+        // no bond and particle is higher than a certain height, which is not able to form bond
         fbond = Fbond(activeBonds, bonds, receptors, ligands); // assess bond forces/torques on the nanoparticle
         fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
         acceleration(fbond, fshear, frepulsion); // calculate accelerations

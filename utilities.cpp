@@ -178,7 +178,13 @@ double gasdev(long idum) {  // generates 2 random deviates at a time; idum is se
     }
 }
 
-
+/**
+ * This functure returns if a potential bond would cross with exist bond(s).
+ *
+ * @param: activeBond, receptors, ligands, checkLig, checkRec(the pair to be checked)
+ * @return: if cross
+ *
+ */
 bool ifCross (const std::set<int> & activeBond, const std::vector<receptor> & receptors,
               const std::vector<ligand> & ligands, const int checkLig, const int checkRec) {
     int lig, rec;
@@ -187,7 +193,7 @@ bool ifCross (const std::set<int> & activeBond, const std::vector<receptor> & re
         lig = bonds.at(bond).ligand;
         rec = bonds.at(bond).receptor;
         if (seg_seg_Dist(receptors.at(rec).position, ligands.at(lig).position,
-                receptors.at(checkRec).position, ligands.at(checkLig).position)<bondDiameter)
+                receptors.at(checkRec).position, ligands.at(checkLig).position) < _bondDiameter)
             return true;
     }
     return false;
