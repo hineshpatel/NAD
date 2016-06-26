@@ -9,7 +9,6 @@ sfmt_t sfmt;
 struct np np;
 double timeAcc;
 std::vector<bond> bonds;
-std::set<int> activeBond;
+std::set<int> activeBonds;
 std::vector<int> availRec;
 std::vector<int> availLig;
-cutoff bondCutoff{_bondEL, _bondCutRatio};

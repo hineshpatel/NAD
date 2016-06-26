@@ -109,6 +109,7 @@ struct cutoff {
     double bondLMin; // min bond length (nm)
     double deltaMax; // max bond length - equilibrium bond length (nm)
 
+    cutoff() {}
     cutoff(double bondL, double ratio) : deltaMax{0.05 * bondL}, bondLMax{0.05 * bondL + bondL},
                                          bondLMin{-0.05 * bondL + bondL} {}
 };

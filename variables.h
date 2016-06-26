@@ -22,11 +22,10 @@ extern std::vector<receptor> receptors;
 extern std::vector<ligand> ligands;
 extern struct np np;
 extern std::vector<bond> bonds;
-extern std::set<int> activeBond;
+extern std::set<int> activeBonds;
 extern double timeAcc;
 extern std::vector<int> availRec;
 extern std::vector<int> availLig;
-extern cutoff bondCutoff;
 
 
 
@@ -43,6 +42,7 @@ const double _substrate = 10 * _radius; // half diameter of the substrate (nm)
 const int ligandNum = (int)(ligandDens * 4 * PI * _radius * _radius / 1e6);
 const int receptorNum = receptorDens * _substrate * _substrate / 250000;
 const unsigned long long steps = timeLimit / _timeInc;
+const cutoff bondCutoff{_bondEL, _bondCutRatio};
 
 
 

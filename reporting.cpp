@@ -28,7 +28,7 @@ void writeLoc() {
     FILE *outfile;
     if ((outfile = fopen(FO1, "a")) == NULL){ printf("\nerror on open FO1!"); exit(0); }
     fprintf(outfile, "%.4e\t%lf\t%lf\t%lf\t%lu\n",
-            timeAcc, np.position.x, np.position.y, np.position.z, activeBond.size());
+            timeAcc, np.position.x, np.position.y, np.position.z, activeBonds.size());
     fclose(outfile);
 
 }
@@ -39,7 +39,7 @@ void writeEndTime() {
     FILE *outfile;
     if ((outfile = fopen(FO5, "w")) == NULL){ printf("\nerror on open FO5!"); exit(0); }
     fprintf(outfile, "%.4e\t%lf\t%lf\t%lf\t%lu\n", timeAcc, np.position.x,
-            np.position.y, np.position.z, activeBond.size());
+            np.position.y, np.position.z, activeBonds.size());
     fclose(outfile);
 
 }
@@ -92,10 +92,13 @@ void writeResume() {
 
     fprintf(outfile, "%.4e\n%lf\t%lf\t%lf\n"
                         "%lf\t%lf\t%lf\n"
-                        "%lf\t%lf\t%lf\n",
-                timeAcc, np.position.x, np.position.y, np.position.z,
-                np.velocity.x, np.velocity.y, np.velocity.z,
-                np.rot_velocity.x, np.rot_velocity.y, np.rot_velocity.z);
+                        "%lf\t%lf\t%lf\n"
+                        "%lu\t%lu\n",
+            timeAcc, np.position.x, np.position.y, np.position.z,
+            np.velocity.x, np.velocity.y, np.velocity.z,
+            np.rot_velocity.x, np.rot_velocity.y, np.rot_velocity.z,
+            activeBonds.size(), bonds.size()
+    );
     for (const auto & ligand : ligands)
         fprintf(outfile, "%lf\t%lf\t%lf\n",
                 ligand.position_origin.x, ligand.position_origin.y,

@@ -173,7 +173,7 @@ void ini_binding() {
     // Place 1st ligand right above the 1st receptor
     ligands.at(0).updatePO(coord{0,0,-_radius}, np.position);
 
-    activeBond.insert(formBond(0, 0, ligands, receptors, bonds));
+    activeBonds.insert(formBond(0, 0, ligands, receptors, bonds));
 
     FILE *outfile;
     if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
@@ -195,13 +195,17 @@ void ini_binding() {
  */
 bool resume() {
     double x, y, z;
-// read simulation time, particle info, ligands info
+    int activeBondN, totalBondN;
+// read simulation time, particle info, ligands info, active/total bond number
     ifstream input{"resume.txt"};
-    if (!input.is_open()) return false;
+    if (!input.is_open()) {
+        cout << "cant't open resume.txt" << endl;
+        return false;
+    }
     input >> timeAcc >> np.position.x >> np.position.y >> np.position.z >>
             np.velocity.x >> np.velocity.y >> np.velocity.z >>
-            np.rot_velocity.x >> np.rot_velocity.y >> np.rot_velocity.z;
-    for (auto j = 0; j < ligandNum; j++) {
+            np.rot_velocity.x >> np.rot_velocity.y >> np.rot_velocity.z >> activeBondN >> totalBondN;
+    for ( ; !input.eof(); ) {
         input >> x >> y >> z;
         ligand ligand1;
         ligand1.updatePO(coord{x,y,z}, np.position);
@@ -211,8 +215,11 @@ bool resume() {
 
 // read receptor info
     input.open("receptor.txt");
-    if (!input.is_open()) return false;
-    for (auto j = 0; j < receptorNum; j++) {
+    if (!input.is_open()) {
+        cout << "cant't open receptor.txt" << endl;
+        return false;
+    }
+    for ( ; !input.eof(); ) {
         input >> x >> y;
         receptor receptor1;
         receptor1.position = {x, y, 0};
@@ -222,7 +229,10 @@ bool resume() {
 
 // read bond info
     input.open("bond_info.txt");
-    if (!input.is_open()) return false;
+    if (!input.is_open()) {
+        cout << "cant't open bond_info.txt" << endl;
+        return false;
+    }
     int bondNum = 0;
     for( ; !input.eof(); ++bondNum) {
         bond bond;
@@ -239,10 +249,21 @@ bool resume() {
         if (bond.bound) {
             receptors.at(bond.receptor).pairing(bond.ligand);
             ligands.at(bond.ligand).pairing(bond.receptor);
+            activeBonds.insert(bondNum);
         }
     }
     input.close();
 
+    if ( bonds.size() != totalBondN || activeBonds.size() != activeBondN ) {
+        cout << "bond info reads wrong" << endl;
+        return false;
+    }
+    
+    if ( receptors.size() != receptorNum || ligands.size() != ligandNum ) {
+        cout << "ligand/receptor files read wrong" << endl;
+        return false;
+    }
+    
 // assign seed to RNG
     setRNG(sfmt);
 
@@ -250,7 +271,7 @@ bool resume() {
 }
 
 /**
- * This function starts a simulation from one state
+ * This function starts a simulation from one bond state
  *
  * @update: timeAcc, sfmt, receptors, ligands, np, bonds, activeBonds
  *

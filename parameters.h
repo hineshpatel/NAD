@@ -8,6 +8,7 @@
 //TODO: rearrange the parameters
 
 #include <math.h>
+#include "dataStructures.h"
 
 /* =======  Commonly used  ====================================================== */
 const int receptorDens = 21; // ICAM-1 density (1/um2)
@@ -60,6 +61,8 @@ const int _detach_criteria = 5; // # times than _radius
 #define CROSSCHECK 1 // whether to perform bond cross check
 
 const double bondDiameter = 2; // ICAM-1/Ab bond diameter (nm)
+const double _bondCutRatio = 0.05;
+
 
 /* =======  For springy linker  ====================================================== */
 const double linkerLen = 5; // (nm)
@@ -67,5 +70,4 @@ const double maxDeltaCom = linkerLen - 0.2; // (nm)
 const double maxDeltaExt = 500 * linkerLen;
 const double sigma_linker = 1e-3; // (N/m)
 #define RESUME 0
-const double _bondCutRatio = 0.05;
 #endif //NANOAD_PARAMETERS_H

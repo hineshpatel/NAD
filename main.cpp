@@ -16,14 +16,13 @@ using namespace std;
 
 int main() {
 
+    cout << "what";
     if (RESUME) {
         if (!resume())
             exit(2);
     }
     else ini();
 
-    for (auto x = 0; x < 100; ++x) cout << sfmt_genrand_res53(&sfmt) << endl;
-    exit(4);
 // get available adhesion molecules
     getAvailRec();
     getAvailLig();
@@ -32,14 +31,14 @@ int main() {
     coord frepulsion;
     pair<coord, coord> fbond, fshear;
     for (long step = 0; timeAcc < timeLimit; ++step, timeAcc += _timeInc) {
-        if ((activeBond.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
-            breakageCheck(activeBond, bonds, ligands, receptors); // assess bond breakage
-            formationCheck(availLig, availRec, activeBond, ligands, receptors); // assess bond formation
+        if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
+            breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
+            formationCheck(availLig, availRec, activeBonds, ligands, receptors); // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
         else frepulsion = coord{0, 0, 0};
         // don't have to check bond and calculate repulsion force
-        fbond = Fbond(activeBond, bonds, receptors, ligands); // assess bond forces/torques on the nanoparticle
+        fbond = Fbond(activeBonds, bonds, receptors, ligands); // assess bond forces/torques on the nanoparticle
         fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
         acceleration(fbond, fshear, frepulsion); // calculate accelerations
         translation(np.velocity, np.position, np.acc); // translate nanoparticle
@@ -89,7 +88,7 @@ int main() {
 //    }
 
 //int main() {
-//    set<int> activeBond = {0, 1, 2};
+//    set<int> activeBonds = {0, 1, 2};
 //    vector<bond> bonds;
 //    bond bond1;
 //    bond1.ligand = 0;
@@ -121,7 +120,7 @@ int main() {
 //    ligand1.updatePA({-9.222984,-149.624129,135.781703}, np.position);
 ////    cout << ligand1.position_origin << endl;
 //    ligands.push_back(ligand1);
-//    std::pair<coord, coord> bond = Fbond(activeBond, bonds, receptors, ligands);
+//    std::pair<coord, coord> bond = Fbond(activeBonds, bonds, receptors, ligands);
 //    std::pair<coord, coord> shear = Fshear(np.position.z);
 //    acceleration(bond, shear, Frepulsion(np.position.z));
 //    cout << Frepulsion(np.position.z) << "\t" << np.acc << "\t" << np.rot_acc << endl;
