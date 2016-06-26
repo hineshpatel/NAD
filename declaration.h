@@ -31,7 +31,8 @@ void ini_receptors_doubleCluster(std::vector<receptor> &receptors); // initializ
 void ini_receptor_monomer(std::vector<receptor> & receptors); // initialize receptors
 void ini_receptor_cluster(std::vector<receptor> &receptors); // initialize receptors
 void ini_ligand(std::vector<ligand> & ligands); // initialize ligands
-void ini_binding(); // initialize binding
+void ini_binding(std::vector<receptor> & receptors, std::vector<ligand> & ligands,
+                 std::set<int> & activeBonds, std::vector<bond> & bonds, const struct np & np); // initialize binding
 void ini_np(struct np & np); // initialize nanoparticle
 coord angle_trans(double ph, double tht, double radius); // transfer spherical to Cartesian
 void getAvailRec();

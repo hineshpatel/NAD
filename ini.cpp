@@ -164,8 +164,11 @@ void ini_ligand(std::vector<ligand> & ligands) {
 /**
  * This function binds the NP to the substrate by one bond.
  *
+ * @param: receptors, ligands, activeBonds, bonds, np
+ *
  */
-void ini_binding() {
+void ini_binding(std::vector<receptor> & receptors, std::vector<ligand> & ligands,
+                 std::set<int> & activeBonds, std::vector<bond> & bonds, const struct np & np) {
 
     // Place 1st receptor right underneath the nanoparticle
     receptors.at(0).position.x = np.position.x;
@@ -175,12 +178,6 @@ void ini_binding() {
     ligands.at(0).updatePO(coord{0,0,-_radius}, np.position);
 
     activeBonds.insert(formBond(0, 0, ligands, receptors, bonds));
-
-    FILE *outfile;
-    if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
-    for (auto j = 0; j < receptorNum; j++)
-        fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
-    fclose(outfile);
 
 }
 
@@ -273,8 +270,10 @@ bool resume() {
 
 /**
  * This function starts a simulation from one bond state
+ * also write receptor info into file
  *
  * @update: timeAcc, sfmt, receptors, ligands, np, bonds, activeBonds
+ * @file: receptor.txt (write)
  *
  */
 void ini() {
@@ -289,5 +288,11 @@ void ini() {
 
     ini_np(np);
     ini_ligand(ligands);
-    ini_binding();
+    ini_binding(receptors, ligands, activeBonds, bonds, np);
+
+    FILE *outfile;
+    if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
+    for (auto j = 0; j < receptorNum; j++)
+        fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
+    fclose(outfile);
 }
