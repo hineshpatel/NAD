@@ -23,7 +23,7 @@ double delta2_ext(double delta) {
     delta = fabs(delta);
     double delta1 = _sigma * delta / (_sigma + sigma_linker);
     if (delta1 > maxDeltaExt) return delta - maxDeltaExt; // assume the linker length is far below bond length
-    return _sigma * delta / (_sigma + sigma_linker);
+    return sigma_linker * delta / (_sigma + sigma_linker);
 }
 
 /**

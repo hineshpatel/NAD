@@ -205,8 +205,7 @@ bool resume() {
     input >> timeAcc >> np.position.x >> np.position.y >> np.position.z >>
             np.velocity.x >> np.velocity.y >> np.velocity.z >>
             np.rot_velocity.x >> np.rot_velocity.y >> np.rot_velocity.z >> activeBondN >> totalBondN;
-    for ( ; !input.eof(); ) {
-        input >> x >> y >> z;
+    for ( ; input >> x >> y >> z; ) {
         ligand ligand1;
         ligand1.updatePO(coord{x,y,z}, np.position);
         ligands.push_back(ligand1);
@@ -219,8 +218,7 @@ bool resume() {
         cout << "cant't open receptor.txt" << endl;
         return false;
     }
-    for ( ; !input.eof(); ) {
-        input >> x >> y;
+    for ( ; input >> x >> y; ) {
         receptor receptor1;
         receptor1.position = {x, y, 0};
         receptors.push_back(receptor1);
@@ -233,10 +231,12 @@ bool resume() {
         cout << "cant't open bond_info.txt" << endl;
         return false;
     }
+    bool b;
     int bondNum = 0;
-    for( ; !input.eof(); ++bondNum) {
+    for( ; input >> b; ++bondNum) {
         bond bond;
-        input >> bond.bound >> bond.ligand >> bond.receptor >>
+        bond.bound = b;
+        input >> bond.ligand >> bond.receptor >>
                     bond.formPositionLigand.x >> bond.formPositionLigand.y >> bond.formPositionLigand.z >>
                     bond.formPositionReceptor.x >> bond.formPositionReceptor.y >> bond.formPositionReceptor.z >>
                     bond.formTime >> bond.breakTime >>

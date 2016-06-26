@@ -16,7 +16,6 @@ using namespace std;
 
 int main() {
 
-    cout << "what";
     if (RESUME) {
         if (!resume())
             exit(2);
@@ -32,7 +31,7 @@ int main() {
     pair<coord, coord> fbond, fshear;
     for (long step = 0; timeAcc < timeLimit; ++step, timeAcc += _timeInc) {
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
-            breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
+            breakageCheck_linker(activeBonds, bonds, ligands, receptors); // assess bond breakage
             formationCheck(availLig, availRec, activeBonds, ligands, receptors); // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
@@ -52,7 +51,7 @@ int main() {
 
 // Step 8: final record
     writeEndTime();
-
+    writeBond();
     return 0;
 }
 
