@@ -31,7 +31,7 @@ const double _timeInc = 1.0e-9; // step length (s)
 
 
 /* =======  Physical properties  ====================================================== */
-#define BROWNIAN 1
+#define BROWNIAN
 const double _viscosity = 1e-9; // _viscosity of water (kg/um/s)
 const double _thermal = 4.11; // scaled temperature Kb*T (nm^2*g/s^2)
 

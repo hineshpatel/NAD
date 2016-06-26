@@ -31,11 +31,18 @@ void translation(coord & velocity, coord & position, const coord & acc) {
     static const double b = c2 * _timeInc * _timeInc * 1e9;
     static const double c = a * 1e9;
 
+
+
+#ifdef BROWNIAN
     coord ran_x = {gasdev(10000), gasdev(10000), gasdev(10000)};
     coord ran_y = {gasdev(10000), gasdev(10000), gasdev(10000)};
-
     position = position + a * velocity +  b * acc + ran_x * stddev_pos; // (nm)
     velocity = c0 * velocity + c * acc + v_coeff1 * ran_x + v_coeff2 * ran_y;
+#else
+    position = position + a * velocity +  b * acc; // (nm)
+    velocity = c0 * velocity + c * acc;
+#endif // BROWNIAN
+
 }
 
 
@@ -65,12 +72,15 @@ vector<coord> rotate(coord & velocity, const coord & acc) {
     static const double a = c1 * _timeInc;
     static const double b = c2 * _timeInc * _timeInc;
 
+#ifdef BROWNIAN
     coord ran_x = {gasdev(10000), gasdev(10000), gasdev(10000)};
     coord ran_y = {gasdev(10000), gasdev(10000), gasdev(10000)};
-
     coord angle = -1 * (a * velocity + b * acc + ran_x * stddev_pos);
     velocity = c0 * velocity + a * acc + v_coeff1 * ran_x + v_coeff2 * ran_y;
-
+#else
+    coord angle = -1 * (a * velocity + b * acc);
+    velocity = c0 * velocity + a * acc;
+#endif // BROWNIAN
 
 // Generates a 3D elementary rotation matrix
     vector<coord> rotationMatrix(3);
