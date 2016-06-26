@@ -7,8 +7,8 @@
 using namespace std;
 bool checkDisplace(long &step) {
 
-    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(); // get all available receptors
-    getAvailLig(); // get all available ligands
+    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(availRec, np); // get all available receptors
+    getAvailLig(availLig, ligands); // get all available ligands
 
     if (ifDetach(np.position)) return true;
 

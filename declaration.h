@@ -35,8 +35,8 @@ void ini_binding(std::vector<receptor> & receptors, std::vector<ligand> & ligand
                  std::set<int> & activeBonds, std::vector<bond> & bonds, const struct np & np); // initialize binding
 void ini_np(struct np & np); // initialize nanoparticle
 coord angle_trans(double ph, double tht, double radius); // transfer spherical to Cartesian
-void getAvailRec();
-void getAvailLig();
+void getAvailRec(std::vector<int> & availRec, struct np & np);
+void getAvailLig(std::vector<int> & availLig, const std::vector<ligand> & ligands);
 void breakageCheck(std::set<int> &activeBonds, std::vector<bond> & bonds,
                    std::vector<ligand> & ligands, std::vector<receptor> & receptors);
 void formationCheck(const std::vector<int> & availLig, const std::vector<int> & availRec,

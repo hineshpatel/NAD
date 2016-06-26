@@ -122,22 +122,24 @@ coord angle_trans(double ph, double tht, double radius) {
  * This function collects all available receptors within
  * _radius + 2 * bond length of NP
  *
- * @update: availRec, np.lastPairPos
+ * @update: availRec, np
  */
-void getAvailRec() {
+void getAvailRec(std::vector<int> & availRec, struct np & np) {
     availRec.clear();
     for (auto j = 0; j < receptorNum; ++j)
-        if (dist(np.position,receptors.at(j).position)<(_radius + 2 * _bondEL))
-            availRec.push_back(j);
+        if (dist({np.position.x, np.position.y}, {receptors.at(j).position.x, receptors.at(j).position.y})
+            <(_radius + 2 * _bondEL))
+    availRec.push_back(j);
     np.lastPairPos = np.position;
 }
 
 /**
  * This function collects all available ligands below bond length
  *
+ * @param: ligands
  * @update: availLig
  */
-void getAvailLig() {
+void getAvailLig(std::vector<int> & availLig, const std::vector<ligand> & ligands) {
     availLig.clear();
     for (auto j = 0; j < ligandNum; ++j)
         if (ligands.at(j).position.z < _bondEL)

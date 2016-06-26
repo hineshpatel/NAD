@@ -11,7 +11,7 @@
 #include "dataStructures.h"
 
 /* =======  Commonly used  ====================================================== */
-const int receptorDens = 21; // ICAM-1 density (1/um2)
+const int receptorDens = 134; // ICAM-1 density (1/um2)
 const int ligandDens = 410; // Ab density (1/um2)
 const double _bondEL = 41.1; // bond length at equilibrium (nm)
 const double timeLimit = 5; // (s)

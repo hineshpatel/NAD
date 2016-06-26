@@ -23,8 +23,8 @@ int main() {
     else ini();
 
 // get available adhesion molecules
-    getAvailRec();
-    getAvailLig();
+    getAvailRec(availRec, np);
+    getAvailLig(availLig, ligands);
 
 // starts integrating Langevin equation
     coord frepulsion;
