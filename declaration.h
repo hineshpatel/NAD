@@ -54,7 +54,7 @@ void rotateLig (std::vector<ligand> & ligands, const std::vector<coord> & rotati
 int formBond(int lig, int rec, std::vector<ligand> & ligands, std::vector<receptor> & receptors,
              std::vector<bond> & bonds);
 bool ifBreak(double bondLength);
-bool checkDisplace(long &step);
+bool checkDisplace(unsigned long long &step);
 bool ifDetach(const coord & position);
 void writeBond();
 void writeEndTime();

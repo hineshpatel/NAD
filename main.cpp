@@ -29,7 +29,7 @@ int main() {
 // starts integrating Langevin equation
     coord frepulsion;
     pair<coord, coord> fbond, fshear;
-    for (long step = 0; timeAcc < timeLimit; ++step, timeAcc += _timeInc) {
+    for (unsigned long long step = 0; timeAcc < timeLimit; ++step, timeAcc += _timeInc) {
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
             breakageCheck_linker(activeBonds, bonds, ligands, receptors); // assess bond breakage
             formationCheck(availLig, availRec, activeBonds, ligands, receptors); // assess bond formation
