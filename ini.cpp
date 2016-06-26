@@ -2,16 +2,17 @@
 // Created by Mingqiu Wang on 5/7/16.
 //
 
-#include <fstream>
 #include "declaration.h"
+
 using namespace std;
+
 /**
  * This function initializes receptors on the substrate under double clustering condition.
  *
  * @update: receptors: initialize all receptors
  *
  */
-void ini_receptor_double_cluster(std::vector<receptor> & receptors) {
+void ini_receptors_doubleCluster(std::vector<receptor> &receptors) {
 
     int gProteinNum = _gProteinDens * _substrate * _substrate / 250000; // number of G protein sites
     std::vector<int> gProtein (gProteinNum + 1, 0); // how many receptors in each G protein site (max 4)
@@ -32,8 +33,8 @@ void ini_receptor_double_cluster(std::vector<receptor> & receptors) {
     // distributes receptors
     for (auto j = 0; j < receptorNum; j++) {
         if (j % 2) {
-            std::pair<double, double> a = distribute(clus_maxRecDis,
-                                                     clus_minRecDis, {receptors.at(j - 1).position.x, receptors.at(j - 1).position.y });
+            std::pair<double, double> a = distribute(_clus_maxRecDis,
+                                                     _clus_minRecDis, {receptors.at(j - 1).position.x, receptors.at(j - 1).position.y });
             receptor_x = a.first;
             receptor_y = a.second;
         }
@@ -41,7 +42,7 @@ void ini_receptor_double_cluster(std::vector<receptor> & receptors) {
             do {
                 i = rand() % gProteinNum + 1;
             } while (gProtein[i] == 4);
-            std::pair<double, double> a = distribute(clus_gProDis, 0, gProteinPos[i]);
+            std::pair<double, double> a = distribute(_clus_gProDis, 0, gProteinPos[i]);
             receptor_x = a.first;
             receptor_y = a.second;
         }
@@ -60,13 +61,13 @@ void ini_receptor_double_cluster(std::vector<receptor> & receptors) {
  * @update: receptors: initialize all receptors
  *
  */
-void ini_receptor_single_cluster(std::vector<receptor> & receptors) {
+void ini_receptor_cluster(std::vector<receptor> &receptors) {
 
     double receptor_x, receptor_y;
     for (auto j = 0; j < receptorNum; j++) { // distribute receptors
         if (j % 2) {
-            std::pair<double, double> a = distribute(clus_maxRecDis,
-                                                     clus_minRecDis, {receptors.at(j - 1).position.x, receptors.at(j - 1).position.y });
+            std::pair<double, double> a = distribute(_clus_maxRecDis,
+                                                     _clus_minRecDis, {receptors.at(j - 1).position.x, receptors.at(j - 1).position.y });
             receptor_x = a.first;
             receptor_y = a.second;
         }
@@ -121,7 +122,7 @@ void ini_np(struct np & np) {
 
 
 /**
- * This function initializes ligandss on the NP.
+ * This function initializes ligands on the NP.
  *
  * @update: ligands
  *
@@ -281,9 +282,9 @@ void ini() {
     timeAcc = 0;
     setRNG(sfmt);
     if (REC_CLU&&DOUBLE_CLU)
-        ini_receptor_double_cluster(receptors); // as double clustering
+        ini_receptors_doubleCluster(receptors); // as double clustering
     else if (REC_CLU)
-        ini_receptor_single_cluster(receptors); // as single clustering
+        ini_receptor_cluster(receptors); // as single clustering
     else ini_receptor_monomer(receptors); // as monomer
 
     ini_np(np);

@@ -36,9 +36,9 @@ const double _viscosity = 1e-9; // _viscosity of water (kg/um/s)
 const double _thermal = 4.11; // scaled temperature Kb*T (nm^2*g/s^2)
 
 /* =======  For receptor double clustering  ====================================================== */
-const double clus_maxRecDis = 2; // max distance between 2 clustered receptors (nm)
-const double clus_minRecDis = 0.5; // min distance between 2 clustered receptors (nm)
-const double clus_gProDis = 4; // max distance from a receptor to a G protein (nm)
+const double _clus_maxRecDis = 2; // max distance between 2 clustered receptors (nm)
+const double _clus_minRecDis = 0.5; // min distance between 2 clustered receptors (nm)
+const double _clus_gProDis = 4; // max distance from a receptor to a G protein (nm)
 const int _gProteinDens = 134 / 4 + 1; // density of G protein sites (1/um2)
 
 /* =======  For receptor clustering  ====================================================== */

@@ -11,6 +11,8 @@
 #include <utility>
 #include <iostream>
 #include <queue>
+#include <fstream>
+
 #include "outputs.h"
 #include "parameters.h"
 #include "SFMT.h"
@@ -25,9 +27,9 @@ double dist(const coord &coord1, const coord &coord2); // get distance between t
 std::pair<double, double> distribute
         (double upper_dis, double lower_dis, const std::pair<double, double>& i);
 // distribute a point close (closer than upper_dis && further than lower_dis) to a given point i
-void ini_receptor_double_cluster(std::vector<receptor> & receptors); // initialize receptors
+void ini_receptors_doubleCluster(std::vector<receptor> &receptors); // initialize receptors
 void ini_receptor_monomer(std::vector<receptor> & receptors); // initialize receptors
-void ini_receptor_single_cluster(std::vector<receptor> & receptors); // initialize receptors
+void ini_receptor_cluster(std::vector<receptor> &receptors); // initialize receptors
 void ini_ligand(std::vector<ligand> & ligands); // initialize ligands
 void ini_binding(); // initialize binding
 void ini_np(struct np & np); // initialize nanoparticle
