@@ -15,7 +15,7 @@
 double delta2_com(double delta) {
     delta = fabs(delta);
     if (delta < maxDeltaCom) return 0;
-    return delta - maxDeltaCom;
+    return - delta + maxDeltaCom;
 }
 
 

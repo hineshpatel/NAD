@@ -19,6 +19,21 @@ bool checkDisplace(unsigned long long &step) {
         writeBond();
         writeResume();
     }
+
+    FILE *outfile;
+    if ((outfile = fopen("bondL.txt", "a")) == NULL){ printf("\nerror on open file!"); exit(0); }
+    for (const auto & bond: bonds)
+
+        fprintf(outfile, "%.4e\n",
+            dist(ligands.at(bond.ligand).position,receptors.at(bond.receptor).position)-_bondEL);
+    fclose(outfile);
+
+    if ((outfile = fopen("bondF.txt", "a")) == NULL){ printf("\nerror on open file!"); exit(0); }
+    for (const auto & bond: bonds)
+        fprintf(outfile, "%.4e\n",
+                bond.delta*_sigma);
+    fclose(outfile);
+
     return false;
 
 }

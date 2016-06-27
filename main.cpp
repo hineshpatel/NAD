@@ -31,7 +31,7 @@ int main() {
     pair<coord, coord> fbond, fshear;
     for (unsigned long long step = 0; timeAcc < timeLimit; ++step, timeAcc += _timeInc) {
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
-            breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
+            breakageCheck_linker(activeBonds, bonds, ligands, receptors); // assess bond breakage
             formationCheck(availLig, availRec, activeBonds, ligands, receptors); // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
@@ -42,7 +42,11 @@ int main() {
         acceleration(fbond, fshear, frepulsion); // calculate accelerations
         translation(np.velocity, np.position, np.acc); // translate nanoparticle
         rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
-
+//        printf("%e\t%lf\t%lf\t%lf\t%d\t%lf\t%lf\t%lf\n", timeAcc, np.position.x, np.position.y,
+//               np.position.z, activeBonds.size(), np.acc.x, np.rot_acc.x, ligands.at(0).position.x);
+//        if (step == 3400) {
+//            exit(0);
+//        }
         if (!(step%CHECKER)) {
             if (checkDisplace(step)) break;
         }
