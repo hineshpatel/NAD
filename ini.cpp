@@ -265,12 +265,15 @@ bool resume() {
 // assign seed to RNG
     setRNG(sfmt);
 
+// get available adhesion molecules
+    getAvailRec(availRec, np);
+    getAvailLig(availLig, ligands);
     return true;
 }
 
 /**
  * This function starts a simulation from one bond state
- * also write receptor info into file
+ * as well as writes receptor info into file
  *
  * @update: timeAcc, sfmt, receptors, ligands, np, bonds, activeBonds
  * @file: receptor.txt (write)
@@ -295,4 +298,8 @@ void ini() {
     for (auto j = 0; j < receptorNum; j++)
         fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
     fclose(outfile);
+
+    // get available adhesion molecules
+    getAvailRec(availRec, np);
+    getAvailLig(availLig, ligands);
 }

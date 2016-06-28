@@ -6,21 +6,18 @@
 #include "declaration.h"
 
 /**
- * This function checks all active bonds and determines possible breakage.
- * Equation: kr = kr0 * exp (gamma * sigma * delta / kB / T)
+ * This
  *
  * @update:
  *
  */
 double delta2_com(double delta) {
-    delta = fabs(delta);
-    if (delta < maxDeltaCom) return 0;
-    return - delta + maxDeltaCom;
+    if (maxDeltaCom + delta > 0 ) return 0;
+    return delta + maxDeltaCom;
 }
 
 
 double delta2_ext(double delta) {
-    delta = fabs(delta);
     double delta1 = _sigma * delta / (_sigma + sigma_linker);
     if (delta1 > maxDeltaExt) return delta - maxDeltaExt; // assume the linker length is far below bond length
     return sigma_linker * delta / (_sigma + sigma_linker);
@@ -46,7 +43,7 @@ void breakageCheck_linker(std::set<int> & activeBonds, std::vector<bond> & bonds
         if (delta < 0) deltaBond = delta2_com(delta);
         else deltaBond = delta2_ext(delta);
         bonds.at(*bond).delta = deltaBond;
-        if (ifBreak(fabs(deltaBond))) {
+        if (ifBreak(deltaBond)) {
             ligands.at(lig).unpairing();
             receptors.at(rec).unpairing();
             bonds.at(*bond).bound = false;

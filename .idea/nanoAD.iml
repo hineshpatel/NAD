@@ -5,10 +5,11 @@
       <sourceFolder url="file://$MODULE_DIR$/SFMT-params216091.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/reporting.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/force.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/SFMT-params.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/dataStructure.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/variables.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/dataStructure.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/unitTest.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/motion.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/SFMT-params.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ini.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/declaration.h" isTestSource="false" />

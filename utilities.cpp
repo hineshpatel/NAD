@@ -201,7 +201,7 @@ bool ifCross (const std::set<int> & activeBond, const std::vector<receptor> & re
 
 
 /**
- * This functure returns the minimum distance between two line segments
+ * This function returns the minimum distance between two line segments
  *
  * @param: coordinates of four ends of the two segments
  * @return: shortest distance

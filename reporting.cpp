@@ -5,12 +5,11 @@
 #include "declaration.h"
 
 using namespace std;
-bool checkDisplace(unsigned long long &step) {
+void checkDisplace(unsigned long long &step) {
 
     if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(availRec, np); // get all available receptors
     getAvailLig(availLig, ligands); // get all available ligands
 
-    if (ifDetach(np.position)) return true;
 
     if (!(step%TRAJ)) {
         writeLoc();
@@ -32,8 +31,6 @@ bool checkDisplace(unsigned long long &step) {
         writeBond();
         writeResume();
     }
-    return false;
-
 }
 
 void writeLoc() {
