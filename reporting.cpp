@@ -13,19 +13,8 @@ void checkDisplace(unsigned long long &step) {
 
     if (!(step%TRAJ)) {
         writeLoc();
-        FILE *outfile;
-        if ((outfile = fopen("bondL.txt", "a")) == NULL){ printf("\nerror on open file!"); exit(0); }
-        for (const auto & bond: bonds)
-
-            fprintf(outfile, "%.4e\n",
-                    dist(ligands.at(bond.ligand).position,receptors.at(bond.receptor).position)-_bondEL);
-        fclose(outfile);
-
-        if ((outfile = fopen("bondF.txt", "a")) == NULL){ printf("\nerror on open file!"); exit(0); }
-        for (const auto & bond: bonds)
-            fprintf(outfile, "%.4e\n",
-                    bond.delta*_sigma);
-        fclose(outfile);
+        writeInTimeBondL();
+        writeInTimeBondF();
     }
     if (!(step%REPORTER)) {
         writeBond();
@@ -117,4 +106,24 @@ void writeResume() {
 
     fclose(outfile);
 
+}
+
+void writeInTimeBondL() {
+    FILE *outfile;
+    if ((outfile = fopen(FO9, "a")) == NULL){ printf("\nerror on open FO9!"); exit(0); }
+    for (auto bond: activeBonds)
+        fprintf(outfile, "%.4e\n",
+                dist(ligands.at(bonds.at(bond).ligand).position,
+                     receptors.at(bonds.at(bond).receptor).position)-_bondEL);
+    fclose(outfile);
+
+}
+
+void writeInTimeBondF() {
+    FILE *outfile;
+
+    if ((outfile = fopen(FO10, "a")) == NULL){ printf("\nerror on open FO10!"); exit(0); }
+    for (auto bond: activeBonds)
+        fprintf(outfile, "%.4e\n", bonds.at(bond).delta*_sigma);
+    fclose(outfile);
 }

@@ -13,8 +13,8 @@
 #define FO6 "bond_info.txt" // record all bond information
 #define FO7 "receptor.txt" // receptor info - (x,y)nm for each receptor
 #define FO8 "resume.txt"
-//#define FO9
-//#define FO10
+#define FO9 "bondL.txt" // in-time active bond delta info (BondL - BondEL) (nm)
+#define FO10 "bondF.txt" // in-time active bond force info (nN)
 //#define FO11
 //#define FO12
 #define FO13 "rst_general.txt" // file for restart

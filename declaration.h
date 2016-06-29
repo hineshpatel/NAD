@@ -100,7 +100,8 @@ void writeBond();
 void writeEndTime();
 void writeLoc();
 void writeResume();
-
+void writeInTimeBondL();
+void writeInTimeBondF();
 
 
 
