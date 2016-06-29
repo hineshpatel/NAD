@@ -13,8 +13,8 @@ void checkDisplace(unsigned long long &step) {
 
     if (!(step%TRAJ)) {
         writeLoc();
-        writeInTimeBondL();
-        writeInTimeBondF();
+        if (WRITEBONDL)writeInTimeBondL();
+        if (WRITEBONDF)writeInTimeBondF();
     }
     if (!(step%REPORTER)) {
         writeBond();

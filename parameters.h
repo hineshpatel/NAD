@@ -21,6 +21,10 @@ const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
 #define DOUBLE_CLU 1 // if double clustering four ICAM-1
 
 
+/* ======= Output ============================================================== */
+#define WRITEBONDF 1
+#define WRITEBONDL 1
+
 /* =======  Particle properties  =============================================== */
 
 const double _radius = 105; // _radius of the NP (nm)
