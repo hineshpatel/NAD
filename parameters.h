@@ -12,7 +12,7 @@
 
 const int _ligandDens = 410; // Ab density (1/um2)
 const int _receptorDens = 21; // ICAM-1 density (1/um2)
-const double _bondEL = 41.1; // bond length at equilibrium (nm)
+const double _bondEL = 41.1 + 2.6; // bond length at equilibrium (nm)
 const double _timeLimit = 30; // (s)
 const double _sigma = 0.8; // stiffness of ICAM-1/Ab bond (N/m)
 const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
@@ -72,10 +72,10 @@ const double clus_minLigDis = 5; // min distance between 2 fab domain of an Ab (
 
 
 /* =======  For springy linker  ================================================ */
-const double linkerLen = 5; // (nm)
-const double maxDeltaCom = linkerLen - 0.2; // (nm)
-const double maxDeltaExt = 500 * linkerLen;
-const double sigma_linker = 1e-3; // (N/m)
+const double _linkerLen = 2.6; // (nm)
+const double _maxDeltaCom = _linkerLen - 0.2; // (nm)
+const double _maxDeltaExt = 13;
+const double _sigma_linker = 1e-3; // (N/m)
 
 
 #endif //NANOAD_PARAMETERS_H

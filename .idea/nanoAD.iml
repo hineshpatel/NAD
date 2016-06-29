@@ -12,9 +12,10 @@
       <sourceFolder url="file://$MODULE_DIR$/SFMT-params.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ini.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/declaration.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/main_linker.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/variables.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SFMT.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/declaration.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/outputs.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SFMT-params19937.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SFMT.c" isTestSource="false" />

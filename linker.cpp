@@ -12,15 +12,15 @@
  *
  */
 double delta2_com(double delta) {
-    if (maxDeltaCom + delta > 0 ) return 0;
-    return delta + maxDeltaCom;
+    if (_maxDeltaCom + delta > 0 ) return 0;
+    return delta + _maxDeltaCom;
 }
 
 
 double delta2_ext(double delta) {
-    double delta1 = _sigma * delta / (_sigma + sigma_linker);
-    if (delta1 > maxDeltaExt) return delta - maxDeltaExt; // assume the linker length is far below bond length
-    return sigma_linker * delta / (_sigma + sigma_linker);
+    double delta1 = _sigma * delta / (_sigma + _sigma_linker);
+    if (delta1 > _maxDeltaExt) return delta - _maxDeltaExt; // assume the linker length is far below bond length
+    return _sigma_linker * delta / (_sigma + _sigma_linker);
 }
 
 /**
@@ -55,4 +55,34 @@ void breakageCheck_linker(std::set<int> & activeBonds, std::vector<bond> & bonds
         }
         else ++bond;
     }
+}
+
+/**
+ * This function calculates force from all bonds
+ *
+ * @param:
+ *
+ * @return: pair<coord, coord>, 1st is force, 2nd is torque
+ *
+ */
+std::pair<coord, coord> Fbond_linker(const std::set<int> & activeBond, const std::vector<bond> & bonds,
+                              const std::vector<receptor> & receptors, const std::vector<ligand> & ligands) {
+
+    int lig, rec;
+    double rot_f_x, rot_f_y, rot_f_z;
+    coord force, sumF, sumT;
+
+    for (int bond : activeBond) {
+        lig = bonds.at(bond).ligand;
+        rec = bonds.at(bond).receptor;
+        force = _sigma * bonds.at(bond).delta / dist(receptors.at(rec).position, ligands.at(lig).position) *
+                (receptors.at(rec).position - ligands.at(lig).position); // (nN)
+        sumF = sumF + force;
+        rot_f_x = (ligands.at(lig).position_origin.y * force.z - ligands.at(lig).position_origin.z * force.y); // (nN*nm)
+        rot_f_y = (ligands.at(lig).position_origin.z * force.x - ligands.at(lig).position_origin.x * force.z); // (nN*nm)
+        rot_f_z = (ligands.at(lig).position_origin.x * force.y - ligands.at(lig).position_origin.y * force.x); // (nN*nm)
+        // right-hand system
+        sumT = sumT + coord{rot_f_x, rot_f_y, rot_f_z}; // (nN*nm)
+    }
+    return {sumF, sumT};
 }

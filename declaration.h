@@ -83,7 +83,8 @@ double delta2_com(double);
 double delta2_ext(double);
 void breakageCheck_linker(std::set<int> &activeBonds, std::vector<bond> & bonds,
                           std::vector<ligand> & ligands, std::vector<receptor> & receptors);
-
+std::pair<coord, coord> Fbond_linker(const std::set<int> & activeBond, const std::vector<bond> & bonds,
+                                     const std::vector<receptor> & receptors, const std::vector<ligand> & ligands);
 
 /* =======  motion.cpp  ============================================= */
 
