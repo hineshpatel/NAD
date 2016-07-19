@@ -67,7 +67,7 @@ void writeBond() {
         fprintf(outfile, "%d\t%d\t%d\t"
                         "%lf\t%lf\t%lf\t"
                         "%lf\t%lf\t%lf\t"
-                        "%.4e\t%.4e\t"
+                        "%.10e\t%.10e\t"
                         "%lf\t%lf\t%lf\t"
                         "%lf\t%lf\t%lf\t"
                         "%lf\n",

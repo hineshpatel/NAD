@@ -78,7 +78,7 @@ const double clus_minLigDis = 5; // min distance between 2 fab domain of an Ab (
 /* =======  For springy linker  ================================================ */
 const double _linkerLen = 2.6; // (nm)
 const double _maxDeltaCom = _linkerLen - 0.2; // (nm)
-const double _maxDeltaExt = 13;
+const double _maxDeltaExt = 13 - _linkerLen;
 const double _sigma_linker = 1e-3; // (N/m)
 
 
