@@ -5,6 +5,7 @@
 
 #ifndef NANOAD_DECLARATION_H
 #define NANOAD_DECLARATION_H
+#include <ostream>
 
 #include <stdio.h>
 #include <stdlib.h>

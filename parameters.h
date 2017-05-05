@@ -12,7 +12,7 @@
 
 const int _ligandDens = 410; // Ab density (1/um2)
 const int _receptorDens = 21; // ICAM-1 density (1/um2)
-const double _bondEL = 41.1 + 2.6; // bond length at equilibrium (nm)
+const double _bondEL = 41.1; // bond length at equilibrium (nm)
 const double _timeLimit = 30; // (s)
 const double _sigma = 0.8; // stiffness of ICAM-1/Ab bond (N/m)
 const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
@@ -22,8 +22,8 @@ const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
 
 
 /* ======= Output ============================================================== */
-#define WRITEBONDF 1
-#define WRITEBONDL 1
+#define WRITEBONDF 0
+#define WRITEBONDL 0
 
 /* =======  Particle properties  =============================================== */
 

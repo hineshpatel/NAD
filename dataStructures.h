@@ -4,7 +4,7 @@
 
 #ifndef NANOAD_DATASTRUCTURES_H
 #define NANOAD_DATASTRUCTURES_H
-
+#include <ostream>
 
 struct coord {
     double x;
