@@ -25,7 +25,7 @@
 
 void breakageCheck(std::set<int> & activeBonds, std::vector<bond> & bonds,
                    std::vector<ligand> & ligands, std::vector<receptor> & receptors);
-void formationCheck(const std::vector<int> & availLig, const std::vector<int> & availRec,
+bool formationCheck(const std::vector<int> & availLig, const std::vector<int> & availRec,
                     std::set<int> &activeBonds, std::vector<ligand> & ligands,
                     std::vector<receptor> & receptors);
 bool ifBreak(double delta);
@@ -77,6 +77,7 @@ void ini_binding(std::vector<receptor> & receptors, std::vector<ligand> & ligand
 void ini_np(struct np & np); // initialize nanoparticle
 bool resume();
 void ini();
+void ini_np_rand(struct np & np);
 
 /* =======  linker.cpp  ============================================= */
 
@@ -104,6 +105,10 @@ void writeResume();
 void writeInTimeBondL();
 void writeInTimeBondF();
 
-
+/* =======  attachment.cpp  ============================================= */
+bool inCell(const coord &);
+void putNPBack(coord&);
+void renewNP();
+void writeAttNum(int num);
 
 #endif //NANOAD_DECLARATION_H

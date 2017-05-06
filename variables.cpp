@@ -12,3 +12,4 @@ std::vector<bond> bonds;
 std::set<int> activeBonds;
 std::vector<int> availRec;
 std::vector<int> availLig;
+int attachedNP = 0;

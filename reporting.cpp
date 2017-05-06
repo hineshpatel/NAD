@@ -12,14 +12,12 @@ void checkDisplace(unsigned long long &step) {
 
 
     if (!(step%TRAJ)) {
-        writeLoc();
-        if (WRITEBONDL)writeInTimeBondL();
-        if (WRITEBONDF)writeInTimeBondF();
+        writeAttNum(attachedNP);
     }
-    if (!(step%REPORTER)) {
-        writeBond();
-        writeResume();
-    }
+//    if (!(step%REPORTER)) {
+//        writeBond();
+//        writeResume();
+//    }
 }
 
 void writeLoc() {

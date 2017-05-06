@@ -3,7 +3,7 @@
 ////
 //
 //#include "declaration.h"
-//
+//#include "dataStructures.h"
 //using namespace std;
 //
 //
@@ -70,11 +70,11 @@
 //int main() {
 //
 //// test case 1 ================================================================================
-//    int bond_num = 3;
-//    double par[] = {1.553678, -45.818843, 124.235014};
-//    double rec[][3] = {0, -45.0, 0, 3, -50, 0, -0.5, -40, 0};
-//    double lig[][3] = {58.055188,-49.81867,35.823587, 77.100255,15.987777,85.535451,
-//                       -9.222984,-149.624129,135.781703};
+////    int bond_num = 3;
+////    double par[] = {1.553678, -45.818843, 124.235014};
+////    double rec[][3] = {0, -45.0, 0, 3, -50, 0, -0.5, -40, 0};
+////    double lig[][3] = {58.055188,-49.81867,35.823587, 77.100255,15.987777,85.535451,
+////                       -9.222984,-149.624129,135.781703};
 //// end input ================================================================================
 //
 ////// test case 2 ==============================================================================
@@ -94,28 +94,34 @@
 ////
 ////// end input ================================================================================
 //
-//    force_and_acc(bond_num, par, rec, lig);
-//    cout << "particle trans and rot accelerations\t" << np.acc << "\t" << np.rot_acc << endl;
-//
+////    force_and_acc(bond_num, par, rec, lig);
+////    cout << "particle trans and rot accelerations\t" << np.acc << "\t" << np.rot_acc << endl;
+////
 //
 //// test case 1 =============================================================================
-//    double v[] = {28533362.197028,23205777.429526,-39590677.153833};
-//    double rot_v[] = {478586.526767,-136219.076178,603880.867970};
+////    double v[] = {28533362.197028,23205777.429526,-39590677.153833};
+////    double rot_v[] = {478586.526767,-136219.076178,603880.867970};
 //// end input ================================================================================
 //
-//    trans_and_rot(v, rot_v);
-//    printf("particle and lig pos %e\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\n", np.position.x, np.position.y,
-//               np.position.z, np.velocity.x, ligands.at(0).position.x, ligands.at(1).position.x, ligands.at(2).position.x);
+////    trans_and_rot(v, rot_v);
+////    printf("particle and lig pos %e\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\n", np.position.x, np.position.y,
+////               np.position.z, np.velocity.x, ligands.at(0).position.x, ligands.at(1).position.x, ligands.at(2).position.x);
+////
+////
+////
+////// test seg-seg distance
+////    cout << seg_seg_Dist(
+////            {0.000000e+00, 0.000000e+00, 0.000000e+00},
+////            {2.278302e+01, 1.695014e+01, 2.975076e+01},
+////            {-1.580203e+00, 3.034802e-01, 0.000000e+00},
+////            {2.359700e+01, 1.263818e+01, 3.020311e+01}
+////    ) << endl;
 //
 //
-//
-//// test seg-seg distance
-//    cout << seg_seg_Dist(
-//            {0.000000e+00, 0.000000e+00, 0.000000e+00},
-//            {2.278302e+01, 1.695014e+01, 2.975076e+01},
-//            {-1.580203e+00, 3.034802e-01, 0.000000e+00},
-//            {2.359700e+01, 1.263818e+01, 3.020311e+01}
-//    ) << endl;
+//// test putNPBack
+//    coord NPposition = {-16, 0, 5};
+//    putNPBack(NPposition);
+//    cout << NPposition << endl;
 //}
 //
 //

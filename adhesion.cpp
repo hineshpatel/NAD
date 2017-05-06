@@ -49,7 +49,6 @@ void breakageCheck(std::set<int> & activeBonds, std::vector<bond> & bonds,
 bool ifBreak(double delta) {
     double kr;
     static const double kr_cal = (_sigma * 1000.0 * _gama) / _thermal; // (nm^-1)
-
     kr = _kr0 * exp(kr_cal * fabs(delta));
     return (sfmt_genrand_res53(&sfmt)< (1.0 - exp(-1.0 * kr * _timeInc)));
 
@@ -63,12 +62,12 @@ bool ifBreak(double delta) {
  *
  * @param: availLig: available ligands; availRec: available receptors
  * @update: activeBonds; ligands; receptors
- *
+ * @return: true if there is new bond forming, otherwise false
  */
-void formationCheck(const std::vector<int> & availLig, const std::vector<int> & availRec,
+bool formationCheck(const std::vector<int> & availLig, const std::vector<int> & availRec,
                     std::set<int> & activeBonds, std::vector<ligand> & ligands,
                     std::vector<receptor> & receptors) {
-
+    bool newBond = false;
     double bondDis;
 
     for (auto lig: availLig) {
@@ -79,14 +78,16 @@ void formationCheck(const std::vector<int> & availLig, const std::vector<int> & 
                            receptors.at(rec).position); // (nm)
             if (bondDis > bondCutoff.bondLMax || bondDis < bondCutoff.bondLMin) continue;
             if (ifForm(bondDis-_bondEL)) {
-                if (CROSSCHECK&&ifCross (activeBonds, receptors, ligands, lig, rec)) continue;
-                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
+//                if (CROSSCHECK&&ifCross (activeBonds, receptors, ligands, lig., rec)) continue;
+                return true;
+//                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
+                newBond = true;
                 break;
             }
         }
     }
+    return newBond;
 }
-
 
 /**
  * This function determines if a potential bond would form
@@ -100,7 +101,6 @@ void formationCheck(const std::vector<int> & availLig, const std::vector<int> & 
 bool ifForm(double delta) {
     double kf;
     static const double kf_cal = -1.0 * (sigma_ts * 500.0) / _thermal; // (nm^-2)
-
     kf = _kf0 * exp(kf_cal * delta * delta);
     if (sfmt_genrand_res53(&sfmt)< 1.0 - exp(-1.0 * kf * _timeInc)) {
         return !ifBreak(delta);

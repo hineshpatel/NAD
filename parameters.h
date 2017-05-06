@@ -10,8 +10,8 @@
 
 /* =======  Commonly used  ====================================================== */
 
-const int _ligandDens = 410; // Ab density (1/um2)
-const int _receptorDens = 21; // ICAM-1 density (1/um2)
+const int _ligandDens = 3400; // Ab density (1/um2)
+const int _receptorDens = 134; // ICAM-1 density (1/um2)
 const double _bondEL = 41.1; // bond length at equilibrium (nm)
 const double _timeLimit = 30; // (s)
 const double _sigma = 0.8; // stiffness of ICAM-1/Ab bond (N/m)
@@ -29,6 +29,11 @@ const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
 
 const double _radius = 105; // _radius of the NP (nm)
 const double _NPdensity = 1.05e-21; // density of polysterene (g/nm^3)
+
+
+/* ======= Attachment ========================================================== */
+const double _boxHeight = 160; // the height of box in which NP is moving (nm)
+const double _boxLength= 8 * _radius; // the x/y radius of box in which NP is moving (nm)
 
 
 /* =======  Computational properties  ========================================== */

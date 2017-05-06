@@ -7,7 +7,7 @@
  *
  * @author: Mingqiu Wang (mingqiuw at uci.edu)
  * @date: 6/28/2016
- *
+ * @date: 5/04/2017 add attachment simulation.
  */
 
 #include "declaration.h"
@@ -16,8 +16,9 @@ using namespace std;
 
 int main() {
 
-    if (RESUME) { if (!resume()) exit(2); }
-    else ini();
+
+//    if (RESUME) { if (!resume()) exit(2); } // disable resume function in attachment sim
+    ini();
 
 // starts integrating Langevin equation
     coord frepulsion;
@@ -25,8 +26,11 @@ int main() {
     for (unsigned long long step = 0; timeAcc < _timeLimit; ++step, timeAcc += _timeInc) {
 
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
-            breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
-            formationCheck(availLig, availRec, activeBonds, ligands, receptors); // assess bond formation
+//            breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
+            if (formationCheck(availLig, availRec, activeBonds, ligands, receptors))
+                attachedNP++;
+                renewNP();
+                ; // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
         else frepulsion = coord{0, 0, 0}; // don't have to check bond and calculate repulsion force if
@@ -35,9 +39,19 @@ int main() {
         fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
         acceleration(fbond, fshear, frepulsion); // calculate accelerations
         translation(np.velocity, np.position, np.acc); // translate nanoparticle
+
         rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
         if (!(step%CHECKER)) {
-            if (ifDetach(np.position)) break;
+
+            if (np.position.z>=_boxHeight) {
+                renewNP();
+                continue;
+            }
+            if (!inCell(np.position))
+                putNPBack(np.position);
+
+
+//            if (ifDetach(np.position)) break;
             checkDisplace(step);
         }
     }

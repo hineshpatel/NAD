@@ -120,6 +120,23 @@ void ini_np(struct np & np) {
 
 }
 
+/**
+ * This function initializes a nanoparticle at random position.
+ *
+ * @update: np
+ *
+ */
+void ini_np_rand(struct np & np) {
+    np.name++;
+    np.position.x = 0;
+    np.position.y = 0;
+    np.position.z = sfmt_genrand_res53(&sfmt)*(_boxHeight - _proThick - _radius) +
+            _proThick + _radius; // generate NP at height [_radius + _proThick, _boxHeight)
+
+    np.lastPairPos = np.position;
+
+}
+
 
 /**
  * This function initializes ligands on the NP.
@@ -155,7 +172,9 @@ void ini_ligand(std::vector<ligand> & ligands) {
 
         ligand ligand1;
         ligand1.updatePO(lig_ori, np.position);
-        ligands.push_back(ligand1);
+        if (ligands.size()<=j)
+            ligands.push_back(ligand1);
+        else ligands[j] = ligand1;
     }
 
 }
@@ -289,15 +308,15 @@ void ini() {
         ini_receptor_cluster(receptors); // as single clustering
     else ini_receptor_monomer(receptors); // as monomer
 
-    ini_np(np);
+    ini_np_rand(np);
     ini_ligand(ligands);
-    ini_binding(receptors, ligands, activeBonds, bonds, np);
+    // ini_binding(receptors, ligands, activeBonds, bonds, np);
 
-    FILE *outfile;
-    if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
-    for (auto j = 0; j < receptorNum; j++)
-        fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
-    fclose(outfile);
+//    FILE *outfile;
+//    if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
+//    for (auto j = 0; j < receptorNum; j++)
+//        fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
+//    fclose(outfile);
 
     // get available adhesion molecules
     getAvailRec(availRec, np);
