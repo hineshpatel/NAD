@@ -30,26 +30,23 @@ int main() {
             if (formationCheck(availLig, availRec, activeBonds, ligands, receptors))
                 attachedNP++;
                 renewNP();
-                ; // assess bond formation
+                // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
         else frepulsion = coord{0, 0, 0}; // don't have to check bond and calculate repulsion force if
         // no bond and particle is higher than a certain height, which is not able to form bond
-        fbond = Fbond(activeBonds, bonds, receptors, ligands); // assess bond forces/torques on the nanoparticle
+//        fbond = Fbond(activeBonds, bonds, receptors, ligands); // assess bond forces/torques on the nanoparticle
         fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
         acceleration(fbond, fshear, frepulsion); // calculate accelerations
         translation(np.velocity, np.position, np.acc); // translate nanoparticle
+        if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax)))
+            rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
 
-        rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
         if (!(step%CHECKER)) {
-
-            if (np.position.z>=_boxHeight) {
+            if (np.position.z>=_boxHeight)
                 renewNP();
-                continue;
-            }
             if (!inCell(np.position))
                 putNPBack(np.position);
-
 
 //            if (ifDetach(np.position)) break;
             checkDisplace(step);
@@ -58,7 +55,7 @@ int main() {
 
 // final recording
     writeEndTime();
-    writeBond();
+//    writeBond();
     return 0;
 }
 
