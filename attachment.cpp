@@ -22,9 +22,13 @@ bool inCell(const coord& NPposition) {
  */
 void putNPBack(coord& NPposition) {
     int adjust = int(NPposition.x/_boxLength);
-    NPposition.x -= adjust*_boxLength;
+    NPposition.x -= adjust*_boxLength*2;
+    if (!(adjust == 1 || adjust == -1 || adjust == 0))
+        putNPBack(NPposition);
     adjust = int(NPposition.y/_boxLength);
-    NPposition.y -= adjust*_boxLength;
+    NPposition.y -= adjust*_boxLength*2;
+    if (!(adjust == 1 || adjust == -1 || adjust == 0))
+        putNPBack(NPposition);
 }
 
 /**
@@ -34,7 +38,6 @@ void renewNP() {
     // set all receptors unbind, so far no need
     ini_np_rand(np);
     ini_ligand(ligands);
-
     // get available adhesion molecules
     getAvailRec(availRec, np);
     getAvailLig(availLig, ligands);

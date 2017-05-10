@@ -27,9 +27,10 @@ int main() {
 
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
 //            breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
-            if (formationCheck(availLig, availRec, activeBonds, ligands, receptors))
+            if (formationCheck(availLig, availRec, activeBonds, ligands, receptors)) {
                 attachedNP++;
                 renewNP();
+            }
                 // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
@@ -39,7 +40,7 @@ int main() {
         fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
         acceleration(fbond, fshear, frepulsion); // calculate accelerations
         translation(np.velocity, np.position, np.acc); // translate nanoparticle
-        if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax)))
+//        if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax)))
             rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
 
         if (!(step%CHECKER)) {

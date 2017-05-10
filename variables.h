@@ -28,7 +28,6 @@ extern std::vector<int> availLig;
 extern sfmt_t sfmt;
 extern int attachedNP;
 
-const double sigma_ts = _sigma; // (N/m)
 const double volume = (4.0 / 3.0) * PI * _radius * _radius * _radius; // volume of NP (nm^3)
 const double mass = _NPdensity * volume * 1.0e9; // mass of NP (ng)
 const double rot_inertia = (2.0 / 5.0) * mass * _radius * _radius; // rotation inertia of NP (ng*nm^2)

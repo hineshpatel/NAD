@@ -127,6 +127,8 @@ void ini_np(struct np & np) {
  *
  */
 void ini_np_rand(struct np & np) {
+    std::cout << np.position << std::endl;
+
     np.name++;
     np.position.x = 0;
     np.position.y = 0;

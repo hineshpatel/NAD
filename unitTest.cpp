@@ -119,7 +119,7 @@
 //
 //
 //// test putNPBack
-//    coord NPposition = {-16, 0, 5};
+//    coord NPposition = {-2000, 0, 5};
 //    putNPBack(NPposition);
 //    cout << NPposition << endl;
 //}
