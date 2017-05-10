@@ -71,9 +71,9 @@ bool formationCheck(const std::vector<int> & availLig, const std::vector<int> & 
     double bondDis;
 
     for (auto lig: availLig) {
-        if (ligands.at(lig).bound) continue;
+//        if (ligands.at(lig).bound) continue;
         for (auto rec: availRec) {
-            if (receptors.at(rec).bound) continue;
+//            if (receptors.at(rec).bound) continue;
             bondDis = dist(ligands.at(lig).position,
                            receptors.at(rec).position); // (nm)
             if (bondDis > bondCutoff.bondLMax || bondDis < bondCutoff.bondLMin) continue;

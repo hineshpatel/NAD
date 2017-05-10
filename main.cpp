@@ -19,8 +19,7 @@ int main() {
 
 //    if (RESUME) { if (!resume()) exit(2); } // disable resume function in attachment sim
     ini();
-
-// starts integrating Langevin equation
+    // starts integrating Langevin equation
     coord frepulsion;
     pair<coord, coord> fbond, fshear;
     for (unsigned long long step = 0; timeAcc < _timeLimit; ++step, timeAcc += _timeInc) {
@@ -40,7 +39,7 @@ int main() {
         fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
         acceleration(fbond, fshear, frepulsion); // calculate accelerations
         translation(np.velocity, np.position, np.acc); // translate nanoparticle
-//        if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax)))
+        if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax)))
             rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
 
         if (!(step%CHECKER)) {

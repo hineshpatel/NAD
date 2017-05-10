@@ -10,14 +10,14 @@
 
 /* =======  Commonly used  ====================================================== */
 
-const int _ligandDens = 3400; // Ab density (1/um2)
-const int _receptorDens = 134; // ICAM-1 density (1/um2)
+const int _ligandDens = 410; // Ab density (1/um2)
+const int _receptorDens = 21; // ICAM-1 density (1/um2)
 const double _bondEL = 41.1; // bond length at equilibrium (nm)
 const double _timeLimit = 30; // (s)
-const double _sigma = 0.001; // stiffness of ICAM-1/Ab bond (N/m)
-const double _bondCutRatio = 0.5;
-const double sigma_ts = 0.00001; // (N/m)
-const double _gama = 11; // reactive compliance of ICAM-1/Ab bond (nm)
+const double _sigma = 0.8; // stiffness of ICAM-1/Ab bond (N/m)
+const double _bondCutRatio = 0.05;
+const double sigma_ts = _sigma; // (N/m)
+const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
 #define LIG_CLU 1 // if cluster two binding sites of Ab
 #define REC_CLU 1 // if cluster two ICAM-1
 #define DOUBLE_CLU 1 // if double clustering four ICAM-1

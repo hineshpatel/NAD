@@ -111,7 +111,7 @@ struct cutoff {
 
     cutoff() {}
     cutoff(double bondL, double ratio) : deltaMax{ratio * bondL}, bondLMax{ratio * bondL + bondL},
-                                         bondLMin{ratio * bondL + bondL} {}
+                                         bondLMin{-1.0 * ratio * bondL + bondL} {}
 };
 
 #endif //NANOAD_DATASTRUCTURES_H
