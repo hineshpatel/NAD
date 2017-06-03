@@ -29,6 +29,10 @@ void writeLoc() {
     fprintf(outfile, "%.4e\t%lf\t%lf\t%lf\t%lu\n",
             timeAcc, np.position.x, np.position.y, np.position.z, activeBonds.size());
     fclose(outfile);
+    if (DEBUG)
+        printf("%.4e\t%lf\t%lf\t%lf\t%lu\n",
+                timeAcc, np.position.x, np.position.y, np.position.z, activeBonds.size());
+
 
 }
 

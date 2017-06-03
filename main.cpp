@@ -6,7 +6,7 @@
  * Please refer to <> for simulation details
  *
  * @author: Mingqiu Wang (mingqiuw at uci.edu)
- * @date: 6/28/2016
+ * @date: 6/2/2017
  *
  */
 
@@ -26,7 +26,11 @@ int main() {
 
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
             breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
-            formationCheck(availLig, availRec, activeBonds, ligands, receptors); // assess bond formation
+            if (ORI)
+                formationCheckOri(availLig, availRec, activeBonds, ligands, receptors);
+            else
+                formationCheck(availLig, availRec, activeBonds, ligands, receptors);
+            // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
         else frepulsion = coord{0, 0, 0}; // don't have to check bond and calculate repulsion force if
