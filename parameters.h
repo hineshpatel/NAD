@@ -14,12 +14,12 @@ const int _ligandDens = 410; // Ab density (1/um2)
 const int _receptorDens = 41; // ICAM-1 density (1/um2)
 const double _bondEL = 41.1; // bond length at equilibrium (nm)
 const double _timeLimit = 30; // (s)
-const double _sigma = 0.7; // stiffness of ICAM-1/Ab bond (N/m)
+const double _sigma = 0.1; // stiffness of ICAM-1/Ab bond (N/m)
 const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
 #define LIG_CLU 1 // if cluster two binding sites of Ab
 #define REC_CLU 1 // if cluster two ICAM-1
 #define DOUBLE_CLU 1 // if double clustering four ICAM-1
-#define ORI 0 // if enable orientation of antibody/ICAM
+#define ORI 1 // if enable orientation of antibody/ICAM
 
 /* ======= Output ============================================================== */
 #define WRITEBONDF 0
@@ -37,7 +37,7 @@ const double _timeInc = 1.0e-9; // step length (s)
 const int _detach_criteria = 5; // # times than _radius
 #define DEBUG 1
 const double _bondCutRatio = 0.05;
-#define RESUME 0
+#define RESUME 1
 #define REPORTER 100000000  // all outputs saved every * steps
 #define TRAJ 10000000  // np location saved every * steps
 #define CHECKER 100

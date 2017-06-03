@@ -216,10 +216,21 @@ bool resume() {
         cout << "cant't open receptor.txt" << endl;
         return false;
     }
-    for ( ; input >> x >> y; ) {
-        receptor receptor1;
-        receptor1.position = {x, y, 0};
-        receptors.push_back(receptor1);
+    if (ORI) {
+        double xx, yy, zz;
+        for ( ; input >> xx >> yy >> zz >> x >> y; ) {
+            receptor receptor1;
+            receptor1.stem = {x, y, 0};
+            receptor1.position = {xx, yy, zz};
+            receptors.push_back(receptor1);
+        }
+    }
+    else {
+        for ( ; input >> x >> y; ) {
+            receptor receptor1;
+            receptor1.position = {x, y, 0};
+            receptors.push_back(receptor1);
+        }
     }
     input.close();
 
