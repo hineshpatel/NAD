@@ -1,13 +1,14 @@
 /**
  * Nano Adhesive Dynamics (NAD) simulation
- * A simulation framework for modeling adhesion/movement of adhesive nanoparticle in the flow
+ * A simulation framework for modeling adhesion/movement of adhesive nanoparticle in the flow.
  *
- * Please modify "parameters.h" to customize simulation condition
- * Please refer to <> for simulation details
+ * Please modify "parameters.h" to customize simulation condition.
+ * Please refer to <> for simulation details.
  *
  * @author: Mingqiu Wang (mingqiuw at uci.edu)
  * @date: 6/28/2016
- * @date: 5/04/2017 add attachment simulation.
+ * @date: 5/04/2017 added attachment simulation.
+ * @data: 6/05/2017 added ori.
  */
 
 #include "declaration.h"
@@ -17,7 +18,6 @@ using namespace std;
 int main() {
 
 
-//    if (RESUME) { if (!resume()) exit(2); } // disable resume function in attachment sim
     ini();
     // starts integrating Langevin equation
     coord frepulsion;
@@ -25,8 +25,13 @@ int main() {
     for (unsigned long long step = 0; timeAcc < _timeLimit; ++step, timeAcc += _timeInc) {
 
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
-//            breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
-            if (formationCheck(availLig, availRec, activeBonds, ligands, receptors)) {
+            bool formed;
+            if (ORI)
+                formed = formationCheckOri(availLig, availRec, activeBonds, ligands, receptors);
+            else
+                formed = formationCheck(availLig, availRec, activeBonds, ligands, receptors);
+
+            if (formed) {
                 attachedNP++;
                 renewNP();
             }

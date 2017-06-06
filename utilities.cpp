@@ -263,3 +263,26 @@ double distance_P_S(const coord & a0, const coord & a1, const coord & a2)
     if (s > 1) return dist(a2, a0);
 }
 
+/**
+ * This functure returns if a potential bond would cross with exist bond(s).
+ * for ORI enabled model only.
+ *
+ * @param: activeBond, receptors, ligands, checkLig, checkRec(the pair to be checked)
+ * @return: if cross
+ *
+ */
+bool ifCrossOri (const std::set<int> & activeBond, const std::vector<receptor> & receptors,
+                 const std::vector<ligand> & ligands, const int checkLig, const int checkRec) {
+    int lig, rec;
+    if (!activeBond.size()) return false;
+    for (int bond : activeBond) {
+        lig = bonds.at(bond).ligand;
+        rec = bonds.at(bond).receptor;
+        // not accessing the whole bond
+        // only accessing the end of ICAM-1 to the tip of Ab
+        if (seg_seg_Dist(receptors.at(rec).stem, ligands.at(lig).position,
+                         receptors.at(checkRec).stem, ligands.at(checkLig).position) < _bondDiameter)
+            return true;
+    }
+    return false;
+}

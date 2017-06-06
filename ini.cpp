@@ -310,15 +310,96 @@ void ini() {
 
     ini_np_rand(np);
     ini_ligand(ligands);
-    // ini_binding(receptors, ligands, activeBonds, bonds, np);
 
-//    FILE *outfile;
-//    if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
-//    for (auto j = 0; j < receptorNum; j++)
-//        fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
-//    fclose(outfile);
+    if (ORI) {
+        setOrient();
+        // ini_binding_ori(receptors, ligands, activeBonds, bonds, np);
+    }
+    else
+        ; // ini_binding(receptors, ligands, activeBonds, bonds, np);
+
+    FILE *outfile;
+    if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
+    for (auto j = 0; j < receptorNum; j++)
+        if (ORI)
+            fprintf(outfile, "%lf\t%lf\t%lf\t%lf\t%lf\n",
+                receptors.at(j).position.x, receptors.at(j).position.y, receptors.at(j).position.z,
+                receptors.at(j).stem.x, receptors.at(j).stem.y);
+        else
+            fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
+    fclose(outfile);
 
     // get available adhesion molecules
     getAvailRec(availRec, np);
     getAvailLig(availLig, ligands);
+}
+
+
+void setOrient() {
+    const double flexure_angle = PI / 3; // ICAM-1 flexure
+    const double rect_length = 29.7; //(nm) ICAM-1
+    double ph, tht;
+    const double flexure = cos(flexure_angle / 2);
+
+    for (auto& receptor:receptors) {
+        ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); //(0, 2*pi)
+        tht = acos(sfmt_genrand_res53(&sfmt)*(1-flexure) + flexure); //(0, pi/6)
+        receptor.stem = receptor.position;
+        receptor.position = receptor.position + angle_trans(ph, tht, rect_length);
+    }
+
+    const double upp_dis = 5; //nm
+    const double lower_dis = 2.5; //nm
+    const double fc_length = 5; // nm
+    const double fab_length = 6.4; // nm
+    double distance = 0;
+    coord pointA; // reference for Fab tip
+    coord pointB; // Fc end
+    coord pointD; // Fab tip
+
+    for (int i = 0; i<ligands.size(); ++i) {
+        if (!(i%2)) {
+            ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); // [0, 2PI]
+            tht = acos(2 * sfmt_genrand_res53(&sfmt) - 1); // [0, PI]
+            pointA = angle_trans(
+                    ph, tht, (_radius + fc_length + fab_length)); // point A
+            pointB = angle_trans(
+                    ph, tht, (_radius + fc_length)); // point B
+        }
+        do {
+            ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); // [0, 2PI]
+            tht = acos(2 * sfmt_genrand_res53(&sfmt) - 1); // [0, PI]
+            pointD = angle_trans(ph, tht, fab_length) + pointB; // point D
+            distance = dist(pointA, pointD);
+        } while ((distance < lower_dis) || (distance > upp_dis));
+
+        ligands[i].updatePO(pointD, np.position);
+    }
+}
+
+/**
+ * This function binds the NP to the substrate by one bond at ORI enabled mode.
+ *
+ * @param: receptors, ligands, activeBonds, bonds, np
+ *
+ */
+void ini_binding_ori(std::vector<receptor> & receptors, std::vector<ligand> & ligands,
+                     std::set<int> & activeBonds, std::vector<bond> & bonds, const struct np & np) {
+
+    const double rect_length = 29.7; //(nm) ICAM-1
+    const double fc_length = 5; // nm
+    const double fab_length = 6.4; // nm
+
+    // Place 1st receptor right underneath the nanoparticle
+    receptors.at(0).stem.x = np.position.x;
+    receptors.at(0).stem.y = np.position.y;
+    receptors.at(0).position.x = np.position.x;
+    receptors.at(0).position.y = np.position.y;
+    receptors.at(0).position.z = rect_length;
+
+    // Place 1st ligand right above the 1st receptor
+    ligands.at(0).updatePO(coord{0,0,-_radius-fab_length-fc_length}, np.position);
+
+    activeBonds.insert(formBond(0, 0, ligands, receptors, bonds));
+
 }

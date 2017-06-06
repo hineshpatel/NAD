@@ -33,7 +33,9 @@ bool ifForm(double delta);
 int formBond(int lig, int rec, std::vector<ligand> & ligands, std::vector<receptor> & receptors,
              std::vector<bond> & bonds);
 bool ifDetach(const coord & position);
-
+bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int> & availRec,
+                       std::set<int> & activeBonds, std::vector<ligand> & ligands,
+                       std::vector<receptor> & receptors);
 
 /* ======= force.cpp =================================================== */
 
@@ -64,7 +66,8 @@ bool ifCross (const std::set<int> & activeBond, const std::vector<receptor> & re
               const std::vector<ligand> & ligands, const int checkLig, const int checkRec);
 double seg_seg_Dist (const coord & rec1, const coord & lig2, const coord & rec3, const coord & lig4);
 double distance_P_S(const coord & a0, const coord & a1, const coord & a2);
-
+bool ifCrossOri (const std::set<int> & activeBond, const std::vector<receptor> & receptors,
+                 const std::vector<ligand> & ligands, const int checkLig, const int checkRec);
 
 /* =======  ini.cpp  ============================================= */
 
@@ -78,6 +81,9 @@ void ini_np(struct np & np); // initialize nanoparticle
 bool resume();
 void ini();
 void ini_np_rand(struct np & np);
+void setOrient();
+void ini_binding_ori(std::vector<receptor> & receptors, std::vector<ligand> & ligands,
+                     std::set<int> & activeBonds, std::vector<bond> & bonds, const struct np & np);
 
 /* =======  linker.cpp  ============================================= */
 

@@ -25,9 +25,11 @@ class receptor {
 
 public:
 
-    coord position;
+    coord position; // if ORI is enabled, this is the position of tip of ICAM-1
+    // otherwise it's the position of stem of ICAM-1 on surface
     bool bound;
     int pair;
+    coord stem; // stem of ICAM-1 on surface
 
     receptor() : bound{false}, pair {-1} {}
 
@@ -46,8 +48,10 @@ class ligand {
 
 public:
 
-    coord position;
-    coord position_origin;
+    coord position; // if ORI is enabled, this is the position of actual Fab tip,
+    // otherwise it's the actual position of Ab stem on the NP
+    coord position_origin; // if ORI is enabled, this is the position of origin-based Fab tip,
+    // otherwise it's the origin-based position of Ab stem on the NP
     bool bound;
     int pair;
 

@@ -20,6 +20,11 @@ void breakageCheck(std::set<int> & activeBonds, std::vector<bond> & bonds,
         lig = bonds.at(*bond).ligand;
         rec = bonds.at(*bond).receptor;
         delta = dist(ligands.at(lig).position, receptors.at(rec).position) - _bondEL; // (nm)
+        if (ORI) {
+            delta += _bondEL;
+            if (delta < 0)
+                delta = 0;
+            }
         bonds.at(*bond).delta = delta;
         if (ifBreak(delta)) {
             ligands.at(lig).unpairing();
@@ -90,6 +95,37 @@ bool formationCheck(const std::vector<int> & availLig, const std::vector<int> & 
 }
 
 /**
+ * This function checks available unbound adhesion molecules and
+ *      determines possible formation for Ori enabled condition only.
+ *
+ * @param: availLig: available ligands; availRec: available receptors
+ * @update: activeBonds; ligands; receptors
+ * @return: true if there is new bond forming, otherwise false
+ */
+bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int> & availRec,
+                       std::set<int> & activeBonds, std::vector<ligand> & ligands,
+                       std::vector<receptor> & receptors) {
+
+    double bondDis;
+
+    for (auto lig: availLig) {
+        if (ligands.at(lig).bound) continue;
+        for (auto rec: availRec) {
+            if (receptors.at(rec).bound) continue;
+            bondDis = dist(ligands.at(lig).position,
+                           receptors.at(rec).position); // (nm)
+            if (bondDis > bondCutoff.deltaMax || bondDis < -1.0*bondCutoff.deltaMax) continue;
+            if (ifForm(bondDis)) {
+                if (CROSSCHECK&&ifCrossOri (activeBonds, receptors, ligands, lig, rec)) continue;
+                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
+                return true;
+                break;
+            }
+        }
+    }
+}
+
+/**
  * This function determines if a potential bond would form
  *      given the distance between pairing ligand and receptor
  * Equation: kf = kf0 * exp ( - sigma_ts * delta * delta / (2*kB*T))
@@ -131,6 +167,8 @@ int formBond(int lig, int rec, std::vector<ligand> & ligands, std::vector<recept
     bond1.ligand = lig;
     bond1.receptor = rec;
     bond1.delta = dist(bond1.formPositionLigand, bond1.formPositionReceptor) - _bondEL;
+    if (ORI)
+        bond1.delta += _bondEL;
     bonds.push_back(bond1);
 
     return bond1.name;
