@@ -34,7 +34,7 @@ const double _NPdensity = 1.05e-21; // density of polysterene (g/nm^3)
 
 
 /* ======= Attachment ========================================================== */
-const double _boxHeight = 1000; // the height of box in which NP is moving (nm)
+const double _boxHeight = 300; // the height of box in which NP is moving (nm)
 const double _boxLength= 8 * _radius; // the x/y radius of box in which NP is moving (nm)
 
 

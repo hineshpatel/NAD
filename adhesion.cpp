@@ -109,20 +109,22 @@ bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int>
     double bondDis;
 
     for (auto lig: availLig) {
-        if (ligands.at(lig).bound) continue;
+//        if (ligands.at(lig).bound) continue;
         for (auto rec: availRec) {
-            if (receptors.at(rec).bound) continue;
+//            if (receptors.at(rec).bound) continue;
             bondDis = dist(ligands.at(lig).position,
                            receptors.at(rec).position); // (nm)
             if (bondDis > bondCutoff.deltaMax || bondDis < -1.0*bondCutoff.deltaMax) continue;
             if (ifForm(bondDis)) {
                 if (CROSSCHECK&&ifCrossOri (activeBonds, receptors, ligands, lig, rec)) continue;
-                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
+                std::cout << bondDis << std::endl;
+//                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
                 return true;
                 break;
             }
         }
     }
+    return false;
 }
 
 /**
