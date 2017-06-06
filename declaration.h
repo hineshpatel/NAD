@@ -104,10 +104,10 @@ void rotateLig (std::vector<ligand> & ligands, const std::vector<coord> & rotati
 /* =======  reporting.cpp  ============================================= */
 
 void checkDisplace(unsigned long long &step);
-void writeBond();
+void writeBond(int n);
 void writeEndTime();
 void writeLoc();
-void writeResume();
+void writeResume(int n);
 void writeInTimeBondL();
 void writeInTimeBondF();
 

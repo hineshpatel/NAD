@@ -318,16 +318,16 @@ void ini() {
     else
         ; // ini_binding(receptors, ligands, activeBonds, bonds, np);
 
-//    FILE *outfile;
-//    if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
-//    for (auto j = 0; j < receptorNum; j++)
-//        if (ORI)
-//            fprintf(outfile, "%lf\t%lf\t%lf\t%lf\t%lf\n",
-//                receptors.at(j).position.x, receptors.at(j).position.y, receptors.at(j).position.z,
-//                receptors.at(j).stem.x, receptors.at(j).stem.y);
-//        else
-//            fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
-//    fclose(outfile);
+    FILE *outfile;
+    if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
+    for (auto j = 0; j < receptorNum; j++)
+        if (ORI)
+            fprintf(outfile, "%lf\t%lf\t%lf\t%lf\t%lf\n",
+                receptors.at(j).position.x, receptors.at(j).position.y, receptors.at(j).position.z,
+                receptors.at(j).stem.x, receptors.at(j).stem.y);
+        else
+            fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
+    fclose(outfile);
 
     // get available adhesion molecules
     getAvailRec(availRec, np);

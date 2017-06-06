@@ -32,7 +32,9 @@ int main() {
                 formed = formationCheck(availLig, availRec, activeBonds, ligands, receptors);
 
             if (formed) {
-                attachedNP++;
+                writeResume(attachedNP++);
+                writeBond(attachedNP);
+                activeBonds.clear();
                 renewNP();
             }
                 // assess bond formation

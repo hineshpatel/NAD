@@ -60,10 +60,11 @@ void writeEndTime() {
  *      14th/15th/16th columns: receptor coordinate when bond broke)
  *
  */
-void writeBond() {
+void writeBond(int n) {
 
     FILE *outfile;
-    if ((outfile = fopen(FO6, "w")) == NULL){ printf("\nerror on open FO6!"); exit(0); }
+    string name = to_string(n) + FO6;
+    if ((outfile = fopen(name.data(), "w")) == NULL){ printf("\nerror on open FO6!"); exit(0); }
     for (const auto & bond : bonds)
         fprintf(outfile, "%d\t%d\t%d\t"
                         "%lf\t%lf\t%lf\t"
@@ -85,10 +86,12 @@ void writeBond() {
 
 }
 
-void writeResume() {
+
+void writeResume(int n) {
 
     FILE *outfile;
-    if ((outfile = fopen(FO8, "w")) == NULL){ printf("\nerror on open FO8!"); exit(0); }
+    string name = to_string(n) + FO8;
+    if ((outfile = fopen(name.data(), "w")) == NULL){ printf("\nerror on open FO8!"); exit(0); }
 
     fprintf(outfile, "%.4e\n%lf\t%lf\t%lf\n"
                         "%lf\t%lf\t%lf\n"

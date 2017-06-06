@@ -117,10 +117,8 @@ bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int>
             if (bondDis > bondCutoff.deltaMax || bondDis < -1.0*bondCutoff.deltaMax) continue;
             if (ifForm(bondDis)) {
                 if (CROSSCHECK&&ifCrossOri (activeBonds, receptors, ligands, lig, rec)) continue;
-                std::cout << bondDis << std::endl;
-//                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
+                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
                 return true;
-                break;
             }
         }
     }
