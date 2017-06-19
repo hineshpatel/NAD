@@ -19,13 +19,16 @@ void breakageCheck(std::set<int> & activeBonds, std::vector<bond> & bonds,
     for (auto bond = activeBonds.begin(); bond != activeBonds.end();) {
         lig = bonds.at(*bond).ligand;
         rec = bonds.at(*bond).receptor;
-        delta = dist(ligands.at(lig).position, receptors.at(rec).position) - _bondEL; // (nm)
-        if (ORI) {
-            delta += _bondEL;
-            if (delta < 0)
-                delta = 0;
-        }
+        coord ligStem = (ligands.at(lig).position - np.position) * (_radius /
+                dist(ligands.at(lig).position, np.position)) + np.position;
+        delta = dist(ligStem, receptors.at(rec).stem) - _bondEL; // (nm)
         bonds.at(*bond).delta = delta;
+        if (ORI) {
+            if (delta < 0) {
+                ++bond;
+                continue;
+            }
+        }
         if (ifBreak(delta)) {
             ligands.at(lig).unpairing();
             receptors.at(rec).unpairing();

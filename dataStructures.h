@@ -114,8 +114,8 @@ struct cutoff {
     double deltaMax; // max bond length - equilibrium bond length (nm)
 
     cutoff() {}
-    cutoff(double bondL, double ratio) : deltaMax{0.05 * bondL}, bondLMax{0.05 * bondL + bondL},
-                                         bondLMin{-0.05 * bondL + bondL} {}
+    cutoff(double bondL, double ratio) : deltaMax{ratio * bondL}, bondLMax{ratio * bondL + bondL},
+                                         bondLMin{-1.0 * ratio * bondL + bondL} {}
 };
 
 #endif //NANOAD_DATASTRUCTURES_H
