@@ -17,6 +17,9 @@ const double _timeLimit = 30; // (s)
 const double _sigma = 0.8; // stiffness of ICAM-1/Ab bond (N/m)
 const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
 const double sigma_ts = _sigma;
+const double _compressForceScale = 0.1; // [0, 1], used for ORI = 1 only,
+// if a bond is compressed, the bond force is scaled by this value.
+// if set 0 ignore compression force, if set 1, doesn't scale compression force at all.
 const double _bondCutRatio = 0.05;
 
 #define LIG_CLU 1 // if cluster two binding sites of Ab

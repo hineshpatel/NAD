@@ -51,6 +51,9 @@ std::pair<coord, coord> Fbond(const std::set<int> & activeBond, const std::vecto
                      dist(ligands.at(lig).position, np.position)) + np.position;
             force = _sigma * bonds.at(bond).delta / (bonds.at(bond).delta + _bondEL) *
                     (receptors.at(rec).stem - ligStem); // (nN)
+            if (bonds.at(bond).delta < 0)
+                force = force * _compressForceScale;
+
         }
         else
             force = _sigma * bonds.at(bond).delta / (bonds.at(bond).delta + _bondEL) *

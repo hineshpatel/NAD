@@ -159,17 +159,18 @@ int formBond(int lig, int rec, std::vector<ligand> & ligands, std::vector<recept
     ligands.at(lig).pairing(rec);
     receptors.at(rec).pairing(lig);
 
+    coord ligStem = (ligands.at(lig).position - np.position) * (_radius /
+          dist(ligands.at(lig).position, np.position)) + np.position;
+
     bond bond1;
     bond1.name = bonds.size();
     bond1.bound = true;
-    bond1.formPositionLigand = ligands.at(lig).position;
-    bond1.formPositionReceptor = receptors.at(rec).position;
+    bond1.formPositionLigand = ligStem;
+    bond1.formPositionReceptor = receptors.at(rec).stem;
     bond1.formTime = timeAcc;
     bond1.ligand = lig;
     bond1.receptor = rec;
     bond1.delta = dist(bond1.formPositionLigand, bond1.formPositionReceptor) - _bondEL;
-    if (ORI)
-        bond1.delta += _bondEL;
     bonds.push_back(bond1);
 
     return bond1.name;
