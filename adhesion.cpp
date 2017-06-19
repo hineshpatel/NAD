@@ -34,8 +34,8 @@ void breakageCheck(std::set<int> & activeBonds, std::vector<bond> & bonds,
             receptors.at(rec).unpairing();
             bonds.at(*bond).bound = false;
             bonds.at(*bond).breakTime = timeAcc;
-            bonds.at(*bond).breakPositionLigand = ligands.at(lig).position;
-            bonds.at(*bond).breakPositionReceptor = receptors.at(rec).position;
+            bonds.at(*bond).breakPositionLigand = ligStem;
+            bonds.at(*bond).breakPositionReceptor = receptors.at(rec).stem;
             bonds.at(*bond).delta = -1.0;
             bond = activeBonds.erase(bond);
         }
