@@ -46,8 +46,12 @@ std::pair<coord, coord> Fbond(const std::set<int> & activeBond, const std::vecto
     for (int bond : activeBond) {
         lig = bonds.at(bond).ligand;
         rec = bonds.at(bond).receptor;
-        if (ORI)
-            force = _sigma * (receptors.at(rec).position - ligands.at(lig).position); // (nN)
+        if (ORI) {
+            coord ligStem = (ligands.at(lig).position - np.position) * (_radius /
+                                                                        dist(ligands.at(lig).position, np.position)) + np.position;
+            force = _sigma * bonds.at(bond).delta / (bonds.at(bond).delta + _bondEL) *
+                    (receptors.at(rec).stem - ligStem); // (nN)
+        }
         else
             force = _sigma * bonds.at(bond).delta / (bonds.at(bond).delta + _bondEL) *
                 (receptors.at(rec).position - ligands.at(lig).position); // (nN)
