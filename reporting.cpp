@@ -7,7 +7,7 @@
 using namespace std;
 void checkDisplace(unsigned long long &step) {
 
-    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(availRec, np); 
+    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(availRec, np);
     // get all available receptors
     getAvailLig(availLig, ligands); // get all available ligands
 
@@ -25,7 +25,7 @@ void checkDisplace(unsigned long long &step) {
 
 void checkDisplaceATT(unsigned long long &step) {
 
-    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(availRec, np); 
+    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(availRec, np);
     // get all available receptors
     getAvailLig(availLig, ligands); // get all available ligands
 
@@ -78,7 +78,7 @@ void writeEndTime() {
  *      14th/15th/16th columns: receptor coordinate when bond broke)
  *
  */
-void writeBond(int n = -1) {
+void writeBond(int n) {
 
     FILE *outfile;
     string name = n != -1 ? to_string(n) + FO6 : FO6;
@@ -111,7 +111,7 @@ void writeBond(int n = -1) {
  * In detachment sim, there is only one NP in one sim, so n is default -1;
  * In attachment sim, there are multiple NPs in one sim, n is passed as arg.
  */
-void writeResume(int n = -1) {
+void writeResume(int n) {
 
     FILE *outfile;
     string name = n != -1 ? to_string(n) + FO8 : FO8;
