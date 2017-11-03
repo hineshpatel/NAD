@@ -2,7 +2,7 @@
  * Nano Adhesive Dynamics (NAD) simulation
  * A simulation framework for modeling adhesion/movement of adhesive nanoparticle in the flow.
  *
- * Please modify "parameters.h" to customize simulation configurations.
+ * Please modify "parameters.h" to customize simulation parameters.
  * Please refer to <Wang, Mingqiu, et al. Langmuir 32.49 (2016): 13124-13136.>
  * for simulation details.
  *
@@ -15,14 +15,17 @@
 
 using namespace std;
 
-int att() {
+
+// Run attachment simulation
+int att_sim() {
     iniATT();
-    // starts integrating Langevin equation
+    
     coord frepulsion;
     pair<coord, coord> fbond, fshear;
+    // starts integrating Langevin equation
     for (unsigned long long step = 0; timeAcc < _timeLimit; ++step, timeAcc += _timeInc) {
 
-        if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
+        if (np.position.z < (_radius + bondCutoff.bondLMax)) {
             bool formed;
             if (ORI)
                 formed = formationCheckOri(availLig, availRec, activeBonds, ligands, receptors);
@@ -40,7 +43,6 @@ int att() {
         }
         else frepulsion = coord{0, 0, 0}; // don't have to check bond and calculate repulsion force if
         // no bond and particle is higher than a certain height, which is not able to form bond
-//        fbond = Fbond(activeBonds, bonds, receptors, ligands); // assess bond forces/torques on the nanoparticle
         fshear = Fshear(np.position.z); // assess shear force/torque on the nanoparticle
         acceleration(fbond, fshear, frepulsion); // calculate accelerations
         translation(np.velocity, np.position, np.acc); // translate nanoparticle
@@ -53,18 +55,18 @@ int att() {
             if (!inCell(np.position))
                 putNPBack(np.position);
 
-//            if (ifDetach(np.position)) break;
             checkDisplaceATT(step);
         }
     }
 
-// final recording
+    // final recording
     writeEndTime();
-//    writeBond();
     return 0;
 }
 
-int detach() {
+
+// Run detachment simulation
+int detach_sim() {
     if (RESUME) { if (!resume()) exit(2); }
     else ini();
 
@@ -100,11 +102,13 @@ int detach() {
     writeBond();
     return 0;
 }
+
+
 int main() {
-    if (ATT) {
-        att();
-    } else {
-        detach();
+    if (ATT) {  // if flag ATT is turned on, run attachment simulation
+        att_sim();
+    } else {  // otherwise run detachment simulation
+        detach_sim();
     }
 }
 

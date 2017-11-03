@@ -21,13 +21,14 @@ const double _gama = 0.04; // reactive compliance of ICAM-1/Ab bond (nm)
 #define LIG_CLU 1 // if cluster two binding sites of Ab
 #define REC_CLU 1 // if cluster two ICAM-1
 #define DOUBLE_CLU 1 // if double clustering four ICAM-1
-#define ORI 1 // if enable orientation of antibody/ICAM
+#define ORI 0 // if enable orientation of antibody/ICAM
 const double _compressForceScale = 0.1; // [0, 1], used for ORI = 1 only,
 // if a bond is compressed, the bond force is scaled by this value.
 // if set 0 ignore compression force, if set 1, doesn't scale compression force at all.
-#define ATT 1 // set 1 if attachment simulation, set 0 otherwise
+#define ATT 0 // set 1 if attachment simulation, set 0 otherwise
 
 /* ======= Output ============================================================== */
+
 #define WRITEBONDF 0
 #define WRITEBONDL 0
 
@@ -38,6 +39,7 @@ const double _NPdensity = 1.05e-21; // density of polysterene (g/nm^3)
 
 
 /* ======= Attachment ========================================================== */
+
 const double _boxHeight = 300; // the height of box in which NP is moving (nm)
 const double _boxLength= 8 * _radius; // the x/y radius of box in which NP is moving (nm)
 
@@ -86,6 +88,7 @@ const double clus_minLigDis = 5; // min distance between 2 fab domain of an Ab (
 
 
 /* =======  For springy linker  ================================================ */
+
 const double _linkerLen = 2.6; // (nm)
 const double _maxDeltaCom = _linkerLen - 0.2; // (nm)
 const double _maxDeltaExt = 13 - _linkerLen;

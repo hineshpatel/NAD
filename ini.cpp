@@ -418,7 +418,7 @@ void ini_binding_ori(std::vector<receptor> & receptors, std::vector<ligand> & li
 
 /**
  * This function starts a simulation with a free particle (only for att sim).
- * as well as writes receptor info into file
+ * as well as writes receptor info into file.
  *
  * @update: timeAcc, sfmt, receptors, ligands, np, bonds, activeBonds
  * @file: receptor.txt (write)
@@ -439,11 +439,8 @@ void iniATT() {
 
     if (ORI) {
         setOrient();
-        // ini_binding_ori(receptors, ligands, activeBonds, bonds, np);
     }
-    else
-        ; // ini_binding(receptors, ligands, activeBonds, bonds, np);
-
+    
     FILE *outfile;
     if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
     for (auto j = 0; j < receptorNum; j++)
