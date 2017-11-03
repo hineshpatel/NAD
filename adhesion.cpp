@@ -57,7 +57,6 @@ void breakageCheck(std::set<int> & activeBonds, std::vector<bond> & bonds,
 bool ifBreak(double delta) {
     double kr;
     static const double kr_cal = (_sigma * 1000.0 * _gama) / _thermal; // (nm^-1)
-
     kr = _kr0 * exp(kr_cal * fabs(delta));
     return (sfmt_genrand_res53(&sfmt)< (1.0 - exp(-1.0 * kr * _timeInc)));
 
@@ -71,12 +70,12 @@ bool ifBreak(double delta) {
  *
  * @param: availLig: available ligands; availRec: available receptors
  * @update: activeBonds; ligands; receptors
- *
+ * @return: true if there is new bond forming, otherwise false
  */
-void formationCheck(const std::vector<int> & availLig, const std::vector<int> & availRec,
+bool formationCheck(const std::vector<int> & availLig, const std::vector<int> & availRec,
                     std::set<int> & activeBonds, std::vector<ligand> & ligands,
                     std::vector<receptor> & receptors) {
-
+    bool newBond = false;
     double bondDis;
 
     for (auto lig: availLig) {
@@ -88,11 +87,16 @@ void formationCheck(const std::vector<int> & availLig, const std::vector<int> & 
             if (bondDis > bondCutoff.bondLMax || bondDis < bondCutoff.bondLMin) continue;
             if (ifForm(bondDis-_bondEL)) {
                 if (CROSSCHECK&&ifCross (activeBonds, receptors, ligands, lig, rec)) continue;
+                if (ATT) {
+                    return true;
+                }
                 activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
+                newBond = true;
                 break;
             }
         }
     }
+    return newBond;
 }
 
 /**
@@ -101,13 +105,14 @@ void formationCheck(const std::vector<int> & availLig, const std::vector<int> & 
  *
  * @param: availLig: available ligands; availRec: available receptors
  * @update: activeBonds; ligands; receptors
- *
+ * @return: true if there is new bond forming, otherwise false
  */
-void formationCheckOri(const std::vector<int> & availLig, const std::vector<int> & availRec,
-                    std::set<int> & activeBonds, std::vector<ligand> & ligands,
-                    std::vector<receptor> & receptors) {
+bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int> & availRec,
+                       std::set<int> & activeBonds, std::vector<ligand> & ligands,
+                       std::vector<receptor> & receptors) {
 
     double bondDis;
+    bool newBond = false;
 
     for (auto lig: availLig) {
         if (ligands.at(lig).bound) continue;
@@ -118,11 +123,16 @@ void formationCheckOri(const std::vector<int> & availLig, const std::vector<int>
             if (bondDis > bondCutoff.deltaMax || bondDis < -1.0*bondCutoff.deltaMax) continue;
             if (ifForm(bondDis)) {
                 if (CROSSCHECK&&ifCrossOri (activeBonds, receptors, ligands, lig, rec)) continue;
+                if (ATT) {
+                    return true;
+                }
                 activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
+                newBond = true;
                 break;
             }
         }
     }
+    return newBond;
 }
 
 /**
@@ -137,7 +147,6 @@ void formationCheckOri(const std::vector<int> & availLig, const std::vector<int>
 bool ifForm(double delta) {
     double kf;
     static const double kf_cal = -1.0 * (sigma_ts * 500.0) / _thermal; // (nm^-2)
-
     kf = _kf0 * exp(kf_cal * delta * delta);
     if (sfmt_genrand_res53(&sfmt)< 1.0 - exp(-1.0 * kf * _timeInc)) {
         return !ifBreak(delta);

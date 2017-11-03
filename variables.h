@@ -26,7 +26,7 @@ extern double timeAcc;
 extern std::vector<int> availRec;
 extern std::vector<int> availLig;
 extern sfmt_t sfmt;
-
+extern int attachedNP;
 
 const double volume = (4.0 / 3.0) * PI * _radius * _radius * _radius; // volume of NP (nm^3)
 const double mass = _NPdensity * volume * 1.0e9; // mass of NP (ng)
@@ -36,6 +36,7 @@ const double beta = (3.0 * PI * _viscosity * (_radius * 2.0 * 0.001))
 const double beta_rot = PI * _viscosity * (2.0 * _radius * 0.001) * (2.0 * _radius) * (2.0 * _radius)
                         / rot_inertia * 1e12; // see {English, Biophys.J, 2014} (s^-1)
 const double _substrate = 10 * _radius; // half diameter of the substrate (nm)
+// the particle is randomly distributed on the plane x [-_substrate, _substrate], y [-_substrate, _substrate]
 const int ligandNum = (int)(_ligandDens * 4 * PI * _radius * _radius / 1e6);
 const int receptorNum = _receptorDens * _substrate * _substrate / 250000;
 const unsigned long long steps = _timeLimit / _timeInc;

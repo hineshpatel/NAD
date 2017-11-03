@@ -16,7 +16,7 @@
 using namespace std;
 
 int att() {
-    ini();
+    iniATT();
     // starts integrating Langevin equation
     coord frepulsion;
     pair<coord, coord> fbond, fshear;
@@ -54,7 +54,7 @@ int att() {
                 putNPBack(np.position);
 
 //            if (ifDetach(np.position)) break;
-            checkDisplace(step);
+            checkDisplaceATT(step);
         }
     }
 

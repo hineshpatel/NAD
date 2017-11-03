@@ -120,6 +120,23 @@ void ini_np(struct np & np) {
 
 }
 
+/**
+ * This function initializes a nanoparticle at random position.
+ *
+ * @update: np
+ *
+ */
+void ini_np_rand(struct np & np) {
+    np.name++;
+    np.position.x = 0;
+    np.position.y = 0;
+    np.position.z = sfmt_genrand_res53(&sfmt)*(_boxHeight - _proThick - _radius) +
+                    _proThick + _radius; // generate NP at height [_radius + _proThick, _boxHeight)
+
+    np.lastPairPos = np.position;
+
+}
+
 
 /**
  * This function initializes ligands on the NP.
@@ -155,7 +172,9 @@ void ini_ligand(std::vector<ligand> & ligands) {
 
         ligand ligand1;
         ligand1.updatePO(lig_ori, np.position);
-        ligands.push_back(ligand1);
+        if (ligands.size()<=j)
+            ligands.push_back(ligand1);
+        else ligands[j] = ligand1;
     }
 
 }
@@ -327,6 +346,7 @@ void ini() {
     getAvailLig(availLig, ligands);
 }
 
+
 void setOrient() {
     const double flexure_angle = PI / 3; // ICAM-1 flexure
     const double rect_length = 29.7; //(nm) ICAM-1
@@ -376,7 +396,7 @@ void setOrient() {
  *
  */
 void ini_binding_ori(std::vector<receptor> & receptors, std::vector<ligand> & ligands,
-                 std::set<int> & activeBonds, std::vector<bond> & bonds, const struct np & np) {
+                     std::set<int> & activeBonds, std::vector<bond> & bonds, const struct np & np) {
 
     const double rect_length = 29.7; //(nm) ICAM-1
     const double fc_length = 5; // nm
@@ -394,4 +414,48 @@ void ini_binding_ori(std::vector<receptor> & receptors, std::vector<ligand> & li
 
     activeBonds.insert(formBond(0, 0, ligands, receptors, bonds));
 
+}
+
+/**
+ * This function starts a simulation with a free particle (only for att sim).
+ * as well as writes receptor info into file
+ *
+ * @update: timeAcc, sfmt, receptors, ligands, np, bonds, activeBonds
+ * @file: receptor.txt (write)
+ *
+ */
+void iniATT() {
+
+    timeAcc = 0;
+    setRNG(sfmt);
+    if (REC_CLU&&DOUBLE_CLU)
+        ini_receptors_doubleCluster(receptors); // as double clustering
+    else if (REC_CLU)
+        ini_receptor_cluster(receptors); // as single clustering
+    else ini_receptor_monomer(receptors); // as monomer
+
+    ini_np_rand(np);
+    ini_ligand(ligands);
+
+    if (ORI) {
+        setOrient();
+        // ini_binding_ori(receptors, ligands, activeBonds, bonds, np);
+    }
+    else
+        ; // ini_binding(receptors, ligands, activeBonds, bonds, np);
+
+    FILE *outfile;
+    if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
+    for (auto j = 0; j < receptorNum; j++)
+        if (ORI)
+            fprintf(outfile, "%lf\t%lf\t%lf\t%lf\t%lf\n",
+                    receptors.at(j).position.x, receptors.at(j).position.y, receptors.at(j).position.z,
+                    receptors.at(j).stem.x, receptors.at(j).stem.y);
+        else
+            fprintf(outfile, "%lf\t%lf\n", receptors.at(j).position.x, receptors.at(j).position.y);
+    fclose(outfile);
+
+    // get available adhesion molecules
+    getAvailRec(availRec, np);
+    getAvailLig(availLig, ligands);
 }

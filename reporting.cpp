@@ -7,7 +7,8 @@
 using namespace std;
 void checkDisplace(unsigned long long &step) {
 
-    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(availRec, np); // get all available receptors
+    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(availRec, np); 
+    // get all available receptors
     getAvailLig(availLig, ligands); // get all available ligands
 
 
@@ -19,6 +20,18 @@ void checkDisplace(unsigned long long &step) {
     if (!(step%REPORTER)) {
         writeBond();
         writeResume();
+    }
+}
+
+void checkDisplaceATT(unsigned long long &step) {
+
+    if (dist(np.lastPairPos,np.position) > _bondEL) getAvailRec(availRec, np); 
+    // get all available receptors
+    getAvailLig(availLig, ligands); // get all available ligands
+
+
+    if (!(step%TRAJ)) {
+        writeAttNum(attachedNP);
     }
 }
 
@@ -51,6 +64,8 @@ void writeEndTime() {
 /**
  * This function writes bond information into the file
  *
+ * In detachment sim, there is only one NP in one sim, so n is default -1;
+ * In attachment sim, there are multiple NPs in one sim, n is passed as arg.
  * @file: bond_info.txt
  *      (0th column: bound status
  *      1st column: ligand
@@ -63,10 +78,12 @@ void writeEndTime() {
  *      14th/15th/16th columns: receptor coordinate when bond broke)
  *
  */
-void writeBond() {
+void writeBond(int n = -1) {
 
     FILE *outfile;
-    if ((outfile = fopen(FO6, "w")) == NULL){ printf("\nerror on open FO6!"); exit(0); }
+    string name = n != -1 ? to_string(n) + FO6 : FO6;
+    if ((outfile = fopen(name.data(), "w")) == NULL){ printf("\nerror on open FO6!"); exit(0); }
+
     for (const auto & bond : bonds)
         fprintf(outfile, "%d\t%d\t%d\t"
                         "%lf\t%lf\t%lf\t"
@@ -88,10 +105,17 @@ void writeBond() {
 
 }
 
-void writeResume() {
+/**
+ * This function writes sim info into the file
+ *
+ * In detachment sim, there is only one NP in one sim, so n is default -1;
+ * In attachment sim, there are multiple NPs in one sim, n is passed as arg.
+ */
+void writeResume(int n = -1) {
 
     FILE *outfile;
-    if ((outfile = fopen(FO8, "w")) == NULL){ printf("\nerror on open FO8!"); exit(0); }
+    string name = n != -1 ? to_string(n) + FO8 : FO8;
+    if ((outfile = fopen(name.data(), "w")) == NULL){ printf("\nerror on open FO8!"); exit(0); }
 
     fprintf(outfile, "%.4e\n%lf\t%lf\t%lf\n"
                         "%lf\t%lf\t%lf\n"

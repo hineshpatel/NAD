@@ -6,7 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/reporting.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/force.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SFMT-params19937.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/declaration.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/dataStructures.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SFMT-params216091.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/variables.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/motion.cpp" isTestSource="false" />
@@ -16,10 +16,11 @@
       <sourceFolder url="file://$MODULE_DIR$/main_linker.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/variables.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SFMT.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/declaration.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/outputs.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/ini.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SFMT.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/dataStructures.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/attachment.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/linker.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/parameters.h" isTestSource="false" />

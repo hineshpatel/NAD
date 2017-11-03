@@ -14,19 +14,17 @@ const int _ligandDens = 410; // Ab density (1/um2)
 const int _receptorDens = 21; // ICAM-1 density (1/um2)
 const double _bondEL = 41.1; // bond length at equilibrium (nm)
 const double _timeLimit = 30; // (s)
-const double _sigma = 0.8; // stiffness of ICAM-1/Ab bond (N/m)
-const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
-const double sigma_ts = _sigma;
-const double _compressForceScale = 0.1; // [0, 1], used for ORI = 1 only,
-// if a bond is compressed, the bond force is scaled by this value.
-// if set 0 ignore compression force, if set 1, doesn't scale compression force at all.
-const double _bondCutRatio = 0.05;
-
+const double _sigma = 0.001; // stiffness of ICAM-1/Ab bond (N/m)
+const double _bondCutRatio = 0.2;
+const double sigma_ts = _sigma; // (N/m)
+const double _gama = 0.04; // reactive compliance of ICAM-1/Ab bond (nm)
 #define LIG_CLU 1 // if cluster two binding sites of Ab
 #define REC_CLU 1 // if cluster two ICAM-1
 #define DOUBLE_CLU 1 // if double clustering four ICAM-1
 #define ORI 1 // if enable orientation of antibody/ICAM
-
+const double _compressForceScale = 0.1; // [0, 1], used for ORI = 1 only,
+// if a bond is compressed, the bond force is scaled by this value.
+// if set 0 ignore compression force, if set 1, doesn't scale compression force at all.
 #define ATT 0 // set 1 if attachment simulation, set 0 otherwise
 
 /* ======= Output ============================================================== */
@@ -37,6 +35,11 @@ const double _bondCutRatio = 0.05;
 
 const double _radius = 105; // _radius of the NP (nm)
 const double _NPdensity = 1.05e-21; // density of polysterene (g/nm^3)
+
+
+/* ======= Attachment ========================================================== */
+const double _boxHeight = 300; // the height of box in which NP is moving (nm)
+const double _boxLength= 8 * _radius; // the x/y radius of box in which NP is moving (nm)
 
 
 /* =======  Computational properties  ========================================== */

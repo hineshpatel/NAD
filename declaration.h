@@ -25,7 +25,7 @@
 
 void breakageCheck(std::set<int> & activeBonds, std::vector<bond> & bonds,
                    std::vector<ligand> & ligands, std::vector<receptor> & receptors);
-void formationCheck(const std::vector<int> & availLig, const std::vector<int> & availRec,
+bool formationCheck(const std::vector<int> & availLig, const std::vector<int> & availRec,
                     std::set<int> &activeBonds, std::vector<ligand> & ligands,
                     std::vector<receptor> & receptors);
 bool ifBreak(double delta);
@@ -33,7 +33,7 @@ bool ifForm(double delta);
 int formBond(int lig, int rec, std::vector<ligand> & ligands, std::vector<receptor> & receptors,
              std::vector<bond> & bonds);
 bool ifDetach(const coord & position);
-void formationCheckOri(const std::vector<int> & availLig, const std::vector<int> & availRec,
+bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int> & availRec,
                        std::set<int> & activeBonds, std::vector<ligand> & ligands,
                        std::vector<receptor> & receptors);
 
@@ -80,9 +80,12 @@ void ini_binding(std::vector<receptor> & receptors, std::vector<ligand> & ligand
 void ini_np(struct np & np); // initialize nanoparticle
 bool resume();
 void ini();
+void iniATT();
+void ini_np_rand(struct np & np);
 void setOrient();
 void ini_binding_ori(std::vector<receptor> & receptors, std::vector<ligand> & ligands,
                      std::set<int> & activeBonds, std::vector<bond> & bonds, const struct np & np);
+
 /* =======  linker.cpp  ============================================= */
 
 double delta2_com(double);
@@ -102,13 +105,18 @@ void rotateLig (std::vector<ligand> & ligands, const std::vector<coord> & rotati
 /* =======  reporting.cpp  ============================================= */
 
 void checkDisplace(unsigned long long &step);
-void writeBond();
+void checkDisplaceATT(unsigned long long &step);
+void writeBond(int n = -1);
 void writeEndTime();
 void writeLoc();
-void writeResume();
+void writeResume(int n = -1);
 void writeInTimeBondL();
 void writeInTimeBondF();
 
-
+/* =======  attachment.cpp  ============================================= */
+bool inCell(const coord &);
+void putNPBack(coord&);
+void renewNP();
+void writeAttNum(int num);
 
 #endif //NANOAD_DECLARATION_H
