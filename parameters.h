@@ -27,6 +27,8 @@ const double _bondCutRatio = 0.05;
 #define DOUBLE_CLU 1 // if double clustering four ICAM-1
 #define ORI 1 // if enable orientation of antibody/ICAM
 
+#define ATT 0 // set 1 if attachment simulation, set 0 otherwise
+
 /* ======= Output ============================================================== */
 #define WRITEBONDF 0
 #define WRITEBONDL 0
