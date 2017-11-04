@@ -48,6 +48,7 @@ void ini_receptors_doubleCluster(std::vector<receptor> &receptors) {
         }
         receptor receptor1;
         receptor1.position = {receptor_x, receptor_y, 0};
+        receptor1.stem = {receptor_x, receptor_y, 0};
         gProtein[i]++;
         receptors.push_back(receptor1);
 
@@ -77,6 +78,7 @@ void ini_receptor_cluster(std::vector<receptor> &receptors) {
         }
         receptor receptor1;
         receptor1.position = {receptor_x, receptor_y, 0};
+        receptor1.stem = {receptor_x, receptor_y, 0};
         receptors.push_back(receptor1);
     }
 }
@@ -99,6 +101,7 @@ void ini_receptor_monomer(std::vector<receptor> & receptors) {
 
         receptor receptor1;
         receptor1.position = {receptor_x, receptor_y, 0};
+        receptor1.stem = {receptor_x, receptor_y, 0};
         receptors.push_back(receptor1);
     }
 
@@ -192,7 +195,7 @@ void ini_binding(std::vector<receptor> & receptors, std::vector<ligand> & ligand
     // Place 1st receptor right underneath the nanoparticle
     receptors.at(0).position.x = np.position.x;
     receptors.at(0).position.y = np.position.y;
-
+    receptors.at(0).stem = {np.position.x, np.position.y, 0};
     // Place 1st ligand right above the 1st receptor
     ligands.at(0).updatePO(coord{0,0,-_radius}, np.position);
 
@@ -248,6 +251,7 @@ bool resume() {
         for ( ; input >> x >> y; ) {
             receptor receptor1;
             receptor1.position = {x, y, 0};
+            receptor1.stem = {x, y, 0};
             receptors.push_back(receptor1);
         }
     }
@@ -440,7 +444,7 @@ void iniATT() {
     if (ORI) {
         setOrient();
     }
-    
+
     FILE *outfile;
     if ((outfile = fopen(FO7, "w")) == NULL){ printf("\nerror on open FO7!"); exit(0); }
     for (auto j = 0; j < receptorNum; j++)

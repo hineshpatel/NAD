@@ -23,7 +23,7 @@ void breakageCheck(std::set<int> & activeBonds, std::vector<bond> & bonds,
                 dist(ligands.at(lig).position, np.position)) + np.position;
         delta = dist(ligStem, receptors.at(rec).stem) - _bondEL; // (nm)
         bonds.at(*bond).delta = delta;
-        if (ORI) {
+        if (ORI) {  // if ORI, no bond breaks due to compression
             if (delta < 0) {
                 ++bond;
                 continue;
