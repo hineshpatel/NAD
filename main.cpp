@@ -33,7 +33,7 @@ int att_sim() {
                 formed = formationCheck(availLig, availRec, activeBonds, ligands, receptors);
 
             if (formed) {
-                writeResume(attachedNP++);
+                writeResume(++attachedNP);
                 writeBond(attachedNP);
                 activeBonds.clear();
                 renewNP();
@@ -100,6 +100,7 @@ int detach_sim() {
     // final recording
     writeEndTime();
     writeBond();
+    writeResume();
     return 0;
 }
 

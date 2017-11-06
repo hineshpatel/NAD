@@ -86,11 +86,11 @@ bool formationCheck(const std::vector<int> & availLig, const std::vector<int> & 
                            receptors.at(rec).position); // (nm)
             if (bondDis > bondCutoff.bondLMax || bondDis < bondCutoff.bondLMin) continue;
             if (ifForm(bondDis-_bondEL)) {
+                if (CROSSCHECK&&ifCross (activeBonds, receptors, ligands, lig, rec)) continue;
+                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
                 if (ATT) {
                     return true;
                 }
-                if (CROSSCHECK&&ifCross (activeBonds, receptors, ligands, lig, rec)) continue;
-                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
                 newBond = true;
                 break;
             }
@@ -122,11 +122,11 @@ bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int>
                            receptors.at(rec).position); // (nm)
             if (bondDis > bondCutoff.deltaMax || bondDis < -1.0*bondCutoff.deltaMax) continue;
             if (ifForm(bondDis)) {
+                if (CROSSCHECK&&ifCrossOri (activeBonds, receptors, ligands, lig, rec)) continue;
+                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
                 if (ATT) {
                     return true;
                 }
-                if (CROSSCHECK&&ifCrossOri (activeBonds, receptors, ligands, lig, rec)) continue;
-                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
                 newBond = true;
                 break;
             }
