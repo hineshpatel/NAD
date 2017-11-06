@@ -194,7 +194,7 @@ int formBond(int lig, int rec, std::vector<ligand> & ligands, std::vector<recept
  * @param: position: current position of NP
  * @return: if the particle moves more than (_detach_criteria) radius
  */
-bool ifDetach(const coord & position) {
+bool ifDetach(const coord & position, double initialX, double initialY ) {
     const static double dis = _detach_criteria * _radius;
-    return (dist({position.x, position.y}, {0, 0}) > dis);
+    return (dist({position.x, position.y}, {initialX, initialY}) > dis);
 }

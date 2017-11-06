@@ -92,7 +92,7 @@ int detach_sim() {
         translation(np.velocity, np.position, np.acc); // translate nanoparticle
         rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
         if (!(step%CHECKER)) {
-            if (ifDetach(np.position)) break;
+            if (ifDetach(np.position, np.iniPos.x, np.iniPos.y)) break;
             checkDisplace(step);
         }
     }

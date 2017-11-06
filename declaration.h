@@ -35,7 +35,7 @@ bool ifBreak(double delta);
 bool ifForm(double delta);
 int formBond(int lig, int rec, std::vector<ligand> & ligands, std::vector<receptor> & receptors,
              std::vector<bond> & bonds);
-bool ifDetach(const coord & position);
+bool ifDetach(const coord & position, double initialX = 0, double initialY = 0);
 
 
 /* ======= force.cpp =================================================== */

@@ -86,6 +86,7 @@ struct np {
     coord rot_velocity;
     coord acc;
     coord rot_acc;
+    coord iniPos;
 };
 
 struct bond {

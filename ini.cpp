@@ -225,6 +225,11 @@ bool resume() {
     input >> timeAcc >> np.position.x >> np.position.y >> np.position.z >>
             np.velocity.x >> np.velocity.y >> np.velocity.z >>
             np.rot_velocity.x >> np.rot_velocity.y >> np.rot_velocity.z >> activeBondN >> totalBondN;
+    // set initial NP position to be np.position
+    // this may cause problem that once a particle is resumed, it's initial pos
+    // is always set to be the position where it starts resume.
+    np.iniPos = np.position;
+
     for ( ; input >> x >> y >> z; ) {
         ligand ligand1;
         ligand1.updatePO(coord{x,y,z}, np.position);
