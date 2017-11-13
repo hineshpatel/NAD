@@ -73,7 +73,7 @@ int detach_sim() {
     // starts integrating Langevin equation
     coord frepulsion;
     pair<coord, coord> fbond, fshear;
-    for (unsigned long long step = 0; timeAcc < _timeLimit; ++step, timeAcc += _timeInc) {
+    for (unsigned long long step = timeAcc * _timeInc; timeAcc < _timeLimit; ++step, timeAcc += _timeInc) {
 
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
             breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage

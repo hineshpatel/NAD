@@ -46,7 +46,8 @@ void acceleration(std::pair<coord, coord> Fbond, std::pair<coord, coord> Fshear,
 std::pair<coord, coord> Fbond(const std::set<int> & activeBond, const std::vector<bond> & bonds,
                               const std::vector<receptor> & receptors, const std::vector<ligand> & ligands);
 void acceleration(std::pair<coord, coord> Fbond, std::pair<coord, coord> Fshear, coord Frepulsion);
-
+coord compressF_hinge(coord& f, const double delta);
+coord compressF_scale(coord& f, const double scaler);
 
 /* =======  utilities.cpp  ============================================= */
 

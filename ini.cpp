@@ -407,10 +407,6 @@ void setOrient() {
 void ini_binding_ori(std::vector<receptor> & receptors, std::vector<ligand> & ligands,
                      std::set<int> & activeBonds, std::vector<bond> & bonds, const struct np & np) {
 
-    const double rect_length = 29.7; //(nm) ICAM-1
-    const double fc_length = 5; // nm
-    const double fab_length = 6.4; // nm
-
     // Place 1st receptor right underneath the nanoparticle
     receptors.at(0).stem.x = np.position.x;
     receptors.at(0).stem.y = np.position.y;

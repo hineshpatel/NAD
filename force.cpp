@@ -29,6 +29,42 @@ coord Frepulsion(const double & npheight) {
 }
 
 /**
+ * This function rescale compression force using a hinge function.
+ * If the bond is shorter than ICAM-1 length, return full compression force.
+ * Otherwise return 0.
+ *
+ * @param:
+ *      coord force - original force computed by hookean law
+ *      double delta - diff between bond length at equilibrium and current length
+ *
+ * @return:
+ *      coord resc_f - rescaled force
+ *
+ */
+coord compressF_hinge(coord& f, const double delta) {
+    static const double abLen = fc_length + fab_length;
+    if ((fabs(delta)) > abLen) return f;
+    else return {0, 0, 0};
+}
+
+/**
+ * This function rescale compression force using a scale.
+ * The original compression force is scaled by a scaler [0, 1].
+ *
+ * @param:
+ *      coord force - original force computed by hookean law
+ *      double scaler - scaler [0, 1]
+ *
+ * @return:
+ *      coord resc_f - rescaled force
+ *
+ */
+coord compressF_scale(coord& f, const double scaler) {
+    return f * scaler;
+}
+
+
+/**
  * This function calculates force from all bonds
  *
  * @param:
@@ -51,8 +87,9 @@ std::pair<coord, coord> Fbond(const std::set<int> & activeBond, const std::vecto
                      dist(ligands.at(lig).position, np.position)) + np.position;
             force = _sigma * bonds.at(bond).delta / (bonds.at(bond).delta + _bondEL) *
                     (receptors.at(rec).stem - ligStem); // (nN)
-            if (bonds.at(bond).delta < 0)
-                force = force * _compressForceScale;
+            if (bonds.at(bond).delta < 0) {
+                force = compressF_hinge(force, bonds.at(bond).delta);
+            }
 
         }
         else

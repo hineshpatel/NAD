@@ -27,6 +27,8 @@ const double _compressForceScale = 0.1; // [0, 1], used for ORI = 1 only,
 // if set 0 ignore compression force, if set 1, doesn't scale compression force at all.
 #define ATT 0 // set 1 if attachment simulation, set 0 otherwise
 
+
+
 /* ======= Output ============================================================== */
 
 #define WRITEBONDF 0
@@ -67,7 +69,9 @@ const double _proThick = 5; // the combined thickness of the protein layers (nm)
 const double _compressibility = 3e-5; // the _compressibility coefficient of surface proteins (nN);
 #define CROSSCHECK 1 // whether to perform bond cross check
 const double _bondDiameter = 2; // ICAM-1/Ab bond diameter (nm)
-
+const double rect_length = 29.7; //(nm) ICAM-1
+const double fc_length = 5; // nm
+const double fab_length = 6.4; // nm
 
 /* =======  For receptor double clustering  ==================================== */
 
