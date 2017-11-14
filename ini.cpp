@@ -394,12 +394,13 @@ void setOrient() {
             ligands[i].updatePO(pointD, np.position);
         }
     } else {
+        static const double abLen = fc_length + fab_length;
         for (auto& receptor:receptors) {
             receptor.stem = receptor.position;
             receptor.position = receptor.position + coord{0, 0, rect_length};
         }
         for (int i = 0; i<ligands.size(); ++i) {
-            coord tips = (_bondEL + _radius) / _radius * (ligands[i].position - np.position) + np.position;
+            coord tips = (abLen + _radius) / _radius * (ligands[i].position - np.position) + np.position;
             ligands[i].updatePA(tips, np.position);
         }
     }
