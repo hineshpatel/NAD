@@ -110,9 +110,8 @@ bool formationCheck(const std::vector<int> & availLig, const std::vector<int> & 
 bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int> & availRec,
                        std::set<int> & activeBonds, std::vector<ligand> & ligands,
                        std::vector<receptor> & receptors) {
-
-    double bondDis;
     bool newBond = false;
+    double bondDis;
 
     for (auto lig: availLig) {
         if (ligands.at(lig).bound) continue;
@@ -122,6 +121,45 @@ bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int>
                            receptors.at(rec).position); // (nm)
             if (bondDis > bondCutoff.deltaMax || bondDis < -1.0*bondCutoff.deltaMax) continue;
             if (ifForm(bondDis)) {
+                if (CROSSCHECK&&ifCrossOri (activeBonds, receptors, ligands, lig, rec)) continue;
+                activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
+                if (ATT) {
+                    return true;
+                }
+                newBond = true;
+                break;
+            }
+        }
+    }
+    return newBond;
+}
+
+
+/**
+ * This function checks available unbound adhesion molecules and
+ *      determines possible formation for Ori enabled condition only.
+ *      Assess the distance of ICAM-1 tip to Fc domain (Equilibrium bond is Fab length).
+ *
+ * @param: availLig: available ligands; availRec: available receptors
+ * @update: activeBonds; ligands; receptors
+ * @return: true if there is new bond forming, otherwise false
+ */
+bool formationCheckOri_FabOnly(const std::vector<int> & availLig, const std::vector<int> & availRec,
+                       std::set<int> & activeBonds, std::vector<ligand> & ligands,
+                       std::vector<receptor> & receptors) {
+    bool newBond = false;
+    double bondDis;
+
+    for (auto lig: availLig) {
+        if (ligands.at(lig).bound) continue;
+        auto Fc = ligands.at(lig).position -
+                fab_length/(fab_length+fc_length+_radius)*(ligands.at(lig).position - np.position);
+        for (auto rec: availRec) {
+            if (receptors.at(rec).bound) continue;
+            bondDis = dist(Fc,
+                           receptors.at(rec).position); // (nm)
+            if (bondDis > bondCutoff.fabMax || bondDis < bondCutoff.fabMin) continue;
+            if (ifForm(bondDis - fab_length)) {
                 if (CROSSCHECK&&ifCrossOri (activeBonds, receptors, ligands, lig, rec)) continue;
                 activeBonds.insert(formBond(lig, rec, ligands, receptors, bonds));
                 if (ATT) {

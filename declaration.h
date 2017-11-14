@@ -31,6 +31,9 @@ bool formationCheck(const std::vector<int> & availLig, const std::vector<int> & 
 bool formationCheckOri(const std::vector<int> & availLig, const std::vector<int> & availRec,
                        std::set<int> & activeBonds, std::vector<ligand> & ligands,
                        std::vector<receptor> & receptors);
+bool formationCheckOri_FabOnly(const std::vector<int> & availLig, const std::vector<int> & availRec,
+                               std::set<int> & activeBonds, std::vector<ligand> & ligands,
+                               std::vector<receptor> & receptors);
 bool ifBreak(double delta);
 bool ifForm(double delta);
 int formBond(int lig, int rec, std::vector<ligand> & ligands, std::vector<receptor> & receptors,

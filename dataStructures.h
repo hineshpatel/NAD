@@ -5,6 +5,7 @@
 #ifndef NANOAD_DATASTRUCTURES_H
 #define NANOAD_DATASTRUCTURES_H
 #include <ostream>
+#include "parameters.h"
 
 struct coord {
     double x;
@@ -113,10 +114,16 @@ struct cutoff {
     double bondLMax; // max bond length (nm)
     double bondLMin; // min bond length (nm)
     double deltaMax; // max bond length - equilibrium bond length (nm)
-
+    double fabMax; // max fab length (nm)
+    double fabMin; // min fab length (nm)
     cutoff() {}
-    cutoff(double bondL, double ratio) : deltaMax{ratio * bondL}, bondLMax{ratio * bondL + bondL},
-                                         bondLMin{-1.0 * ratio * bondL + bondL} {}
+    cutoff(double bondL, double ratio, double fab_length = 6.4) :
+            deltaMax{ratio * bondL},
+            bondLMax{ratio * bondL + bondL},
+            bondLMin{-1.0 * ratio * bondL + bondL},
+            fabMax{ratio * bondL + fab_length},
+            fabMin{-1.0 * ratio * bondL + fab_length}
+    {}
 };
 
 #endif //NANOAD_DATASTRUCTURES_H

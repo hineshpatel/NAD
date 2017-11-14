@@ -10,13 +10,13 @@
 
 /* =======  Commonly used  ====================================================== */
 
-const int _ligandDens = 410; // Ab density (1/um2)
-const int _receptorDens = 41; // ICAM-1 density (1/um2)
+const int _ligandDens = 3400; // Ab density (1/um2)
+const int _receptorDens = 134; // ICAM-1 density (1/um2)
 const double _bondEL = 41.1; // bond length at equilibrium (nm)
 const double _timeLimit = 30; // (s)
 const double _sigma = 0.8; // stiffness of ICAM-1/Ab bond (N/m)
 const double _bondCutRatio = 0.05;
-const double sigma_ts = _sigma; // (N/m)
+const double sigma_ts = 0.001; // (N/m)
 const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
 #define LIG_CLU 1 // if cluster two binding sites of Ab
 #define REC_CLU 1 // if cluster two ICAM-1
@@ -25,9 +25,11 @@ const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
 const double _compressForceScale = 0.1; // [0, 1], used for ORI = 1 only,
 // if a bond is compressed, the bond force is scaled by this value.
 // if set 0 ignore compression force, if set 1, doesn't scale compression force at all.
-#define ATT 0 // set 1 if attachment simulation, set 0 otherwise
+#define ATT 1 // set 1 if attachment simulation, set 0 otherwise
 
 #define ORI_BEND 0 // if allows ICAM-1 or antibody to bend
+#define FAB_BOND 1 // if only allows fab domain to move during bond formation check
+                    // must turn off ORI_BEND before using this
 
 /* ======= Output ============================================================== */
 

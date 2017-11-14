@@ -27,10 +27,16 @@ int att_sim() {
 
         if (np.position.z < (_radius + bondCutoff.bondLMax)) {
             bool formed;
-            if (ORI)
-                formed = formationCheckOri(availLig, availRec, activeBonds, ligands, receptors);
-            else
-                formed = formationCheck(availLig, availRec, activeBonds, ligands, receptors);
+            if (ORI) {
+                if (FAB_BOND && !ORI_BEND) {
+                    formationCheckOri_FabOnly(availLig, availRec, activeBonds, ligands, receptors);
+                }
+                else {
+                    formationCheckOri(availLig, availRec, activeBonds, ligands, receptors);
+                }
+            } else {
+                formationCheck(availLig, availRec, activeBonds, ligands, receptors);
+            }
 
             if (formed) {
                 writeResume(++attachedNP);
@@ -77,10 +83,16 @@ int detach_sim() {
 
         if ((activeBonds.size()) || (np.position.z < (_radius + bondCutoff.bondLMax))) {
             breakageCheck(activeBonds, bonds, ligands, receptors); // assess bond breakage
-            if (ORI)
-                formationCheckOri(availLig, availRec, activeBonds, ligands, receptors);
-            else
+            if (ORI) {
+                if (FAB_BOND && !ORI_BEND) {
+                    formationCheckOri_FabOnly(availLig, availRec, activeBonds, ligands, receptors);
+                }
+                else {
+                    formationCheckOri(availLig, availRec, activeBonds, ligands, receptors);
+                }
+            } else {
                 formationCheck(availLig, availRec, activeBonds, ligands, receptors);
+            }
             // assess bond formation
             frepulsion = Frepulsion(np.position.z); // calculate repulsion force from substrate to nanoparticle
         }
