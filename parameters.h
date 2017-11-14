@@ -27,7 +27,7 @@ const double _compressForceScale = 0.1; // [0, 1], used for ORI = 1 only,
 // if set 0 ignore compression force, if set 1, doesn't scale compression force at all.
 #define ATT 0 // set 1 if attachment simulation, set 0 otherwise
 
-
+#define ORI_BEND 0 // if allows ICAM-1 or antibody to bend
 
 /* ======= Output ============================================================== */
 

@@ -357,44 +357,51 @@ void ini() {
 
 
 void setOrient() {
-    const double flexure_angle = PI / 3; // ICAM-1 flexure
-    const double rect_length = 29.7; //(nm) ICAM-1
-    double ph, tht;
-    const double flexure = cos(flexure_angle / 2);
+    if (ORI_BEND) {
+        const double flexure_angle = PI / 3; // ICAM-1 flexure
+        double ph, tht;
+        const double flexure = cos(flexure_angle / 2);
 
-    for (auto& receptor:receptors) {
-        ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); //(0, 2*pi)
-        tht = acos(sfmt_genrand_res53(&sfmt)*(1-flexure) + flexure); //(0, pi/6)
-        receptor.stem = receptor.position;
-        receptor.position = receptor.position + angle_trans(ph, tht, rect_length);
-    }
-
-    const double upp_dis = 5; //nm
-    const double lower_dis = 2.5; //nm
-    const double fc_length = 5; // nm
-    const double fab_length = 6.4; // nm
-    double distance = 0;
-    coord pointA; // reference for Fab tip
-    coord pointB; // Fc end
-    coord pointD; // Fab tip
-
-    for (int i = 0; i<ligands.size(); ++i) {
-        if (!(i%2)) {
-            ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); // [0, 2PI]
-            tht = acos(2 * sfmt_genrand_res53(&sfmt) - 1); // [0, PI]
-            pointA = angle_trans(
-                    ph, tht, (_radius + fc_length + fab_length)); // point A
-            pointB = angle_trans(
-                    ph, tht, (_radius + fc_length)); // point B
+        for (auto& receptor:receptors) {
+            ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); //(0, 2*pi)
+            tht = acos(sfmt_genrand_res53(&sfmt)*(1-flexure) + flexure); //(0, pi/6)
+            receptor.stem = receptor.position;
+            receptor.position = receptor.position + angle_trans(ph, tht, rect_length);
         }
-        do {
-            ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); // [0, 2PI]
-            tht = acos(2 * sfmt_genrand_res53(&sfmt) - 1); // [0, PI]
-            pointD = angle_trans(ph, tht, fab_length) + pointB; // point D
-            distance = dist(pointA, pointD);
-        } while ((distance < lower_dis) || (distance > upp_dis));
+        const double upp_dis = 5; //nm
+        const double lower_dis = 2.5; //nm
+        double distance = 0;
+        coord pointA; // reference for Fab tip
+        coord pointB; // Fc end
+        coord pointD; // Fab tip
 
-        ligands[i].updatePO(pointD, np.position);
+        for (int i = 0; i<ligands.size(); ++i) {
+            if (!(i%2)) {
+                ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); // [0, 2PI]
+                tht = acos(2 * sfmt_genrand_res53(&sfmt) - 1); // [0, PI]
+                pointA = angle_trans(
+                        ph, tht, (_radius + fc_length + fab_length)); // point A
+                pointB = angle_trans(
+                        ph, tht, (_radius + fc_length)); // point B
+            }
+            do {
+                ph = 2.0 * PI * sfmt_genrand_res53(&sfmt); // [0, 2PI]
+                tht = acos(2 * sfmt_genrand_res53(&sfmt) - 1); // [0, PI]
+                pointD = angle_trans(ph, tht, fab_length) + pointB; // point D
+                distance = dist(pointA, pointD);
+            } while ((distance < lower_dis) || (distance > upp_dis));
+
+            ligands[i].updatePO(pointD, np.position);
+        }
+    } else {
+        for (auto& receptor:receptors) {
+            receptor.stem = receptor.position;
+            receptor.position = receptor.position + coord{0, 0, rect_length};
+        }
+        for (int i = 0; i<ligands.size(); ++i) {
+            coord tips = (_bondEL + _radius) / _radius * (ligands[i].position - np.position) + np.position;
+            ligands[i].updatePA(tips, np.position);
+        }
     }
 }
 
