@@ -29,13 +29,13 @@ int att_sim() {
             bool formed;
             if (ORI) {
                 if (FAB_BOND && !ORI_BEND) {
-                    formationCheckOri_FabOnly(availLig, availRec, activeBonds, ligands, receptors);
+                    formed = formationCheckOri_FabOnly(availLig, availRec, activeBonds, ligands, receptors);
                 }
                 else {
-                    formationCheckOri(availLig, availRec, activeBonds, ligands, receptors);
+                    formed = formationCheckOri(availLig, availRec, activeBonds, ligands, receptors);
                 }
             } else {
-                formationCheck(availLig, availRec, activeBonds, ligands, receptors);
+                formed = formationCheck(availLig, availRec, activeBonds, ligands, receptors);
             }
 
             if (formed) {

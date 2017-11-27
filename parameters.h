@@ -25,6 +25,7 @@ const double _gama = 0.274; // reactive compliance of ICAM-1/Ab bond (nm)
 const double _compressForceScale = 0.1; // [0, 1], used for ORI = 1 only,
 // if a bond is compressed, the bond force is scaled by this value.
 // if set 0 ignore compression force, if set 1, doesn't scale compression force at all.
+// by default using hinge compression force
 #define ATT 1 // set 1 if attachment simulation, set 0 otherwise
 
 #define ORI_BEND 0 // if allows ICAM-1 or antibody to bend
@@ -44,7 +45,7 @@ const double _NPdensity = 1.05e-21; // density of polysterene (g/nm^3)
 
 /* ======= Attachment ========================================================== */
 
-const double _boxHeight = 300; // the height of box in which NP is moving (nm)
+const double _boxHeight = 1000; // the height of box in which NP is moving (nm)
 const double _boxLength= 8 * _radius; // the x/y radius of box in which NP is moving (nm)
 
 
