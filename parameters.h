@@ -26,7 +26,7 @@ const double _compressForceScale = 0.1; // [0, 1], used for ORI = 1 only,
 // if a bond is compressed, the bond force is scaled by this value.
 // if set 0 ignore compression force, if set 1, doesn't scale compression force at all.
 // by default using hinge compression force
-#define ATT 1 // set 1 if attachment simulation, set 0 otherwise
+#define ATT 0 // set 1 if attachment simulation, set 0 otherwise
 
 #define ORI_BEND 0 // if allows ICAM-1 or antibody to bend
 #define FAB_BOND 1 // if only allows fab domain to move during bond formation check

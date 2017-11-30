@@ -48,7 +48,7 @@ coord compressF_hinge(coord& f, const double delta) {
 }
 
 /**
- * This function rescale compression force using a scale.
+ * This function rescales compression force using a scale.
  * The original compression force is scaled by a scaler [0, 1].
  *
  * @param:
@@ -75,6 +75,8 @@ coord compressF_scale(coord& f, const double scaler) {
 std::pair<coord, coord> Fbond(const std::set<int> & activeBond, const std::vector<bond> & bonds,
                               const std::vector<receptor> & receptors, const std::vector<ligand> & ligands) {
 
+    static const double abLen = fc_length + fab_length;
+
     int lig, rec;
     double rot_f_x, rot_f_y, rot_f_z;
     coord force, sumF, sumT;
@@ -88,9 +90,14 @@ std::pair<coord, coord> Fbond(const std::set<int> & activeBond, const std::vecto
             force = _sigma * bonds.at(bond).delta / (bonds.at(bond).delta + _bondEL) *
                     (receptors.at(rec).stem - ligStem); // (nN)
             if (bonds.at(bond).delta < 0) {
-                force = compressF_hinge(force, bonds.at(bond).delta);
+                if (bonds.at(bond).delta + abLen < 0) {
+                    force = force + _sigma * (fc_length + fab_length) /
+                                (bonds.at(bond).delta + _bondEL) *
+                                (receptors.at(rec).stem - ligStem); // (nN)
+                } else {
+                    force = {0, 0, 0};
+                }
             }
-
         }
         else
             force = _sigma * bonds.at(bond).delta / (bonds.at(bond).delta + _bondEL) *
