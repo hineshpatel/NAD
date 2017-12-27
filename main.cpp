@@ -41,7 +41,9 @@ int att_sim() {
             if (formed) {
                 writeResume(++attachedNP);
                 writeBond(attachedNP);
+                receptors.at(bonds[0].receptor).unpairing();
                 activeBonds.clear();
+                bonds.clear();
                 renewNP();
             }
             // assess bond formation
