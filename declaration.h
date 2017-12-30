@@ -122,6 +122,6 @@ void writeInTimeBondF();
 bool inCell(const coord &);
 void putNPBack(coord&);
 void renewNP();
-void writeAttNum(int num);
+void writeAttNum(int num, long long step = -1);
 
 #endif //NANOAD_DECLARATION_H

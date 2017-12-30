@@ -45,12 +45,15 @@ void renewNP() {
 
 
 
-void writeAttNum(int num) {
+void writeAttNum(int num, long long step) {
 
     FILE *outfile;
     if ((outfile = fopen(FO11, "a")) == NULL){ printf("\nerror on open FO11!"); exit(0); }
-    fprintf(outfile, "%.4e\t%d\t%d\n", timeAcc, num, np.name);
+    if (step != -1) {
+        fprintf(outfile, "%.4e\t%.4e\t%d\t%d\n", timeAcc, (double)step*_timeInc, num, np.name);
+    } else {
+        fprintf(outfile, "%.4e\t%d\t%d\n", timeAcc, num, np.name);
+    }
     fclose(outfile);
-    printf("%.4e\t%d\t%d\n", timeAcc, num, np.name);
 
 }

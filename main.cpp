@@ -23,8 +23,12 @@ int att_sim() {
     coord frepulsion;
     pair<coord, coord> fbond, fshear;
     // starts integrating Langevin equation
-    for (unsigned long long step = 0; timeAcc < _timeLimit; ++step, timeAcc += _timeInc) {
-
+    double effectT = 0.0;
+    for (unsigned long long step = 0; timeAcc < _timeLimit; ++step) {
+        if (np.position.z < _radius + 50.0) {
+            effectT += _timeInc;
+            timeAcc = effectT;
+        }
         if (np.position.z < (_radius + bondCutoff.bondLMax)) {
             bool formed;
             if (ORI) {

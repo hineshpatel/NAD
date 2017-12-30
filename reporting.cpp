@@ -31,7 +31,7 @@ void checkDisplaceATT(unsigned long long &step) {
 
 
     if (!(step%TRAJ)) {
-        writeAttNum(attachedNP);
+        writeAttNum(attachedNP, step);
     }
 }
 
