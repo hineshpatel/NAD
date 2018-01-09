@@ -88,6 +88,7 @@ struct np {
     coord acc;
     coord rot_acc;
     coord iniPos;
+    double start_time = 0.0;
 };
 
 struct bond {

@@ -54,3 +54,11 @@ void writeAttNum(int num) {
     printf("%.4e\t%d\t%d\n", timeAcc, num, np.name);
 
 }
+
+void summarizeNP(double start_t, double end_t, bool attached) {
+
+    FILE *outfile;
+    if ((outfile = fopen(FO12, "a")) == NULL){ printf("\nerror on open FO12!"); exit(0); }
+    fprintf(outfile, "%.4e\t%.4e\t%d\n", start_t, end_t, attached);
+    fclose(outfile);
+}

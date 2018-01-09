@@ -16,7 +16,7 @@
 #define FO9 "bondL.txt" // in-time active bond delta info (BondL - BondEL) (nm)
 #define FO10 "bondF.txt" // in-time active bond force info (nN)
 #define FO11 "attachment.txt"
-//#define FO12
+#define FO12 "attachment_NP.txt"
 #define FO13 "rst_general.txt" // file for restart
 #define FO14 "rst_receptor.txt" // file for restart
 #define FO15 "rst_ligand.txt" // file for restart

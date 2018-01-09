@@ -123,5 +123,6 @@ bool inCell(const coord &);
 void putNPBack(coord&);
 void renewNP();
 void writeAttNum(int num);
+void summarizeNP(double start_t, double end_t, bool attached);
 
 #endif //NANOAD_DECLARATION_H

@@ -39,6 +39,7 @@ int att_sim() {
             }
 
             if (formed) {
+                summarizeNP(np.start_time, timeAcc, true);
                 writeResume(++attachedNP);
                 writeBond(attachedNP);
                 receptors.at(bonds[0].receptor).unpairing();
@@ -58,10 +59,13 @@ int att_sim() {
             rotateLig (ligands, rotate(np.rot_velocity, np.rot_acc), np.position); // rotate nanoparticle
 
         if (!(step%CHECKER)) {
-            if (np.position.z>=_boxHeight)
-                renewNP();
-            if (!inCell(np.position))
+            if (np.position.z>=_boxHeight) {
+                np.position.z = sfmt_genrand_res53(&sfmt)*(_boxHeight - _proThick - _radius) +
+                               _proThick + _radius; // generate NP at height [_radius + _proThick, _boxHeight)
+            }
+            if (!inCell(np.position)) {
                 putNPBack(np.position);
+            }
 
             checkDisplaceATT(step);
         }

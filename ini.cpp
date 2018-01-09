@@ -115,7 +115,7 @@ void ini_receptor_monomer(std::vector<receptor> & receptors) {
  *
  */
 void ini_np(struct np & np) {
-
+    np.start_time = timeAcc;
     np.position.x = 0;
     np.position.y = 0;
     np.position.z = _radius + _bondEL;
@@ -130,7 +130,9 @@ void ini_np(struct np & np) {
  *
  */
 void ini_np_rand(struct np & np) {
+
     np.name++;
+    np.start_time = timeAcc;
     np.position.x = 0;
     np.position.y = 0;
     np.position.z = sfmt_genrand_res53(&sfmt)*(_boxHeight - _proThick - _radius) +
